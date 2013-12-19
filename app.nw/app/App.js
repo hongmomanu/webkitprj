@@ -23,15 +23,14 @@ Ext.define('Webdesktop.App', {
 
     getModules : function(){
         return [
-            Ext.widget('video'),
+            //Ext.widget('video'),
             //new Webdesktop.Blockalanche(),
-            Ext.widget('systemstatus'),
-            Ext.widget('grid-win'),
-            Ext.widget('tab-win'),
-            Ext.widget('acc-win'),
-            Ext.widget('notepad'),
-            Ext.widget('bogusmodule'),
-            Ext.widget('bogusmenumodule')
+            Ext.widget('systemstatus')
+            //Ext.widget('grid-win'),
+            //Ext.widget('tab-win'),
+            //Ext.widget('acc-win'),
+            //Ext.widget('notepad')
+            //Ext.widget('bogusmenumodule')
 
         ];
     },
@@ -49,9 +48,7 @@ Ext.define('Webdesktop.App', {
             shortcuts: Ext.create('Ext.data.Store', {
                 model: 'Ext.ux.desktop.ShortcutModel',
                 data: [
-                    { name: '测试窗口', iconCls: 'grid-shortcut', module: 'grid-win' },
                     /*{ name: 'Accordion Window', iconCls: 'accordion-shortcut', module: 'acc-win' },*/
-                    { name: '记事本', iconCls: 'notepad-shortcut', module: 'notepad' },
                     { name: '系统状态', iconCls: 'cpu-shortcut', module: 'systemstatus'}
                 ]
             }),
@@ -66,7 +63,7 @@ Ext.define('Webdesktop.App', {
         var me = this, ret = me.callParent();
 
         return Ext.apply(ret, {
-            title: 'Don Griffin',
+            title: Globle.username,
             iconCls: 'user',
             height: 300,
             toolConfig: {
@@ -100,8 +97,7 @@ Ext.define('Webdesktop.App', {
 
         return Ext.apply(ret, {
             quickStart: [
-                { name: 'Accordion Window', iconCls: 'accordion', module: 'acc-win' },
-                { name: 'Grid Window', iconCls: 'icon-grid', module: 'grid-win' }
+                { name: '系统状态', iconCls: 'cpu-shortcut', module: 'systemstatus' }
             ],
             trayItems: [
                 { xtype: 'trayclock', flex: 1 }
