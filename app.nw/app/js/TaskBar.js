@@ -226,6 +226,7 @@ Ext.define('Ext.ux.desktop.TrayClock', {
 
     html: '&#160;',
 
+
     timeFormat: 'Y-m-d g:i A',
 
     tpl: '{time}',

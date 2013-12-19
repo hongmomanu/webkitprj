@@ -30,7 +30,11 @@
 Ext.define('Webdesktop.view.user.Login', {
     extend : 'Ext.window.Window',
     alias  : 'widget.webdesktop_login',
-
+    listeners: {
+        show: function(panel) {
+            panel.down('#username').focus();
+        }
+    },
     initComponent: function() {
         var me = this;
 
@@ -51,6 +55,7 @@ Ext.define('Webdesktop.view.user.Login', {
                 items       : [{
                         name       : 'username',
                         fieldLabel : '用户名',
+                        itemId:'username',
                         allowBlank : false
                     }, {
                         name       : 'password',
