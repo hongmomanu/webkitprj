@@ -52,12 +52,22 @@ Ext.define('Webdesktop.view.user.Config', {
                         labelWidth:80,
                         width:250,
                         fieldLabel : '服务器地址',
+                        listeners: {
+
+                            "specialkey": function (field, e) {
+                                if (e.keyCode == 13) {
+                                    var btn=field.up('form').down('#submit');
+                                    btn.fireHandler();
+                                }
+                            }
+                        },
                         allowBlank : false
                     }
                 ],
                 buttons: [{
                     text     : '确定',
                     action:'saveconfig',
+                    itemId:'submit',
                     formBind : true, //only enabled once the form is valid
                     disabled : true
                 },{

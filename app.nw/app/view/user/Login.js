@@ -42,6 +42,7 @@ Ext.define('Webdesktop.view.user.Login', {
             resizable :false,
             layout:'fit',
             constrain : true,
+
             items     : {
                 xtype       : 'form',
                 border      : false,
@@ -54,12 +55,23 @@ Ext.define('Webdesktop.view.user.Login', {
                     }, {
                         name       : 'password',
                         fieldLabel : '密码',
+                        listeners: {
+
+                            "specialkey": function (field, e) {
+                                if (e.keyCode == 13) {
+                                    var btn=field.up('form').down('#submit');
+                                    btn.fireHandler();
+                                }
+                            }
+                        },
                         inputType  : 'password',
                         allowBlank : false
                     }
                 ],
                 buttons: [{
                     text     : '登陆',
+                    itemId:'submit',
+
                     action   :'login',
                     formBind : true, //only enabled once the form is valid
                     disabled : true

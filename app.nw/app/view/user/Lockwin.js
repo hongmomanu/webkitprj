@@ -62,12 +62,22 @@ Ext.define('Webdesktop.view.user.Lockwin', {
                         labelWidth:80,
                         width:250,
                         fieldLabel : '请输入密码',
+                        listeners: {
+
+                            "specialkey": function (field, e) {
+                                if (e.keyCode == 13) {
+                                    var btn=field.up('form').down('#submit');
+                                    btn.fireHandler();
+                                }
+                            }
+                        },
                         allowBlank : false
                     }
                 ],
                 buttons: [{
                     text     : '解锁',
                     action:'unlockwin',
+                    itemId:'submit',
                     formBind : true, //only enabled once the form is valid
                     disabled : true
                 }]
