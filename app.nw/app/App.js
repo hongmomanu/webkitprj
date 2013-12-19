@@ -108,6 +108,7 @@ Ext.define('Webdesktop.App', {
         });
     },
     onLockwin:function(){
+        Ext.widget('webdesktop_lockwin');
 
     },
     onLogout: function () {

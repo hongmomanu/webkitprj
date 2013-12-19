@@ -27,7 +27,7 @@
     "window": {
         "title": "速报优化平台",
         
-        "toolbar": false,
+        "toolbar": true,
 
         "position": "mouse"
 

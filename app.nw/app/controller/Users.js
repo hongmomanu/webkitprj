@@ -9,12 +9,12 @@ Ext.define('Webdesktop.controller.Users', {
     extend: 'Ext.app.Controller',
     views: [
         'user.Login',
+        'user.Lockwin',
         'user.Config'
     ],
 
     init: function() {
 
-        console.log('Initialized Users! This happens before the Application launch function is called');
 
         this.control({
             'webdesktop_login button[action=openconfigwin]':{
@@ -25,6 +25,9 @@ Ext.define('Webdesktop.controller.Users', {
 
             },'webdesktop_config button[action=saveconfig]':{
                 click: this.saveconfig
+
+            },'webdesktop_lockwin button[action=unlockwin]':{
+                click: this.unlockwin
 
             }
 
@@ -43,9 +46,10 @@ Ext.define('Webdesktop.controller.Users', {
 
         var successFunc = function (form, action) {
              win.close();
-             console.log(action);
+             Globle.password=action.result.result.pass;
+             Globle.username=action.result.result.username;
+             Globle.isadmin=action.result.result.isadmin;
              Ext.widget('maindesktopview');
-
 
         };
 
@@ -78,6 +82,17 @@ Ext.define('Webdesktop.controller.Users', {
        var form=win.down('form').getForm();
        localStorage.serverurl=form.getValues().serverurl;
        win.hide();
+
+    },
+    unlockwin:function(btn){
+        var win=btn.up('window');
+        var form=win.down('form').getForm();
+        var password=form.getValues().password;
+        if(password==Globle.password){
+            win.close();
+        }else{
+            Ext.Msg.alert("解锁失败", "密码错误");
+        }
 
     }
 
