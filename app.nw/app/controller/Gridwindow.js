@@ -8,28 +8,29 @@
 Ext.define('Webdesktop.controller.Gridwindow', {
     extend: 'Ext.app.Controller',
     views: [
-        'Webdesktop.GridWindow',
+        'maindesktop.GridWindow',
         'Ext.window.MessageBox',
 
         'Ext.ux.desktop.ShortcutModel',
 
-        'Webdesktop.SystemStatus',
-        'Webdesktop.VideoWindow',
+        'maindesktop.SystemStatus',
+        'maindesktop.VideoWindow',
 
-        'Webdesktop.TabWindow',
-        'Webdesktop.AccordionWindow',
-        'Webdesktop.Notepad',
-        'Webdesktop.BogusMenuModule',
-        'Webdesktop.BogusModule',
+        'maindesktop.TabWindow',
+        'maindesktop.AccordionWindow',
+        'maindesktop.Notepad',
+        'maindesktop.BogusMenuModule',
+        'maindesktop.BogusModule',
 
 //        'Webdesktop.Blockalanche',
-        'Webdesktop.Settings',
+        'maindesktop.Settings',
         'TestGrid'
+    ],
+    models:[
+         'maindesktop.WallpaperModel'
     ],
 
     init: function() {
-
-        console.log('Initialized Users! This happens before the Application launch function is called');
 
         this.control({
             'testgrid button[action=add]':{

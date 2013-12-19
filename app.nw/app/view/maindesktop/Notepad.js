@@ -5,7 +5,7 @@
  * http://www.sencha.com/license
  */
 
-Ext.define('Webdesktop.Notepad', {
+Ext.define('Webdesktop.view.maindesktop.Notepad', {
     extend: 'Ext.ux.desktop.Module',
 
     requires: [
@@ -13,7 +13,10 @@ Ext.define('Webdesktop.Notepad', {
         //'Ext.form.field.TextArea'
     ],
 
-    id:'notepad',
+    //id:'notepad',
+
+    alias:'widget.notepad',
+    appType:'notepad',
 
     init : function(){
         this.launcher = {

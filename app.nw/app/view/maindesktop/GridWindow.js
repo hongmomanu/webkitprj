@@ -5,7 +5,7 @@
  * http://www.sencha.com/license
  */
 
-Ext.define('Webdesktop.GridWindow', {
+Ext.define('Webdesktop.view.maindesktop.GridWindow', {
     extend: 'Ext.ux.desktop.Module',
 
     requires: [
@@ -16,7 +16,9 @@ Ext.define('Webdesktop.GridWindow', {
         ''
     ],
 
-    id:'grid-win',
+    //id:'grid-win',
+    alias:'widget.grid-win',
+    appType:'grid-win',
 
     init : function(){
         this.launcher = {

@@ -5,7 +5,7 @@
 * http://www.sencha.com/license
 */
 
-Ext.define('Webdesktop.SystemStatus', {
+Ext.define('Webdesktop.view.maindesktop.SystemStatus', {
     extend: 'Ext.ux.desktop.Module',
 
     requires: [
@@ -13,8 +13,9 @@ Ext.define('Webdesktop.SystemStatus', {
         'Ext.data.JsonStore'
     ],
 
-    id: 'systemstatus',
-
+    //id: 'systemstatus',
+    alias:'widget.systemstatus',
+    appType:'systemstatus',
     refreshRate: 500,
 
     init : function() {

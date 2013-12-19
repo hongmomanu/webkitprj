@@ -5,14 +5,17 @@
  * http://www.sencha.com/license
  */
 
-Ext.define('Webdesktop.TabWindow', {
+Ext.define('Webdesktop.view.maindesktop.TabWindow', {
     extend: 'Ext.ux.desktop.Module',
 
     requires: [
         'Ext.tab.Panel'
     ],
 
-    id:'tab-win',
+    //id:'tab-win',
+    alias:'widget.tab-win',
+    appType:'tab-win',
+
 
     init : function(){
         this.launcher = {

@@ -5,9 +5,9 @@
 * http://www.sencha.com/license
 */
 
-Ext.define('Webdesktop.BogusMenuModule', {
-    extend: 'Webdesktop.BogusModule',
-
+Ext.define('Webdesktop.view.maindesktop.BogusMenuModule', {
+    extend: 'Webdesktop.view.maindesktop.BogusModule',
+    alias:'widget.bogusmenumodule',
     init : function() {
 
         this.launcher = {

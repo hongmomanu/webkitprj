@@ -43,7 +43,7 @@ Ext.define('Ext.ux.desktop.Wallpaper', {
 
     setWallpaper: function (wallpaper, stretch) {
         var me = this, imgEl, bkgnd;
-
+        //console.log(wallpaper);
         me.stretch = (stretch !== false);
         me.wallpaper = wallpaper;
 

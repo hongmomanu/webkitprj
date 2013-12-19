@@ -7,14 +7,17 @@
 
 // From code originally written by David Davis (http://www.sencha.com/blog/html5-video-canvas-and-ext-js/)
 
-Ext.define('Webdesktop.VideoWindow', {
+Ext.define('Webdesktop.view.maindesktop.VideoWindow', {
     extend: 'Ext.ux.desktop.Module',
 
     uses: [
         'Ext.ux.desktop.Video'
     ],
 
-    id:'video',
+    //id:'video',
+    alias:'widget.video',
+    appType:'video',
+
     windowId: 'video-window',
 
     tipWidth: 160,

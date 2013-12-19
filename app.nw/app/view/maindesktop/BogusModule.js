@@ -7,8 +7,9 @@
 
 var windowIndex = 0;
 
-Ext.define('Webdesktop.BogusModule', {
+Ext.define('Webdesktop.view.maindesktop.BogusModule', {
     extend: 'Ext.ux.desktop.Module',
+    alisa:'widget.bogusmodule',
 
     init : function(){
         this.launcher = {

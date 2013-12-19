@@ -5,19 +5,16 @@
  * http://www.sencha.com/license
  */
 
-Ext.define('Webdesktop.Settings', {
+Ext.define('Webdesktop.view.maindesktop.Settings', {
     extend: 'Ext.window.Window',
-
+    alias:'widget.desktop_setting',
     uses: [
         'Ext.tree.Panel',
         'Ext.tree.View',
         'Ext.form.field.Checkbox',
         'Ext.layout.container.Anchor',
         'Ext.layout.container.Border',
-
-        'Ext.ux.desktop.Wallpaper',
-
-        'Webdesktop.WallpaperModel'
+        'Ext.ux.desktop.Wallpaper'
     ],
 
     layout: 'anchor',
@@ -31,6 +28,7 @@ Ext.define('Webdesktop.Settings', {
         var me = this;
 
         me.selected = me.desktop.getWallpaper();
+
         me.stretch = me.desktop.wallpaper.stretch;
 
         me.preview = Ext.create('widget.wallpaper');
@@ -95,7 +93,7 @@ Ext.define('Webdesktop.Settings', {
                 scope: this
             },
             store: new Ext.data.TreeStore({
-                model: 'Webdesktop.WallpaperModel',
+                model: 'Webdesktop.model.maindesktop.WallpaperModel',
                 root: {
                     text:'Wallpaper',
                     expanded: true,
@@ -144,7 +142,6 @@ Ext.define('Webdesktop.Settings', {
         } else {
             me.selected = Ext.BLANK_IMAGE_URL;
         }
-
         me.preview.setWallpaper(me.selected);
     },
 

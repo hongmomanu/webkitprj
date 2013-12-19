@@ -5,7 +5,7 @@
  * http://www.sencha.com/license
  */
 
-Ext.define('Webdesktop.AccordionWindow', {
+Ext.define('Webdesktop.view.maindesktop.AccordionWindow', {
     extend: 'Ext.ux.desktop.Module',
 
     requires: [
@@ -15,8 +15,9 @@ Ext.define('Webdesktop.AccordionWindow', {
         'Ext.tree.Panel'
     ],
 
-    id:'acc-win',
-
+    //id:'acc-win',
+    alias:'widget.acc-win',
+    appType:'acc-win',
     init : function(){
         this.launcher = {
             text: 'Accordion Window',

@@ -23,15 +23,16 @@ Ext.define('Webdesktop.App', {
 
     getModules : function(){
         return [
-            new Webdesktop.VideoWindow(),
+            Ext.widget('video'),
             //new Webdesktop.Blockalanche(),
-            new Webdesktop.SystemStatus(),
-            new Webdesktop.GridWindow(),
-            new Webdesktop.TabWindow(),
-            new Webdesktop.AccordionWindow(),
-            new Webdesktop.Notepad(),
-            new Webdesktop.BogusMenuModule(),
-            new Webdesktop.BogusModule()
+            Ext.widget('systemstatus'),
+            Ext.widget('grid-win'),
+            Ext.widget('tab-win'),
+            Ext.widget('acc-win'),
+            Ext.widget('notepad'),
+            Ext.widget('bogusmodule'),
+            Ext.widget('bogusmenumodule')
+
         ];
     },
 
@@ -127,9 +128,11 @@ Ext.define('Webdesktop.App', {
     },
 
     onSettings: function () {
-        var dlg = new Webdesktop.Settings({
-            desktop: this.desktop
+        var me=this;
+        var dlg=Ext.widget('desktop_setting', { // Equivalent to Ext.create('widget.panel')
+            desktop: me.desktop
         });
+
         dlg.show();
     }
 });
