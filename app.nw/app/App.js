@@ -25,7 +25,8 @@ Ext.define('Webdesktop.App', {
         return [
             //Ext.widget('video'),
             //new Webdesktop.Blockalanche(),
-            Ext.widget('systemstatus')
+            Ext.widget('systemstatus'),
+            Ext.widget('serversview')
             //Ext.widget('grid-win'),
             //Ext.widget('tab-win'),
             //Ext.widget('acc-win'),
@@ -49,7 +50,8 @@ Ext.define('Webdesktop.App', {
                 model: 'Ext.ux.desktop.ShortcutModel',
                 data: [
                     /*{ name: 'Accordion Window', iconCls: 'accordion-shortcut', module: 'acc-win' },*/
-                    { name: '系统状态', iconCls: 'cpu-shortcut', module: 'systemstatus'}
+                    { name: '系统状态', iconCls: 'cpu-shortcut', module: 'systemstatus'},
+                    { name: '系统监视', iconCls: 'cpu-shortcut', module: 'serversview'}
                 ]
             }),
 

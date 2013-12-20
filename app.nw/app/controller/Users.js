@@ -48,6 +48,7 @@ Ext.define('Webdesktop.controller.Users', {
              win.close();
              Globle.password=action.result.result.pass;
              Globle.username=action.result.result.username;
+             Globle.displayname=action.result.result.displayname;
              Globle.isadmin=action.result.result.isadmin;
              Ext.widget('maindesktopview');
 

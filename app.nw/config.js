@@ -7,6 +7,7 @@ var Globle={
     serverurl:"",
     username:"",
     password:"",
+    displayname:"",
     isadmin:false
 
 };
