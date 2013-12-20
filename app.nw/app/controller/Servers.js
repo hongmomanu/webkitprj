@@ -7,6 +7,12 @@
  */
 Ext.define('Webdesktop.controller.Servers', {
     extend: 'Ext.app.Controller',
+    models:[
+        'server.ServerDataView'
+    ],
+    stores:[
+        'server.ServerDataViews'
+    ],
     views: [
         'server.ServersView',
         'server.ServersDataView'

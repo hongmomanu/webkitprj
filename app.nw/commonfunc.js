@@ -31,6 +31,12 @@ var CommonFunc = {
         }
 
 
+    },
+
+    geturl:function(){
+        var url=Globle.iswebapp?"":localStorage.serverurl;
+        return url;
+
     }
 
 
