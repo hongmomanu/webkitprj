@@ -7,7 +7,7 @@ Ext.define('Webdesktop.store.server.ServerDataViews', {
     model: 'Webdesktop.model.server.ServerDataView',
     autoLoad:true,
 
-    //pageSize: 15,
+    pageSize: 25,
     proxy: {
         type: 'ajax',
         url: CommonFunc.geturl()+'serverlist',
@@ -17,8 +17,8 @@ Ext.define('Webdesktop.store.server.ServerDataViews', {
         },*/
         reader: {
             type: 'json',
-            root: 'results'/*,
-            totalProperty: 'totalCount'*/
+            root: 'results',
+            totalProperty: 'totalCount'
         }
     }
 });

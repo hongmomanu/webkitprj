@@ -57,7 +57,10 @@ Ext.define('Webdesktop.view.server.ServersView', {
                 hideMode: 'offsets',
 
                 layout: 'fit',
-                items:Ext.widget('serversdataview')
+                items:Ext.widget('serversdataview'),
+                bbar:Ext.create('Ext.PagingToolbar',{
+                    store: 'server.ServerDataViews'
+                })
 
             });
         }
