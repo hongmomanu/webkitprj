@@ -9,7 +9,7 @@ Ext.define('Webdesktop.store.server.AppPortCharts', {
 
     proxy: {
         type: 'ajax',
-        url: CommonFunc.geturl()+'serverport?serverid=1'
+        url: CommonFunc.geturl()+'serverport'
         //getMethod:function(request){ return 'POST'; },
         /*extraParams:{
             businesstype:businessTableType.dbgl
