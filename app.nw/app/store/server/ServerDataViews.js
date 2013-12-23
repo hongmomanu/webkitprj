@@ -8,6 +8,11 @@ Ext.define('Webdesktop.store.server.ServerDataViews', {
     autoLoad:true,
 
     pageSize: 25,
+    /*listeners: {
+        load: function(store, node, records) {
+            store.sort('servername', 'ASC');
+        }
+    },*/
     proxy: {
         type: 'ajax',
         url: CommonFunc.geturl()+'serverlist',

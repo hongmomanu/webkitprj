@@ -1,4 +1,4 @@
-#phones {
+#servers {
     background-color: #fff;
     text-shadow: #fff 0 1px 0;
     position: relative;
@@ -6,11 +6,11 @@
     height: auto;
 }
 
-#phones div.phone img {
+#servers div.server img {
     margin-bottom: 1px;
 }
 
-#phones div.phone {
+#servers div.server {
     float: left;
     padding: 8px 17px;
     margin: 5px;
@@ -27,27 +27,27 @@
     cursor: pointer;
 }
 
-.x-ie6 #phones div.phone,
-.x-ie7 #phones div.phone,
-.x-ie8 #phones div.phone {
+.x-ie6 #servers div.server,
+.x-ie7 #servers div.server,
+.x-ie8 #servers div.server {
     border-top: none;
     padding: 3px 2px;
     margin: 2px;
 }
 
-#phones div.phone-hover {
+#servers div.server-hover {
     background-color: #eee;
 }
 
-#phones .x-item-selected {
+#servers .x-item-selected {
     background-color: #D3E1F1 !important;
 }
 
-#phones div.phone strong {
+#servers div.server strong {
     color: #000;
     display: block;
 }
 
-#phones div.phone span {
+#servers div.server span {
     color: #999;
 }

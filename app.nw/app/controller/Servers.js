@@ -8,14 +8,17 @@
 Ext.define('Webdesktop.controller.Servers', {
     extend: 'Ext.app.Controller',
     models:[
-        'server.ServerDataView'
+        'server.ServerDataView',
+        'server.AppPortChart'
     ],
     stores:[
-        'server.ServerDataViews'
+        'server.ServerDataViews'  ,
+        'server.AppPortCharts'
     ],
     views: [
         'server.ServersView',
-        'server.ServersDataView'
+        'server.ServersDataView',
+        'server.AppPortChart'
     ],
 
     init: function() {

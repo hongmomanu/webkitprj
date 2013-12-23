@@ -40,25 +40,51 @@ Ext.define('Webdesktop.view.server.ServersDataView', {
             store: 'server.ServerDataViews',
             tpl  : Ext.create('Ext.XTemplate',
                 '<tpl for=".">',
-                '<div class="phone">',
-                (!Ext.isIE6? '<img width="64" height="64" src="app/images/grid.png" />' :
-                    '<div style="width:74px;height:74px;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'images/phones/{[values.name.replace(/ /g, "-")]}.png\',sizingMethod=\'scale\')"></div>'),
+                '<div class="server">',
+                (!Ext.isIE6? '<img width="64" height="64" src="app/images/{[values.isping?"grid.png":"grid.png"]}" />' :
+                    '<div style="width:74px;height:74px;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'app/images/grid.png\',sizingMethod=\'scale\')"></div>'),
                 '<strong>{servername}</strong>',
                 //'<span>{price:usMoney} ({reviews} Review{[values.reviews == 1 ? "" : "s"]})</span>',
                 '</div>',
                 '</tpl>'
             ),
-
+            trackOver: true,
             plugins : [
                 Ext.create('Ext.ux.DataView.Animated', {
                     duration  : 550,
                     idProperty: 'id'
                 })
             ],
-            id: 'phones',
 
-            itemSelector: 'div.phone',
-            overItemCls : 'phone-hover',
+            listeners: {
+                selectionchange: function(dv, nodes ){
+                    if(nodes[0]){
+
+                        var win = Ext.create('Ext.Window', {
+                            width: 600,
+                            height: 380,
+                           /* minHeight: 380,
+                            minWidth: 550,*/
+                            hidden: false,
+                            shadow: false,
+                            maximizable: true,
+                            style: 'overflow: hidden;',
+                            title: '端口测试',
+                            layout: 'fit',
+                            items: Ext.widget('appportchart')
+                        });
+                        win.show();
+
+                        //testobj=nodes[0];
+
+                    }
+                }
+            },
+
+            id: 'servers',
+
+            itemSelector: 'div.server',
+            overItemCls : 'server-hover',
             multiSelect : false,
             autoScroll  : true
         });

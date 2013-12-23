@@ -1,13 +1,12 @@
 /**
  * Created by jack on 13-12-20.
  */
-Ext.define('Webdesktop.model.server.ServerDataView', {
+Ext.define('Webdesktop.model.server.AppPortChart', {
     extend: 'Ext.data.Model',
     fields: [
         {name: 'servername'},
-        {name:'servervalue'},
-        {name:'parentid'},
-        {name:'isping'},
+        {name:'value'},
+        {name:'isconnect'},
         {name: 'id'}
 
     ]

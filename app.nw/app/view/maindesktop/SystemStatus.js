@@ -97,6 +97,7 @@ Ext.define('Webdesktop.view.maindesktop.SystemStatus', {
                 items: [
                     me.createCpu1LoadChart(),
                     me.createCpu2LoadChart()
+                    //Ext.widget('appportchart')
                 ]
             }, {
                 flex: 1,
