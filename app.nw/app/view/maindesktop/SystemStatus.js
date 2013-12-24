@@ -13,7 +13,7 @@ Ext.define('Webdesktop.view.maindesktop.SystemStatus', {
         'Ext.data.JsonStore'
     ],
 
-    //id: 'systemstatus',
+    id: 'systemstatus',
     alias:'widget.systemstatus',
     appType:'systemstatus',
     refreshRate: 500,

@@ -26,6 +26,7 @@ Ext.define('Webdesktop.App', {
             //Ext.widget('video'),
             //new Webdesktop.Blockalanche(),
             Ext.widget('systemstatus'),
+            //new Webdesktop.view.maindesktop.SystemStatus()
             Ext.widget('serversview')
             //Ext.widget('grid-win'),
             //Ext.widget('tab-win'),

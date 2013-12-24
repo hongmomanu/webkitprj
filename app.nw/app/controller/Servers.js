@@ -50,7 +50,13 @@ Ext.define('Webdesktop.controller.Servers', {
         if(!win){
 
             win = desktop.createWindow(Ext.widget('appportchartwin',
-                {title:title,id:id,items:Ext.widget('appportchart')}),null,true);
+                {
+                    title:title,
+                    id:id,
+                    items:Ext.widget('appportchart')
+
+
+                }),null,true);
             //win.items=Ext.widget('appportchart');
         }
         var store=win.down('#appprtchart').getStore();

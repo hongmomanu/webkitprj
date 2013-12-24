@@ -28,7 +28,7 @@
  * @alias webdesktop_login
  */
 Ext.define('Webdesktop.view.server.ServersView', {
-    extend : 'Ext.Viewport',
+    extend : 'Ext.ux.desktop.Module',
     alias:'widget.serversview',
     appType:'serversview',
     /*listeners: {
@@ -46,15 +46,16 @@ Ext.define('Webdesktop.view.server.ServersView', {
                 title:'系统监视',
                 width:600,
                 height:400,
-                iconCls: 'notepad',
                 animCollapse:false,
+                constrainHeader:true,
+                //iconCls: 'notepad',
                 border: false,
                 //defaultFocus: 'notepad-editor', EXTJSIV-1300
 
                 // IE has a bug where it will keep the iframe's background visible when the window
                 // is set to visibility:hidden. Hiding the window via position offsets instead gets
                 // around this bug.
-                hideMode: 'offsets',
+                //hideMode: 'offsets',
 
                 layout: 'fit',
                 items:Ext.widget('serversdataview'),
