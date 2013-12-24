@@ -37,6 +37,7 @@ Ext.define('Webdesktop.view.server.AppPortChart', {
             theme: 'Category2',
             //insetPadding: 30,
             animate: true,
+            itemId:'appprtchart',
             store: 'server.AppPortCharts',
 
             legend: {
@@ -56,6 +57,7 @@ Ext.define('Webdesktop.view.server.AppPortChart', {
                 type: 'radar',
                 xField: 'servername',
                 yField: 'isconnect',
+                title: '服务状态',
                 style: {
                     opacity: 0.6,
                     'stroke-width': 3/*,

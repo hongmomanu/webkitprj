@@ -56,31 +56,19 @@ Ext.define('Webdesktop.view.server.ServersDataView', {
                 })
             ],
 
-            listeners: {
+           /* listeners: {
                 selectionchange: function(dv, nodes ){
                     if(nodes[0]){
 
-                        var win = Ext.create('Ext.Window', {
-                            width: 600,
-                            height: 380,
-                           /* minHeight: 380,
-                            minWidth: 550,*/
-                            hidden: false,
-                            shadow: false,
-                            maximizable: true,
-                            style: 'overflow: hidden;',
-                            title: '端口测试',
-                            layout: 'fit',
-                            items: Ext.widget('appportchart')
-                        });
-                        win.show();
-
-                        //testobj=nodes[0];
-
                     }
-                }
-            },
+                },
+                itemclick: function(view, record, item, index, e, eOpts) {
 
+
+                }
+
+            },
+*/
             id: 'servers',
 
             itemSelector: 'div.server',

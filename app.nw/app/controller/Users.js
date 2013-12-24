@@ -35,8 +35,9 @@ Ext.define('Webdesktop.controller.Users', {
 
 
     },
+    desktop_widget:null,
     user_login:function(btn){
-
+        var me=this;
         var form =btn.up('form');
         var win=form.up('window');
         var params={};
@@ -50,7 +51,7 @@ Ext.define('Webdesktop.controller.Users', {
              Globle.username=action.result.result.username;
              Globle.displayname=action.result.result.displayname;
              Globle.isadmin=action.result.result.isadmin;
-             Ext.widget('maindesktopview');
+             me.desktop_widget=Ext.widget('maindesktopview');
 
         };
 

@@ -24,6 +24,7 @@ Ext.define('Webdesktop.view.maindesktop.BogusModule', {
     createWindow : function(src){
         var desktop = this.app.getDesktop();
         var win = desktop.getWindow('bogus'+src.windowId);
+
         if(!win){
             win = desktop.createWindow({
                 id: 'bogus'+src.windowId,

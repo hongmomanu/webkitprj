@@ -4,7 +4,7 @@
 Ext.define('Webdesktop.store.server.AppPortCharts', {
     extend: 'Ext.data.Store',
     model: 'Webdesktop.model.server.AppPortChart',
-    autoLoad:true,
+    autoLoad:false,
 
 
     proxy: {

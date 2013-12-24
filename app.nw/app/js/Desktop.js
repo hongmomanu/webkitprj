@@ -288,7 +288,7 @@ Ext.define('Ext.ux.desktop.Desktop', {
         });
     },
 
-    createWindow: function(config, cls) {
+    createWindow: function(config, cls,iswidget) {
         var me = this, win, cfg = Ext.applyIf(config || {}, {
                 stateful: false,
                 isWindow: true,
@@ -298,7 +298,8 @@ Ext.define('Ext.ux.desktop.Desktop', {
             });
 
         cls = cls || Ext.window.Window;
-        win = me.add(new cls(cfg));
+        if(iswidget)win=config //added by jack widget support
+        else win = me.add(new cls(cfg));
 
         me.windows.add(win);
 
