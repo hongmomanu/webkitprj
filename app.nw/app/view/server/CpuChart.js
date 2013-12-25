@@ -27,9 +27,9 @@
  * @extends Ext.window.Window
  * @alias webdesktop_login
  */
-Ext.define('Webdesktop.view.server.AppPortChart', {
+Ext.define('Webdesktop.view.server.CpuChart', {
     extend : 'Ext.chart.Chart',
-    alias  : 'widget.appportchart',
+    alias  : 'widget.appcpuchart',
     initComponent: function() {
         var me = this;
         Ext.apply(me, {
@@ -38,7 +38,7 @@ Ext.define('Webdesktop.view.server.AppPortChart', {
             theme: 'Category2',
             //insetPadding: 30,
             animate: true,
-            itemId:'appprtchart',
+            //itemId:'appprtchart',
             store: 'server.AppPortCharts',
 
             legend: {

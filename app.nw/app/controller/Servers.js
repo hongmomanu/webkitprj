@@ -18,7 +18,8 @@ Ext.define('Webdesktop.controller.Servers', {
     views: [
         'server.ServersView',
         'server.ServersDataView',
-        'server.AppPortChart'
+        'server.AppPortChart',
+        'server.CpuChart'
     ],
 
     init: function() {
@@ -38,7 +39,6 @@ Ext.define('Webdesktop.controller.Servers', {
 
     },
     showportwin:function(view, record, item, index, e, eOpts){
-        console.log(this.getController("Users"));
         var user_cl=this.getController("Users");
         var title=record.get('servername')+'('+record.get('servervalue')+')';
         var id='portwin'+record.get('id');
@@ -54,10 +54,27 @@ Ext.define('Webdesktop.controller.Servers', {
                     id:id,
                     animCollapse:false,
                     constrainHeader:true,
-                    layout:'fit',
+                    //layout:'fit',
+                    layout: {
+                        type: 'hbox',
+                        align: 'stretch'
+                    },
                     height: 380,
                     width: 600,
-                    items:Ext.widget('appportchart')
+                    items:[
+                        {
+                            flex: 1,
+                            xtype: 'container',
+                            layout: {
+                                type: 'vbox',
+                                align: 'stretch'
+                            },
+                            items: [
+                                Ext.widget('appportchart'),
+                                Ext.widget('appcpuchart')
+                            ]
+                        }
+                    ]
                 });
         }
 
