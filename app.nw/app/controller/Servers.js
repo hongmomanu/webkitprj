@@ -18,7 +18,6 @@ Ext.define('Webdesktop.controller.Servers', {
     views: [
         'server.ServersView',
         'server.ServersDataView',
-        'server.AppPortChartWin',
         'server.AppPortChart'
     ],
 
@@ -49,14 +48,17 @@ Ext.define('Webdesktop.controller.Servers', {
 
         if(!win){
 
-            win = desktop.createWindow(Ext.widget('appportchartwin',
+            win = desktop.createWindow(
                 {
                     title:title,
                     id:id,
+                    animCollapse:false,
+                    constrainHeader:true,
+                    layout:'fit',
+                    height: 380,
+                    width: 600,
                     items:Ext.widget('appportchart')
-
-
-                }),null,true);
+                });
             //win.items=Ext.widget('appportchart');
         }
         var store=win.down('#appprtchart').getStore();
