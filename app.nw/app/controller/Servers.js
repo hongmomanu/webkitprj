@@ -59,35 +59,14 @@ Ext.define('Webdesktop.controller.Servers', {
                     width: 600,
                     items:Ext.widget('appportchart')
                 });
-            //win.items=Ext.widget('appportchart');
         }
+
         var store=win.down('#appprtchart').getStore();
         store.proxy.extraParams.serverid=record.get('id');
         store.proxy.extraParams.ip=record.get('servervalue');
         store.load({callback:function(){
             win.show();
         }});
-        //win.show();
-        /*var win = Ext.create('Ext.Window', {
-            width: 600,
-            height: 380,
-            minHeight: 380,
-            minWidth: 550,
-            //hidden: false,
-            shadow: true,
-            maximizable: true,
-            style: 'overflow: hidden;',
-            title: record.get('servername')+'('+record.get('servervalue')+')',
-            layout: 'fit',
-            items: Ext.widget('appportchart')
-        });
-        var store=win.down('#appprtchart').getStore();
-        store.proxy.extraParams.serverid=record.get('id');
-        store.proxy.extraParams.ip=record.get('servervalue');
-        store.load({callback:function(){
-            win.show();
-        }});
-*/
 
     }
 
