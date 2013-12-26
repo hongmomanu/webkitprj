@@ -9,11 +9,13 @@ Ext.define('Webdesktop.controller.Servers', {
     extend: 'Ext.app.Controller',
     models:[
         'server.ServerDataView',
-        'server.AppPortChart'
+        'server.AppPortChart',
+        'server.CpuChart'
     ],
     stores:[
         'server.ServerDataViews'  ,
-        'server.AppPortCharts'
+        'server.AppPortCharts',
+        'server.CpuCharts'
     ],
     views: [
         'server.ServersView',

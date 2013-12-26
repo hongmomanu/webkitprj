@@ -30,42 +30,95 @@
 Ext.define('Webdesktop.view.server.CpuChart', {
     extend : 'Ext.chart.Chart',
     alias  : 'widget.appcpuchart',
+    refreshRate: 1500,
+    updateCharts: function () {
+        var me = this;
+        clearTimeout(me.updateTimer);
+        me.updateTimer = setTimeout(function() {
+            testobj=me;
+            me.getStore().load();
+            me.updateCharts();
+        }, me.refreshRate);
+    },
     initComponent: function() {
         var me = this;
-        Ext.apply(me, {
-            flex: 1,
-            style: 'background:#fff',
-            theme: 'Category2',
-            //insetPadding: 30,
-            animate: true,
-            //itemId:'appprtchart',
-            store: 'server.AppPortCharts',
-
-            legend: {
-                position: 'right'
-            },
-            axes: [{
-                type: 'Radial',
-                position: 'radial',
-                minimum: 0,
-                maximum: 1,
-                label: {
-                    display: true
-                }
-            }],
-            series: [{
-                showInLegend: true,
-                type: 'radar',
-                xField: 'servername',
-                yField: 'isconnect',
-                title: '服务状态',
-                style: {
-                    opacity: 0.6,
-                    'stroke-width': 3/*,
-                    fill: 'none'*/
-                }
-            }]
-        });
+        Ext.apply(me,
+            {
+                flex: 1,
+                xtype: 'chart',
+                theme: 'Category1',
+                animate: false,
+                listeners: {
+                    afterrender: {
+                        fn: me.updateCharts,
+                        delay: 100
+                    },
+                    destroy: function () {
+                        //alert(2);
+                        clearTimeout(me.updateTimer);
+                        me.updateTimer = null;
+                    },
+                    scope: me
+                },
+                store: 'server.CpuCharts',
+                legend: {
+                    position: 'bottom'
+                },
+                axes: [{
+                    type: 'Numeric',
+                    position: 'left',
+                    minimum: 0,
+                    maximum: 100,
+                    fields: ['cpu1'],
+                    title: 'CPU 负载',
+                    grid: true,
+                    labelTitle: {
+                        font: '13px Arial'
+                    },
+                    label: {
+                        font: '11px Arial'
+                    }
+                }],
+                series: [{
+                    title: 'Cpu1',
+                    type: 'line',
+                    lineWidth: 4,
+                    showMarkers: false,
+                    fill: true,
+                    axis: 'left',
+                    xField: 'time',
+                    yField: 'cpu1',
+                    style: {
+                        'stroke-width': 1
+                    }
+                },
+                    {
+                        title: 'Cpu2',
+                        type: 'line',
+                        lineWidth: 4,
+                        showMarkers: false,
+                        fill: true,
+                        axis: 'left',
+                        xField: 'time',
+                        yField: 'cpu2',
+                        style: {
+                            'stroke-width': 1
+                        }
+                    },{
+                        title: 'Cpu3',
+                        type: 'line',
+                        lineWidth: 4,
+                        showMarkers: false,
+                        fill: true,
+                        axis: 'left',
+                        xField: 'time',
+                        yField: 'cpu3',
+                        style: {
+                            'stroke-width': 1
+                        }
+                    }]
+            }
+        );
 
         me.callParent();
     }
