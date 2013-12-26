@@ -10,18 +10,21 @@ Ext.define('Webdesktop.controller.Servers', {
     models:[
         'server.ServerDataView',
         'server.AppPortChart',
-        'server.CpuChart'
+        'server.CpuChart',
+        'server.MemoryChart'
     ],
     stores:[
         'server.ServerDataViews'  ,
         'server.AppPortCharts',
-        'server.CpuCharts'
+        'server.CpuCharts',
+        'server.MemoryCharts'
     ],
     views: [
         'server.ServersView',
         'server.ServersDataView',
         'server.AppPortChart',
-        'server.CpuChart'
+        'server.CpuChart',
+        'server.MemoryChart'
     ],
 
     init: function() {
@@ -61,8 +64,8 @@ Ext.define('Webdesktop.controller.Servers', {
                         type: 'hbox',
                         align: 'stretch'
                     },
-                    height: 380,
-                    width: 600,
+                    //height: 380,
+                    //width: 600,
                     items:[
                         {
                             flex: 1,
@@ -72,20 +75,22 @@ Ext.define('Webdesktop.controller.Servers', {
                                 align: 'stretch'
                             },
                             items: [
-                                Ext.widget('appportchart'),
+                                //Ext.widget('appportchart'),
+                                Ext.widget('appmemchart'),
                                 Ext.widget('appcpuchart')
                             ]
                         }
                     ]
                 });
         }
-
-        var store=win.down('#appprtchart').getStore();
+        win.show();
+        win.maximize(true);
+       /* var store=win.down('#appprtchart').getStore();
         store.proxy.extraParams.serverid=record.get('id');
         store.proxy.extraParams.ip=record.get('servervalue');
         store.load({callback:function(){
             win.show();
-        }});
+        }});*/
 
     }
 

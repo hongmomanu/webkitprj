@@ -78,6 +78,23 @@ Ext.define('Webdesktop.view.server.CpuChart', {
                     label: {
                         font: '11px Arial'
                     }
+                },{
+                    type: 'Category',
+                    position: 'bottom',
+                    fields: ['time'],
+                    title: '时间',
+                    grid: true,
+                    label: {
+                        rotate: {
+                            degrees: 315
+                        },
+                        renderer: function(v){
+
+                            //if v is 'Grilled Pizza Special' then you get something like 'Grilled ...'
+                            //console.log(v);
+                            return Ext.Date.format(new Date(v), 'H:m:s:u');
+                        }
+                    }
                 }],
                 series: [{
                     title: 'Cpu1',
