@@ -64,8 +64,8 @@ Ext.define('Webdesktop.controller.Servers', {
                         type: 'hbox',
                         align: 'stretch'
                     },
-                    //height: 380,
-                    //width: 600,
+                    height: 480,
+                    width: 780,
                     items:[
                         {
                             flex: 1,

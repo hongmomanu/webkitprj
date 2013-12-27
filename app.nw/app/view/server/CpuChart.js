@@ -35,9 +35,16 @@ Ext.define('Webdesktop.view.server.CpuChart', {
         var me = this;
         clearTimeout(me.updateTimer);
         me.updateTimer = setTimeout(function() {
-            testobj=me;
-            me.getStore().load();
-            me.updateCharts();
+            var data=me.getStore().data.items;
+
+            me.getStore().load({callback:function(){
+                if(data.length>6){
+                    data=Ext.Array.erase(data,0,1)
+                }
+                me.getStore().loadData(data.concat(me.getStore().data.items));
+                me.updateCharts();
+            }});
+
         }, me.refreshRate);
     },
     initComponent: function() {
