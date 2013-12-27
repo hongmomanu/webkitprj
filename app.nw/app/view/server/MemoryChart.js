@@ -72,9 +72,8 @@ Ext.define('Webdesktop.view.server.MemoryChart', {
                     field: 'memory',
                     showInLegend: true,
                     getLegendColor: function(index) {
-                        var me = this,
-                            colorLength = 0;
-
+                        var me = this;
+                        var colorLength = 0;
                         me.colorArrayStyle = [ '#115fa6','#94ae0a'];
                         colorLength = me.colorArrayStyle.length;
                         if (me.style && me.style.fill) {
@@ -88,7 +87,6 @@ Ext.define('Webdesktop.view.server.MemoryChart', {
                         width: 140,
                         height: 28,
                         renderer: function(storeItem, item) {
-                            //calculate percentage.
                             this.setTitle(storeItem.get('name') + ': ' + Math.round(storeItem.get('memory')* 100) + '%');
                         }
                     },
@@ -100,8 +98,6 @@ Ext.define('Webdesktop.view.server.MemoryChart', {
                     renderer: function(sprite, record, attr, index, store) {
                         var colormap={"未使用":'#94ae0a',"已使用":'#115fa6'};
                         var color = colormap[record.get('name')];
-                        //var value = (record.get('data1') >> 0) % 9;
-                        //var color = [ "#94ae0a", "#115fa6","#a61120", "#ff8809", "#ffd13e", "#a61187", "#24ad9a", "#7c7474", "#a66111"][4];
                         return Ext.apply(attr, {
                             fill: color
                         });

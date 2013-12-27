@@ -38,7 +38,7 @@ Ext.define('Webdesktop.view.server.CpuChart', {
             var data=me.getStore().data.items;
 
             me.getStore().load({callback:function(){
-                if(data.length>8){
+                if(data.length>80){
                     data=Ext.Array.erase(data,0,1)
                 }
                 me.getStore().loadData(data.concat(me.getStore().data.items));
@@ -76,7 +76,7 @@ Ext.define('Webdesktop.view.server.CpuChart', {
                     position: 'left',
                     minimum: 0,
                     maximum: 100,
-                    fields: ['cpu1'],
+                    fields: ['cpu1','cpu2','cpu3','cpu4'],
                     title: 'CPU 负载',
                     grid: true,
                     labelTitle: {
@@ -86,6 +86,16 @@ Ext.define('Webdesktop.view.server.CpuChart', {
                         font: '11px Arial'
                     }
                 },{
+                    type: 'Time',
+                    position: 'bottom',
+                    fields: 'time',
+                    title: 'Day',
+                    dateFormat: 'M d',
+
+                    constrain: true,
+                    fromDate: new Date('1/1/11'),
+                    toDate: new Date('1/7/11')
+                }/*,{
                     type: 'Category',
                     position: 'bottom',
                     fields: ['time'],
@@ -102,7 +112,7 @@ Ext.define('Webdesktop.view.server.CpuChart', {
                             return Ext.Date.format(new Date(v), 'H:m:s:u');
                         }
                     }
-                }],
+                }*/],
                 series: [{
                     title: 'Cpu1',
                     type: 'line',
@@ -137,6 +147,18 @@ Ext.define('Webdesktop.view.server.CpuChart', {
                         axis: 'left',
                         xField: 'time',
                         yField: 'cpu3',
+                        style: {
+                            'stroke-width': 1
+                        }
+                    },{
+                        title: 'Cpu4',
+                        type: 'line',
+                        lineWidth: 4,
+                        showMarkers: false,
+                        fill: true,
+                        axis: 'left',
+                        xField: 'time',
+                        yField: 'cpu4',
                         style: {
                             'stroke-width': 1
                         }

@@ -4,7 +4,7 @@
 Ext.define('Webdesktop.model.server.CpuChart', {
     extend: 'Ext.data.Model',
     fields: [
-        {name: 'cpu0'},
+        {name: 'cpu4'},
         {name:'cpu1'},
         {name:'cpu2'},
         {name: 'cpu3'},
