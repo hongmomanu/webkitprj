@@ -38,7 +38,7 @@ Ext.define('Webdesktop.view.server.CpuChart', {
             var data=me.getStore().data.items;
 
             me.getStore().load({callback:function(){
-                if(data.length>6){
+                if(data.length>8){
                     data=Ext.Array.erase(data,0,1)
                 }
                 me.getStore().loadData(data.concat(me.getStore().data.items));

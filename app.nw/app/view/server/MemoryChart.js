@@ -71,6 +71,18 @@ Ext.define('Webdesktop.view.server.MemoryChart', {
                     type: 'pie',
                     field: 'memory',
                     showInLegend: true,
+                    getLegendColor: function(index) {
+                        var me = this,
+                            colorLength = 0;
+
+                        me.colorArrayStyle = [ '#115fa6','#94ae0a'];
+                        colorLength = me.colorArrayStyle.length;
+                        if (me.style && me.style.fill) {
+                            return me.style.fill;
+                        } else {
+                            return me.colorArrayStyle[index % colorLength];
+                        }
+                    },
                     tips: {
                         trackMouse: true,
                         width: 140,
