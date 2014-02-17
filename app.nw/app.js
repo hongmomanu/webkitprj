@@ -13,7 +13,7 @@ Ext.application({
     appFolder: 'app',
 
     controllers: [
-        'Gridwindow','Users','Servers'
+        'OnDuty','Users','Servers'
     ],
 
     launch: function() {

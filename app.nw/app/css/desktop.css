@@ -199,6 +199,9 @@ div.ux-taskbar div.x-toolbar {
 .cpu-shortcut {
     background-image: url(../images/statusLarge.png);
 }
+.duty-shortcut {
+    background-image: url(../images/im48x48.png);
+}
 
 .grid-shortcut {
     background-image: url(../images/grid48x48.png);
@@ -253,6 +256,9 @@ div.ux-taskbar div.x-toolbar {
 
 .icon-grid {
     background-image:url( ../images/grid.png ) !important;
+}
+.icon-duty {
+    background-image:url( ../images/member.png ) !important;
 }
 .add {
     background-image:url(../../shared/icons/fam/add.gif) !important;
