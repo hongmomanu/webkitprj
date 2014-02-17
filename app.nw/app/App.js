@@ -25,10 +25,10 @@ Ext.define('Webdesktop.App', {
         return [
             //Ext.widget('video'),
             //new Webdesktop.Blockalanche(),
-            Ext.widget('systemstatus'),
+            //Ext.widget('systemstatus'),
             //new Webdesktop.view.maindesktop.SystemStatus()
-            Ext.widget('serversview')
-            //Ext.widget('grid-win'),
+            Ext.widget('serversview'),
+            Ext.widget('grid-win')
             //Ext.widget('tab-win'),
             //Ext.widget('acc-win'),
             //Ext.widget('notepad')
@@ -51,7 +51,7 @@ Ext.define('Webdesktop.App', {
                 model: 'Ext.ux.desktop.ShortcutModel',
                 data: [
                     /*{ name: 'Accordion Window', iconCls: 'accordion-shortcut', module: 'acc-win' },*/
-                    { name: '系统状态', iconCls: 'cpu-shortcut', module: 'systemstatus'},
+                    { name: '值班管理', iconCls: 'cpu-shortcut', module: 'grid-win'},
                     { name: '系统监视', iconCls: 'cpu-shortcut', module: 'serversview'}
                 ]
             }),

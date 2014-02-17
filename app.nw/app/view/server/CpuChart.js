@@ -85,17 +85,19 @@ Ext.define('Webdesktop.view.server.CpuChart', {
                     label: {
                         font: '11px Arial'
                     }
-                },{
+                }/*,{
                     type: 'Time',
                     position: 'bottom',
                     fields: 'time',
-                    title: 'Day',
-                    dateFormat: 'M d',
+                    title: '时间',
+                    dateFormat: 'H:m:s',
+                    step:[Ext.Date.SECOND, 1]*//*,
+
 
                     constrain: true,
                     fromDate: new Date('1/1/11'),
-                    toDate: new Date('1/7/11')
-                }/*,{
+                    toDate: new Date('1/7/11')*//*
+                }*//*,{
                     type: 'Category',
                     position: 'bottom',
                     fields: ['time'],

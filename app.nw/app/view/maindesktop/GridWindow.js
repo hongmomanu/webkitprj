@@ -34,7 +34,7 @@ Ext.define('Webdesktop.view.maindesktop.GridWindow', {
             win = desktop.createWindow({
                 id: 'grid-win',
                 alias:'widget.gridwind',
-                title:'Grid Window',
+                title:'值班管理',
                 width:740,
                 height:480,
                 iconCls: 'icon-grid',
@@ -95,16 +95,16 @@ Ext.define('Webdesktop.view.maindesktop.GridWindow', {
                     Ext.widget('testgrid')
                 ],
                 tbar:[{
-                    text:'Add Something',
+                    text:'新增值班任务',
                     tooltip:'Add a new row',
                     action:'add',
                     iconCls:'add'
                 }, '-', {
-                    text:'Options',
+                    text:'属性',
                     tooltip:'Modify options',
                     iconCls:'option'
                 },'-',{
-                    text:'Remove Something',
+                    text:'删除值班任务',
                     tooltip:'Remove the selected item',
                     iconCls:'remove'
                 }]
