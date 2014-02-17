@@ -56,7 +56,7 @@ Ext.define('Webdesktop.App', {
                 ]
             }),
 
-            wallpaper: 'wallpapers/sky.jpg',
+            wallpaper: 'wallpapers/Dark-Sencha.jpg',
             wallpaperStretch: false
         });
     },

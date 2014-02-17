@@ -47,7 +47,7 @@ Ext.define('Webdesktop.controller.Users', {
 
         var successFunc = function (form, action) {
              win.close();
-             Globle.password=action.result.result.pass;
+             Globle.password=action.result.result.password;
              Globle.username=action.result.result.username;
              Globle.displayname=action.result.result.displayname;
              Globle.isadmin=action.result.result.isadmin;

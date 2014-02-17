@@ -22,7 +22,7 @@ Ext.define('Webdesktop.view.maindesktop.GridWindow', {
 
     init : function(){
         this.launcher = {
-            text: 'Grid Window',
+            text: '值班管理',
             iconCls:'icon-grid'
         };
     },
@@ -51,48 +51,8 @@ Ext.define('Webdesktop.view.maindesktop.GridWindow', {
 
                 layout: 'fit',
                 items: [
-                    /*{
-                        border: false,
-                        xtype: 'grid',
-                        store: new Ext.data.ArrayStore({
-                            fields: [
-                               { name: 'company' },
-                               { name: 'price', type: 'float' },
-                               { name: 'change', type: 'float' },
-                               { name: 'pctChange', type: 'float' }
-                            ],
-                            data: Webdesktop.GridWindow.getDummyData()
-                        }),
-                        columns: [
-                            new Ext.grid.RowNumberer(),
-                            {
-                                text: "Company",
-                                flex: 1,
-                                sortable: true,
-                                dataIndex: 'company'
-                            },
-                            {
-                                text: "Price",
-                                width: 70,
-                                sortable: true,
-                                renderer: Ext.util.Format.usMoney,
-                                dataIndex: 'price'
-                            },
-                            {
-                                text: "Change",
-                                width: 70,
-                                sortable: true,
-                                dataIndex: 'change'
-                            },
-                            {
-                                text: "% Change",
-                                width: 70,
-                                sortable: true,
-                                dataIndex: 'pctChange'
-                            }
-                        ]
-                    }*/
-                    Ext.widget('testgrid')
+
+                    //Ext.widget('testgrid')
                 ],
                 tbar:[{
                     text:'新增值班任务',
