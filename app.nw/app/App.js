@@ -29,7 +29,7 @@ Ext.define('Webdesktop.App', {
             //Ext.widget('systemstatus'),
             //new Webdesktop.view.maindesktop.SystemStatus()
             Ext.widget('serversview'),
-            Ext.widget('duty-win')
+            Ext.widget('dutywin')
             //Ext.widget('tab-win'),
             //Ext.widget('acc-win'),
             //Ext.widget('notepad')
@@ -52,7 +52,7 @@ Ext.define('Webdesktop.App', {
                 model: 'Ext.ux.desktop.ShortcutModel',
                 data: [
                     /*{ name: 'Accordion Window', iconCls: 'accordion-shortcut', module: 'acc-win' },*/
-                    { name: '值班管理', iconCls: 'duty-shortcut', module: 'duty-win'},
+                    { name: '值班管理', iconCls: 'duty-shortcut', module: 'dutywin'},
                     { name: '系统监视', iconCls: 'cpu-shortcut', module: 'serversview'}
                 ]
             }),
