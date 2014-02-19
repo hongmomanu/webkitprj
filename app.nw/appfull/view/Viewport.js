@@ -16,27 +16,43 @@ Ext.define('Webdesktop.view.Viewport', {
 
                     xtype: 'container',
                     layout: {
-                        type: 'hbox',
+                        type: 'border',
                         align: 'stretch'
+                    },
+                    defaults: {
+                        split: true,
+                        //collapsible: true,
+                        animCollapse: true,
+                        bodyPadding: 5
                     },
 
                     items:[
                         {
                             flex: 1,
                             xtype: 'container',
+                            region: 'north',
+
+                            //xtype: 'container',
                             layout: {
-                                type: 'vbox',
+                                type: 'border',
                                 align: 'stretch'
+                            },
+                            defaults: {
+                                split: true,
+                                //collapsible: true,
+                                animCollapse: true,
+                                bodyPadding: 5
                             },
                             items: [
                                 {
-                                    xtype:'panel',
-                                    flex: 1,
-                                    html:'text'
-
+                                    xtype:'dutypanel',
+                                    region:'west',
+                                    flex: 1/*,
+                                    html:'text'*/
                                 },
                                 {
                                     xtype:'panel',
+                                    region:'center',
                                     flex: 1,
                                     html:'text'
 
@@ -44,10 +60,12 @@ Ext.define('Webdesktop.view.Viewport', {
                             ]
                         }, {
                             flex: 1,
+                            region: 'center',
                             xtype: 'container',
                             layout: {
-                                type: 'vbox',
-                                align: 'stretch'
+                                //type: 'hbox',
+                                //align: 'stretch'
+                                type:'fit'
                             },
                             items: [
                                 {
@@ -55,13 +73,8 @@ Ext.define('Webdesktop.view.Viewport', {
                                     flex: 1,
                                     html:'text'
 
-                                },
-                                {
-                                    xtype:'panel',
-                                    flex: 1,
-                                    html:'text'
-
                                 }
+
                             ]
                         }
                     ]
