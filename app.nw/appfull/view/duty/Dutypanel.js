@@ -47,6 +47,12 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                     action:'workmanager',
                     hidden: !Globle.isadmin
 
+                },
+                {
+                    text:'工作任务管理',
+                    action:'missionmanager',
+                    hidden: !Globle.isadmin
+
                 }
             ],
 

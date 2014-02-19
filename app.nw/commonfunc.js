@@ -33,6 +33,17 @@ var CommonFunc = {
 
 
     },
+    ajaxSend:function(params,url,sucFun,failFunc,method){
+        var me=this;
+        Ext.Ajax.request({
+            url: me.geturl()+url,
+            method : method,
+            params: params,
+            success:sucFun,
+            failure:failFunc
+        });
+
+    },
 
     geturl:function(){
         var url=Globle.iswebapp?"":localStorage.serverurl;

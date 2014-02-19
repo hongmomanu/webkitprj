@@ -11,18 +11,22 @@ Ext.define('Webdesktop.controller.Duty', {
          'duty.Dutypanel',
          'duty.DutyManagerWin',
          'duty.AddNewWorkWin',
+         'duty.AddNewMissionWin',
+         'duty.MissionManagerpanel',
+         'duty.MissionManagerWin',
          'duty.WorkManagerpanel'
     ],
     models: [
         'duty.DutyMission',
         'duty.User',
+        'duty.MissionManager',
         'duty.WorkManager'
     ],
     stores: [
         'duty.DutyMissions',
         'duty.Users',
+        'duty.MissionManagers',
         'duty.WorkManagers'
-
     ],
 
     init: function() {
@@ -32,11 +36,23 @@ Ext.define('Webdesktop.controller.Duty', {
             'dutypanel button[action=workmanager]':{
                 click: this.openworkmanagerwin
             },
+            'dutypanel button[action=missionmanager]':{
+                click: this.openmissionmanagerwin
+            },
+            'workmanagerpanel':{
+                itemclick:this.dutyclick
+            },
             'workmanagerpanel button[action=new]':{
                 click: this.addnewworkwin
             },
+            'missionmanagerpanel button[action=new]':{
+                click: this.addnewmissionwin
+            },
             'addnewworkwin button[action=add]':{
                 click: this.addnewduty
+            },
+            'workmanagerpanel button[action=del]':{
+                click: this.delduty
             }
         });
     },
@@ -47,24 +63,51 @@ Ext.define('Webdesktop.controller.Duty', {
         this.workmanagerwin.show();
 
     },
+    openmissionmanagerwin:function(btn){
+        if(!this.missionmanagerwin)this.missionmanagerwin= Ext.widget('missionmanagerwin');
+        this.missionmanagerwin.show();
+    },
+    addnewmissionwin:function(btn){
+        if(!this.newmissionwin)this.newmissionwin= Ext.widget('addnewmissionwin');
+        this.newmissionwin.show();
+    },
     addnewworkwin:function(btn){
         if(!this.newworkwin)this.newworkwin= Ext.widget('addnewworkwin');
         this.newworkwin.show();
     },
-    addnewduty:function(btn){
-        var url='addnewduty';
-        var successFunc = function (form, action) {
-            //rolestore.load();
-            //me.newRoleWin.hide();
-
+    dutyclick:function(grid, record){
+        grid.up('panel').down('#del').enable()
+    },
+    delduty:function(btn){
+        var sm = btn.up('panel').getSelectionModel();
+        var selectitem=sm.getSelection();
+        var enumids=[];
+        for(var i=0;i<selectitem.length;i++){
+            enumids.push(selectitem[i].data.enumid);
+        }
+        var params={
+            enumids:enumids
+        };
+        var successFunc = function (response, action) {
+            btn.up('panel').getStore().load();
         };
         var failFunc = function (form, action) {
-            Ext.Msg.alert("提示信息", "新增失败，检查web服务或数据库服务");
-
+            Ext.Msg.alert("提示信息", "删除失败!");
         };
-        CommonFunc.formSubmit(btn,{},url,successFunc,failFunc,"正在提交。。。")
+        CommonFunc.ajaxSend(params,'delenumbyid',successFunc,failFunc,'POST');
+    },
+    addnewduty:function(btn){
+        var url='addnewduty';
+        var me=this;
+        var successFunc = function (form, action) {
+            var grid=me.workmanagerwin.down('grid');
+            grid.getStore().load();
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息",action.result.msg);
+        };
+        var form = btn.up('form');
+        CommonFunc.formSubmit(form,{},url,successFunc,failFunc,"正在提交。。。")
     }
-
-
 
 });

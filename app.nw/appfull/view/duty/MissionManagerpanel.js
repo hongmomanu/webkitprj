@@ -1,6 +1,6 @@
-Ext.define('Webdesktop.view.duty.WorkManagerpanel', {
+Ext.define('Webdesktop.view.duty.MissionManagerpanel', {
     extend: 'Ext.grid.Panel',
-    alias:'widget.workmanagerpanel',
+    alias:'widget.missionmanagerpanel',
     layout: 'fit',
 
     requires: [
@@ -26,23 +26,8 @@ Ext.define('Webdesktop.view.duty.WorkManagerpanel', {
 
             //hideHeaders:true,
             columns: [
-
-
-                {header: '值班日', dataIndex: 'day',width: 150,
-                    renderer:function(val, obj, record){
-                       if(val==0) return '星期天';
-                       else if(val==1) return '星期一';
-                       else if(val==2) return '星期二';
-                       else if(val==3) return '星期三';
-                       else if(val==4) return '星期四';
-                       else if(val==5) return '星期五';
-                       else if(val==6) return '星期六';
-
-                    }
-
-                },
-                {header: '姓名', dataIndex: 'displayname',width: 250}
-
+                {header: '值班任务', dataIndex: 'missionname',width: 150},
+                {header: '任务提醒时间',dataIndex: 'missiontime',width: 250}
             ],
             flex: 1,
             tbar:[
@@ -68,10 +53,7 @@ Ext.define('Webdesktop.view.duty.WorkManagerpanel', {
 
                 }
             ],
-
-            store: 'duty.WorkManagers'
-
-
+            store: 'duty.MissionManagers'
         });
         me.callParent(arguments);
     }
