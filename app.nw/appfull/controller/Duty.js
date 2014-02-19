@@ -52,7 +52,7 @@ Ext.define('Webdesktop.controller.Duty', {
         this.newworkwin.show();
     },
     addnewduty:function(btn){
-        var url=Globle.iswebapp?"":localStorage.serverurl+'addnewduty';
+        var url='addnewduty';
         var successFunc = function (form, action) {
             //rolestore.load();
             //me.newRoleWin.hide();
@@ -62,28 +62,9 @@ Ext.define('Webdesktop.controller.Duty', {
             Ext.Msg.alert("提示信息", "新增失败，检查web服务或数据库服务");
 
         };
-      this.formSubmit(btn,{},url,successFunc,failFunc,"正在提交。。。")
-    },
-    formSubmit: function (button, params, url, sucFunc, failFunc,waitmsg) {
-        var form = button.up('form').getForm();
-        if (form.isValid()) {
-            //Ext.MessageBox.alert('Submitted Values', form.getValues(true));
-
-            form.submit({
-                waitTitle: '提示', //标题
-                waitMsg: waitmsg, //提示信息
-                url: url,
-
-                method: "POST",
-                params: params,
-                success: sucFunc,
-                failure: failFunc
-            });
-
-        }
-
-
+        CommonFunc.formSubmit(btn,{},url,successFunc,failFunc,"正在提交。。。")
     }
+
 
 
 });

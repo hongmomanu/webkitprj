@@ -42,9 +42,7 @@ Ext.define('Webdesktop.controller.Users', {
         var form =btn.up('form');
         var win=form.up('window');
         var params={};
-        var url=Globle.iswebapp?"":localStorage.serverurl;
-
-        url=url+"login";
+        var url="login";
 
         var successFunc = function (form, action) {
              win.close();

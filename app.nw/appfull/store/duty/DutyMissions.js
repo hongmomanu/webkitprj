@@ -7,7 +7,7 @@ Ext.define('Webdesktop.store.duty.DutyMissions', {
     autoLoad:true,
     proxy:{
         type: 'ajax',
-        url: Globle.iswebapp?"":localStorage.serverurl+'getdutymissions'
+        url:CommonFunc.geturl()+'getdutymissions'
     }
 
 });

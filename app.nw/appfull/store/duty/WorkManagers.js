@@ -7,7 +7,7 @@ Ext.define('Webdesktop.store.duty.WorkManagers', {
     autoLoad:true,
     proxy:{
         type: 'ajax',
-        url: Globle.iswebapp?"":localStorage.serverurl+'getworkmanagers'
+        url: CommonFunc.geturl()+'getworkmanagers'
     }
 
 });

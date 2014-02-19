@@ -6,7 +6,7 @@ Ext.define('Webdesktop.store.duty.Users', {
     autoLoad:true,
     proxy:{
         type: 'ajax',
-        url: Globle.iswebapp?"":localStorage.serverurl+'users'
+        url: CommonFunc.geturl()+'users'
     }
 
 });

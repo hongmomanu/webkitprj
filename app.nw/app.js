@@ -13,7 +13,7 @@ Ext.application({
     appFolder: 'appfull',
 
     controllers: [
-        'Users'
+        'Users','Duty'
     ],
 
     launch: function() {

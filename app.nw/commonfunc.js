@@ -10,12 +10,13 @@ var CommonFunc = {
 //form提交共用方法
     formSubmit: function (myform, params, url, sucFunc, failFunc,waitmsg) {
         var form = myform.getForm();
+        var me=this;
         if (form.isValid()) {
             //Ext.MessageBox.alert('Submitted Values', form.getValues(true));
             form.submit({
                 waitTitle: '提示', //标题
                 waitMsg: waitmsg, //提示信息
-                url: url,
+                url: me.geturl()+url,
 
                 method: "POST",
                 params: params,
