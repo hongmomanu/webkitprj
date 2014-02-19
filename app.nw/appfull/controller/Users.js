@@ -43,15 +43,20 @@ Ext.define('Webdesktop.controller.Users', {
         var win=form.up('window');
         var params={};
         var url="login";
-
+        var me=this;
         var successFunc = function (form, action) {
              win.close();
              Globle.password=action.result.result.password;
              Globle.username=action.result.result.username;
              Globle.displayname=action.result.result.displayname;
              Globle.isadmin=action.result.result.admin==1;
+             var callback=function(){
+                 Ext.widget('viewport');
+             }
+             me.getcurrentduty(callback);
              //me.desktop_widget=Ext.widget('maindesktopview');
-             Ext.widget('viewport');
+
+
 
 
         };
@@ -68,6 +73,25 @@ Ext.define('Webdesktop.controller.Users', {
 
         CommonFunc.formSubmit(form, params, url, successFunc, failFunc,"正在验证登陆");
 
+
+    },
+    getcurrentduty:function(callback){
+        var params = {
+            day:(new Date()).getDay()
+        };
+        var successFunc = function (response, action) {
+            var res = Ext.JSON.decode(response.responseText);
+            Globle.dutydisplayname=res[0].displayname;
+            Globle.dutyusername=res[0].username;
+            Globle.dutyuserid=res[0].userid;
+            Globle.dutyenumid=res[0].enumid;
+            callback();
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息", "获取今日值班人员失败!");
+            callback();
+        };
+        CommonFunc.ajaxSend(params, 'getcurrentduty', successFunc, failFunc,'GET');
 
     },
     openconfigwin:function(btn){

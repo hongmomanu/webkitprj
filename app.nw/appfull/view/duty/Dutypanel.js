@@ -40,7 +40,7 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
             tbar:[
                 {
                   xtype: 'label',
-                  text:'今日值班人员，当前登陆人员'
+                  text:'今日值班人员:'+Globle.dutydisplayname+',当前登陆人员:'+Globle.displayname
                 },
                 {
                     text:'排班管理',
