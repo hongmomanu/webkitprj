@@ -13,6 +13,7 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
 
             border: false,
             hideHeaders: true,
+            flex:1,
             viewConfig: {
                 trackOver: false,
                 loadMask: true,
@@ -30,12 +31,12 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
 
             //view: new Ext.grid.GridView({ scrollToTop: Ext.emptyFn }),
 
-            //hideHeaders:true,
+            forceFit: true,
             columns: [
 
 
-                {header: '任务名', dataIndex: 'missionname', width: 150},
-                {header: '任务状态', dataIndex: 'missionstatus', width: 250, renderer: function (val, obj, record) {
+                {header: '任务名', dataIndex: 'missionname'},
+                {header: '任务状态', dataIndex: 'missionstatus', renderer: function (val, obj, record) {
                     if (val == 0) {
                         return "未完成";
                     }
@@ -44,11 +45,40 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                     }
 
                 }},
-                {header: '任务完成时间', dataIndex: 'time', width: 150, renderer: function (val, obj, record) {
-                    var time = Ext.Date.parse(val, "Y-m-d H:i:s");
-                    val = Ext.util.Format.date(time, 'Y-m-d H:i');
-                    return val;
+                {
+                    menuDisabled: true,
+                    sortable: false,
+                    xtype: 'actioncolumn',
+                    width: 50,
+                    items: [{
+
+                        getClass: function(v, meta, rec) {
+                            if (rec.get('missionstatus') == 0) {
+                                return 'duty-action-col';
+                            } else {
+                                return 'no';
+                            }
+                        },
+
+                        tooltip: '点击完成值班任务',
+                        handler: function(grid, rowIndex, colIndex) {
+                            var rec = grid.getStore().getAt(rowIndex);
+                            Ext.Msg.alert('测试', '测试' + rec.get('missionstatus'));
+                        }
+                    }
+                    ]
+                },
+                {header: '任务完成时间', dataIndex: 'time',  renderer: function (val, obj, record) {
+                    if(record.get('missionstatus')==0){
+                         return ""
+                    }else{
+                        var time = Ext.Date.parse(val, "Y-m-d H:i:s");
+                        val = Ext.util.Format.date(time, 'Y-m-d H:i');
+                        return val +" 完成";
+                    }
+
                 }}
+
 
             ],
             flex: 1,

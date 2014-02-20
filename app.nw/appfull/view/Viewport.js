@@ -46,6 +46,7 @@ Ext.define('Webdesktop.view.Viewport', {
                             items: [
                                 {
                                     xtype:'panel',
+                                    title:'值班监视管理窗口',
                                     items:[
                                         {
                                          xtype:'dutypanel'
