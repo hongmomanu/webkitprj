@@ -45,7 +45,22 @@ Ext.define('Webdesktop.view.Viewport', {
                             },
                             items: [
                                 {
-                                    xtype:'dutypanel',
+                                    xtype:'panel',
+                                    items:[
+                                        {
+                                         xtype:'dutypanel'
+                                        }
+                                    ],
+                                    tools: [
+                                        {
+                                            type: 'maximize',
+                                            tooltip:'窗口最大化',
+                                            handler: function (a, b, c) {
+                                                CommonFunc.maxpanel('dutypanel','值班任务管理',c);
+                                            }
+                                        }
+                                    ],
+
                                     region:'west',
                                     flex: 1/*,
                                     html:'text'*/

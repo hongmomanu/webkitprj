@@ -33,10 +33,10 @@ Ext.define('Webdesktop.controller.Duty', {
 
 
         this.control({
-            'dutypanel button[action=workmanager]':{
+            'dutypanel menuitem[action=workmanager]':{
                 click: this.openworkmanagerwin
             },
-            'dutypanel button[action=missionmanager]':{
+            'dutypanel menuitem[action=missionmanager]':{
                 click: this.openmissionmanagerwin
             },
             'workmanagerpanel':{

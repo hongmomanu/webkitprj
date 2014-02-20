@@ -8,15 +8,15 @@
 var CommonFunc = {
 
 //form提交共用方法
-    formSubmit: function (myform, params, url, sucFunc, failFunc,waitmsg) {
+    formSubmit: function (myform, params, url, sucFunc, failFunc, waitmsg) {
         var form = myform.getForm();
-        var me=this;
+        var me = this;
         if (form.isValid()) {
             //Ext.MessageBox.alert('Submitted Values', form.getValues(true));
             form.submit({
                 waitTitle: '提示', //标题
                 waitMsg: waitmsg, //提示信息
-                url: me.geturl()+url,
+                url: me.geturl() + url,
 
                 method: "POST",
                 params: params,
@@ -24,31 +24,58 @@ var CommonFunc = {
                 failure: failFunc
             });
 
-        }else{
-            var invaliditem=form.getFields().findBy(function(c){if(!c.isValid()){return c}});
-            var formcontent=myform.getDefaultContentTarget();
-            var target=invaliditem.getEl();
-            target.scrollIntoView(formcontent,true,true,true);
+        } else {
+            var invaliditem = form.getFields().findBy(function (c) {
+                if (!c.isValid()) {
+                    return c
+                }
+            });
+            var formcontent = myform.getDefaultContentTarget();
+            var target = invaliditem.getEl();
+            target.scrollIntoView(formcontent, true, true, true);
         }
 
 
     },
-    ajaxSend:function(params,url,sucFun,failFunc,method){
-        var me=this;
+    ajaxSend: function (params, url, sucFun, failFunc, method) {
+        var me = this;
         Ext.Ajax.request({
-            url: me.geturl()+url,
-            method : method,
+            url: me.geturl() + url,
+            method: method,
             params: params,
-            success:sucFun,
-            failure:failFunc
+            success: sucFun,
+            failure: failFunc
         });
 
     },
 
-    geturl:function(){
-        var url=Globle.iswebapp?"":localStorage.serverurl;
+    geturl: function () {
+        var url = Globle.iswebapp ? "" : localStorage.serverurl;
         return url;
 
+    },
+    maxpanel: function (widgetname, title, target) {
+        var a = new Ext.window.Window(
+            {
+                //rtl: false,
+                maximized: true,
+                closable: true,
+                baseCls: "x-panel",
+                //modal:true,
+                title: title,
+                items: [
+                    {
+                        xtype: widgetname
+                    }
+                ]/*,
+                tools: [
+                    {type: "close", handler: function () {
+                        a.hide(target, function () {
+                            a.destroy()
+                        })
+                    }}
+                ]*/});
+        a.show();
     }
 
 
