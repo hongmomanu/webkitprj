@@ -105,7 +105,10 @@ Ext.define('Webdesktop.controller.Users', {
            };
            var successFunc = function (response, action) {
                var res = Ext.JSON.decode(response.responseText);
-               Ext.getStore('duty.DutyMissions').load();
+               if(res.success){
+                   Ext.getStore('duty.DutyMissions').load();
+               }
+
            };
            var failFunc = function (form, action) {
                Ext.Msg.alert("提示信息", "生成值日任务失败!");

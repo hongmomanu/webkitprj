@@ -18,6 +18,14 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                 loadMask: true,
                 scrollToTop: Ext.emptyFn,
                 enableTextSelection:true,
+                getRowClass: function(record, rowIndex, rowParams, store){
+                    if(record.get('missionstatus')==0){
+                        return 'duty-gridrow-red';
+                    }else{
+                        return 'duty-gridrow-green';
+                    }
+
+                },
                 stripeRows: true
             },
 
