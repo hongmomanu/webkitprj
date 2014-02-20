@@ -7,6 +7,9 @@ Ext.define('Webdesktop.store.duty.DutyMissions', {
     autoLoad:true,
     proxy:{
         type: 'ajax',
+        extraParams:{
+            day:Ext.util.Format.date(new Date(), "Y-m-d")
+        },
         url:CommonFunc.geturl()+'getdutymissions'
     }
 

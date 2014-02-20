@@ -51,6 +51,9 @@ Ext.define('Webdesktop.controller.Duty', {
             'addnewworkwin button[action=add]':{
                 click: this.addnewduty
             },
+            'addnewmissionwin button[action=add]':{
+                click: this.addnewmission
+            },
             'workmanagerpanel button[action=del]':{
                 click: this.delduty
             }
@@ -95,6 +98,20 @@ Ext.define('Webdesktop.controller.Duty', {
             Ext.Msg.alert("提示信息", "删除失败!");
         };
         CommonFunc.ajaxSend(params,'delenumbyid',successFunc,failFunc,'POST');
+    },
+    addnewmission:function(btn){
+        var url='addnewmission';
+        var me=this;
+        var successFunc = function (form, action) {
+            var grid=me.missionmanagerwin.down('grid');
+            grid.getStore().load();
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息",action.result.msg);
+        };
+        var form = btn.up('form');
+        CommonFunc.formSubmit(form,{},url,successFunc,failFunc,"正在提交。。。")
+
     },
     addnewduty:function(btn){
         var url='addnewduty';

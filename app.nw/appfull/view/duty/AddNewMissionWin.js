@@ -50,7 +50,13 @@ Ext.define('Webdesktop.view.duty.AddNewMissionWin' ,{
                         minValue: '6:00',
                         maxValue: '18:00',
                         increment: 30,
+                        format: 'H:i',
                         name: 'missiontime'
+                    },
+                    {
+                        xtype: 'timefield',
+                        fieldLabel: '间隔时间',
+                        name: 'missioninterval'
                     }
 
                 ],

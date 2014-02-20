@@ -28,7 +28,15 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
 
 
                 {header: '任务名', dataIndex: 'missionname',width: 150},
-                {header: '任务状态', dataIndex: 'missionstatus',width: 250},
+                {header: '任务状态', dataIndex: 'missionstatus',width: 250,renderer: function (val, obj, record) {
+                    if(val==0){
+                        return "未完成";
+                    }
+                    else{
+                        return "已完成" ;
+                    }
+
+                }},
                 {header: '任务完成时间', dataIndex: 'time',width: 150, renderer: function (val, obj, record) {
                     var time =Ext.Date.parse(val, "Y-m-d H:i:s");
                     val = Ext.util.Format.date(time, 'Y-m-d H:i');
@@ -54,6 +62,7 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                     hidden: !Globle.isadmin
 
                 }
+
             ],
 
             store: 'duty.DutyMissions'

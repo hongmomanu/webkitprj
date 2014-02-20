@@ -48,6 +48,7 @@ Ext.define('Webdesktop.controller.Users', {
              win.close();
              Globle.password=action.result.result.password;
              Globle.username=action.result.result.username;
+             Globle.userid=action.result.result.id;
              Globle.displayname=action.result.result.displayname;
              Globle.isadmin=action.result.result.admin==1;
              var callback=function(){
@@ -76,6 +77,7 @@ Ext.define('Webdesktop.controller.Users', {
 
     },
     getcurrentduty:function(callback){
+        var me=this;
         var params = {
             day:(new Date()).getDay()
         };
@@ -86,6 +88,7 @@ Ext.define('Webdesktop.controller.Users', {
             Globle.dutyuserid=res[0].userid;
             Globle.dutyenumid=res[0].enumid;
             callback();
+            me.maketodaymission();
         };
         var failFunc = function (form, action) {
             Ext.Msg.alert("提示信息", "获取今日值班人员失败!");
@@ -93,6 +96,25 @@ Ext.define('Webdesktop.controller.Users', {
         };
         CommonFunc.ajaxSend(params, 'getcurrentduty', successFunc, failFunc,'GET');
 
+    },
+    maketodaymission:function(){
+       if(Globle.dutyuserid===Globle.userid){
+           var params = {
+               day:Ext.util.Format.date(new Date(), "Y-m-d"),
+               userid:Globle.userid
+           };
+           var successFunc = function (response, action) {
+               var res = Ext.JSON.decode(response.responseText);
+               Ext.getStore('duty.DutyMissions').load();
+           };
+           var failFunc = function (form, action) {
+               Ext.Msg.alert("提示信息", "生成值日任务失败!");
+           };
+           CommonFunc.ajaxSend(params, 'maketodaymission', successFunc, failFunc,'GET');
+       }
+        else{
+           alert("no");
+       }
     },
     openconfigwin:function(btn){
 
