@@ -12,7 +12,7 @@ Ext.define('Webdesktop.view.duty.MissionManagerpanel', {
         Ext.apply(me, {
 
             border: false,
-            hideHeaders:true,
+            //hideHeaders:true,
             multiSelect: true,
             viewConfig: {
                 trackOver: false,
@@ -22,12 +22,11 @@ Ext.define('Webdesktop.view.duty.MissionManagerpanel', {
                 stripeRows: true
             },
 
-            //view: new Ext.grid.GridView({ scrollToTop: Ext.emptyFn }),
-
-            //hideHeaders:true,
+            forceFit: true,
             columns: [
-                {header: '值班任务', dataIndex: 'missionname',width: 150},
-                {header: '任务提醒时间',dataIndex: 'missiontime',width: 250}
+                {header: '值班任务', dataIndex: 'missionname'},
+                {header: '任务提醒时间',dataIndex: 'missiontime'},
+                {header: '提醒时间间隔',dataIndex: 'missioninterval'}
             ],
             flex: 1,
             tbar:[

@@ -35,8 +35,8 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
             columns: [
 
 
-                {header: '任务名', dataIndex: 'missionname'},
-                {header: '任务状态', dataIndex: 'missionstatus', renderer: function (val, obj, record) {
+                {header: '任务名', align:'center',dataIndex: 'missionname'},
+                {header: '任务状态',align:'center', dataIndex: 'missionstatus', renderer: function (val, obj, record) {
                     if (val == 0) {
                         return "未完成";
                     }
@@ -48,6 +48,8 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                 {
                     menuDisabled: true,
                     sortable: false,
+                    align:'center',
+                    hidden:Globle.dutyuserid!=Globle.userid&&!Globle.isadmin,
                     xtype: 'actioncolumn',
                     width: 50,
                     items: [{
@@ -63,12 +65,12 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                         tooltip: '点击完成值班任务',
                         handler: function(grid, rowIndex, colIndex) {
                             var rec = grid.getStore().getAt(rowIndex);
-                            Ext.Msg.alert('测试', '测试' + rec.get('missionstatus'));
+                            Ext.Msg.alert('测试', '测试' + rec.get('missionname'));
                         }
                     }
                     ]
                 },
-                {header: '任务完成时间', dataIndex: 'time',  renderer: function (val, obj, record) {
+                {header: '任务完成时间', dataIndex: 'time', align:'center',  renderer: function (val, obj, record) {
                     if(record.get('missionstatus')==0){
                          return ""
                     }else{

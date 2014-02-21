@@ -7,6 +7,9 @@ Ext.define('Webdesktop.model.duty.MissionManager', {
         {
             name: 'missionname',
             type:'string'
+        },{
+            name: 'missioninterval',
+            type:'string'
         },
         {
             name:'missiontime',

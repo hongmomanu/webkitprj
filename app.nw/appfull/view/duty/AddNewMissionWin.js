@@ -54,7 +54,7 @@ Ext.define('Webdesktop.view.duty.AddNewMissionWin' ,{
                         name: 'missiontime'
                     },
                     {
-                        xtype: 'timefield',
+                        xtype: 'textfield',
                         fieldLabel: '间隔时间',
                         name: 'missioninterval'
                     }

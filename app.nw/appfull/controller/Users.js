@@ -116,7 +116,7 @@ Ext.define('Webdesktop.controller.Users', {
            CommonFunc.ajaxSend(params, 'maketodaymission', successFunc, failFunc,'GET');
        }
         else{
-           alert("no");
+           //alert("no");
        }
     },
     openconfigwin:function(btn){
