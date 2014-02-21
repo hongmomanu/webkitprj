@@ -9,6 +9,7 @@ Ext.define('Webdesktop.controller.Duty', {
     extend: 'Ext.app.Controller',
     views: [
          'duty.Dutypanel',
+         'duty.Systempanel',
          'duty.DutyManagerWin',
          'duty.AddNewWorkWin',
          'duty.AddNewMissionWin',
@@ -56,6 +57,48 @@ Ext.define('Webdesktop.controller.Duty', {
             },
             'workmanagerpanel button[action=del]':{
                 click: this.delduty
+            },
+            'systempanel':{
+                afterrender:function(){
+                    //alert(1);
+                    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+                    var $ = go.GraphObject.make;  // for conciseness in defining templates
+                    //console.log(document.getElementById('myDiagram'));
+                    myDiagram = $(go.Diagram, Ext.get('myDiagram').dom,  // create a Diagram for the DIV HTML element
+                        { initialContentAlignment: go.Spot.Center });  // center the content
+
+                    // define a simple Node template
+                    myDiagram.nodeTemplate =
+                        $(go.Node, "Auto",
+                            $(go.Shape, "RoundedRectangle",
+                                // Shape.fill is bound to Node.data.color
+                                new go.Binding("fill", "color")),
+                            $(go.TextBlock,
+                                { margin: 3 },  // some room around the text
+                                // TextBlock.text is bound to Node.data.key
+                                new go.Binding("text", "key"))
+                        );
+
+                    // create the model data that will be represented by Nodes and Links
+                    myDiagram.model = new go.GraphLinksModel(
+                        [
+                            { key: "服务器1", color: "lightblue" },
+                            { key: "服务器2", color: "orange" },
+                            { key: "服务器3", color: "lightgreen" },
+                            { key: "服务器4", color: "pink" }
+                        ],
+                        [
+                            { from: "服务器1", to: "服务器2" },
+                            { from: "服务器2", to: "服务器3" },
+                            { from: "服务器3", to: "服务器4" }
+                        ]);
+
+                    // enable Ctrl-Z to undo and Ctrl-Y to redo
+                    // (should do this after assigning Diagram.model)
+                    myDiagram.undoManager.isEnabled = true;
+
+
+                }
             }
         });
     },

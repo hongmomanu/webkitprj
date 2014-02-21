@@ -5,10 +5,14 @@ Ext.define('Webdesktop.view.Viewport', {
 
     requires: [
     ],
-
+    listeners: {
+        show: function(panel) {
+            //this.fireEvent('gridshowfresh',this);
+            alert("fired");
+        }
+    },
     initComponent: function() {
         var me = this;
-        //alert(1);
         Ext.apply(me, {
 
             items: [
@@ -47,6 +51,7 @@ Ext.define('Webdesktop.view.Viewport', {
                                 {
                                     xtype:'panel',
                                     title:'值班监视管理窗口',
+                                    layout:'fit',
                                     items:[
                                         {
                                          xtype:'dutypanel'
@@ -57,20 +62,38 @@ Ext.define('Webdesktop.view.Viewport', {
                                             type: 'maximize',
                                             tooltip:'窗口最大化',
                                             handler: function (a, b, c) {
-                                                CommonFunc.maxpanel('dutypanel','值班任务管理',c);
+                                                //console.log(c);
+                                                //testobj=c;
+                                                var panel=c.up('panel').down('panel');
+                                                CommonFunc.maxpanel(panel,'值班任务管理',c);
                                             }
                                         }
                                     ],
 
                                     region:'west',
-                                    flex: 1/*,
-                                    html:'text'*/
+                                    flex: 1
                                 },
                                 {
                                     xtype:'panel',
+                                    title:'服务器状态监测',
+                                    layout:'fit',
                                     region:'center',
                                     flex: 1,
-                                    html:'text'
+                                    tools: [
+                                        {
+                                            type: 'maximize',
+                                            tooltip:'窗口最大化',
+                                            handler: function (a, b, c) {
+                                                var panel=c.up('panel').down('panel');
+                                                CommonFunc.maxpanel(panel,'系统监视窗口',c);
+                                            }
+                                        }
+                                    ],
+                                    items:[
+                                        {
+                                            xtype:'systempanel'
+                                        }
+                                    ]
 
                                 }
                             ]

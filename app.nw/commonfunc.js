@@ -54,19 +54,31 @@ var CommonFunc = {
         return url;
 
     },
+
     maxpanel: function (widgetname, title, target) {
         var a = new Ext.window.Window(
             {
                 //rtl: false,
                 maximized: true,
                 closable: true,
+                closeAction:'hide',
                 baseCls: "x-panel",
+                layout:'fit',
+                listeners: {
+                    beforeclose:function(){
+                        var panel=target.up('panel');
+                        panel.add(widgetname);
+
+                    }
+
+                },
                 //modal:true,
                 title: title,
                 items: [
-                    {
+                    widgetname
+                    /*{
                         xtype: widgetname
-                    }
+                    }*/
                 ]/*,
                 tools: [
                     {type: "close", handler: function () {
