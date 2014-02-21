@@ -13,7 +13,7 @@ Ext.define('Webdesktop.view.duty.Systempanel', {
         Ext.apply(me, {
             border: true,
             itemId:'systempanel',
-            html:'<div id="myDiagram"  style="width: 100%;height: 100%;">11</div>',
+            html:'<div id="SystemDiagram"  style="width: 100%;height: 100%;"></div>',
             tbar: [
 
                 {
