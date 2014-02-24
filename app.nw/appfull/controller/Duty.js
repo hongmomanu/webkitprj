@@ -69,7 +69,7 @@ Ext.define('Webdesktop.controller.Duty', {
                     function load() {
                         //var str = document.getElementById("mySavedModel").value;
                         myDiagram.model = go.Model.fromJson({ "nodeDataArray": [
-                                {"key":"1", "text":"服务器1", "type":"S2", "loc":"195 225"},
+                                {"key":"1", "text":"服务器1","problem":true, "type":"S2", "loc":"195 225"},
                                 {"key":"2", "text":"服务器2", "type":"M4", "loc":"183.5 94"},
                                 {"key":"3", "text":"服务器3", "type":"P2", "loc":"75 211.5"},
                                 {"key":"4", "text":"服务器4", "type":"S3", "loc":"306 225"},
