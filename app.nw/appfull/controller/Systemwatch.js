@@ -10,6 +10,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
     views: [
          'systemwatch.Systempanel',
          'systemwatch.SystemManagerpanel',
+         'systemwatch.AddNewSystemWin',
          'systemwatch.SystemManagerWin'
     ],
     models: [
@@ -26,7 +27,12 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             'systempanel menuitem[action=systemmanager]':{
                 click: this.opensystemmanagerwin
             },
-
+            'systemmanagerpanel button[action=new]':{
+               click :this.addnewsystemwin
+            },
+            'addnewsystemwin button[action=add]':{
+                click: this.addnewsystem
+            },
             'systempanel':{
                 afterrender:function(){
                     if (window.goSamples) goSamples();
@@ -141,6 +147,27 @@ Ext.define('Webdesktop.controller.Systemwatch', {
     opensystemmanagerwin:function(btn){
         if(!this.systemmanagerwin)this.systemmanagerwin= Ext.widget('systemmanagerwin');
         this.systemmanagerwin.show();
+
+    },
+    addnewsystemwin:function(btn){
+        if(!this.newsystemwin)this.newsystemwin= Ext.widget('addnewsystemwin');
+        this.newsystemwin.show();
+    },
+    addnewsystem:function(btn){
+        var url='server/addserver';
+        var me=this;
+        var successFunc = function (form, action) {
+            var grid=me.systemmanagerwin.down('grid');
+            grid.getStore().load();
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息",action.result.msg);
+        };
+        var params={
+            parentid:-1
+        };
+        var form = btn.up('form');
+        CommonFunc.formSubmit(form,params,url,successFunc,failFunc,"正在提交。。。")
 
     }
 
