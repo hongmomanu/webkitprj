@@ -8,7 +8,8 @@
 Ext.define('Webdesktop.controller.Systemwatch', {
     extend: 'Ext.app.Controller',
     views: [
-         'systemwatch.Systempanel'
+         'systemwatch.Systempanel',
+         'systemwatch.SystemManagerWin'
     ],
     models: [
 
@@ -21,7 +22,9 @@ Ext.define('Webdesktop.controller.Systemwatch', {
 
 
         this.control({
-
+            'systempanel menuitem[action=systemmanager]':{
+                click: this.opensystemmanagerwin
+            },
 
             'systempanel':{
                 afterrender:function(){
@@ -133,6 +136,11 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                 }
             }
         });
+    },
+    opensystemmanagerwin:function(btn){
+        if(!this.systemmanagerwin)this.systemmanagerwin= Ext.widget('systemmanagerwin');
+        this.systemmanagerwin.show();
+
     }
 
 
