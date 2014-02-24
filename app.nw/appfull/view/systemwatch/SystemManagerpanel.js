@@ -1,4 +1,4 @@
-Ext.define('Webdesktop.view.duty.SystemManagerpanel', {
+Ext.define('Webdesktop.view.systemwatch.SystemManagerpanel', {
     extend: 'Ext.grid.Panel',
     alias:'widget.systemmanagerpanel',
     layout: 'fit',
@@ -24,9 +24,9 @@ Ext.define('Webdesktop.view.duty.SystemManagerpanel', {
 
             forceFit: true,
             columns: [
-                {header: '值班任务', dataIndex: 'missionname'},
-                {header: '任务提醒时间',dataIndex: 'missiontime'},
-                {header: '提醒时间间隔',dataIndex: 'missioninterval'}
+                {header: '服务器名', dataIndex: 'servername'},
+                {header: '服务器地址',dataIndex: 'servervalue'},
+                {header: 'id',dataIndex: 'serverid',hidden:true}
             ],
             flex: 1,
             tbar:[
@@ -52,7 +52,7 @@ Ext.define('Webdesktop.view.duty.SystemManagerpanel', {
 
                 }
             ],
-            store: 'duty.MissionManagers'
+            store: 'systemwatch.SystemManagers'
         });
         me.callParent(arguments);
     }

@@ -9,13 +9,14 @@ Ext.define('Webdesktop.controller.Systemwatch', {
     extend: 'Ext.app.Controller',
     views: [
          'systemwatch.Systempanel',
+         'systemwatch.SystemManagerpanel',
          'systemwatch.SystemManagerWin'
     ],
     models: [
-
+         'systemwatch.SystemManager'
     ],
     stores: [
-
+         'systemwatch.SystemManagers'
     ],
 
     init: function() {
