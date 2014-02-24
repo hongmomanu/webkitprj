@@ -17,7 +17,7 @@ Ext.define('Webdesktop.view.systemwatch.SystemManagerWin' ,{
             resizable:false,
             layout: 'fit',
             items: {
-                //xtype:'systemmanagerpanel'
+                xtype:'systemmanagerpanel'
             }
 
         });

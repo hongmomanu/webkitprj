@@ -7,7 +7,7 @@ Ext.define('Webdesktop.store.systemwatch.SystemManagers', {
     autoLoad:true,
     proxy:{
         type: 'ajax',
-        url: CommonFunc.geturl()+'getsystems'
+        url: CommonFunc.geturl()+'server/getsystems'
     }
 
 });
