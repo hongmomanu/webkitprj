@@ -22,16 +22,16 @@ Ext.define('Webdesktop.controller.Systemwatch', {
 
         this.control({
 
+
             'systempanel':{
                 afterrender:function(){
-                    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
-                    var $ = go.GraphObject.make;  // for conciseness in defining templates
+                    if (window.goSamples) goSamples();
+                    var $ = go.GraphObject.make;
                     //myDiagram.redraw();
                     myDiagram =
                         $(go.Diagram, "SystemDiagram",
                             { initialContentAlignment: go.Spot.Center });
                     function load() {
-                        //var str = document.getElementById("mySavedModel").value;
                         myDiagram.model = go.Model.fromJson({ "nodeDataArray": [
                                 {"key":"1", "text":"服务器1","problem":true, "type":"S2", "loc":"195 225"},
                                 {"key":"2", "text":"服务器2", "type":"M4", "loc":"183.5 94"},
@@ -127,27 +127,6 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                         );
 
                     load();
-
-                    // simulate some real-time problem monitoring, once a second:
-                    function randomProblems() {
-                        var model = myDiagram.model;
-                        // update all nodes
-                        var arr = model.nodeDataArray;
-                        for (var i = 0; i < arr.length; i++) {
-                            data = arr[i];
-                            data.problem = (Math.random() < 0.8) ? "" : "Power loss due to ...";
-                            data.status = Math.random() * 3;
-                            data.operation = Math.random() * 3;
-                            model.updateTargetBindings(data);
-                        }
-                        // and update all links
-                        arr = model.linkDataArray;
-                        for (i = 0; i < arr.length; i++) {
-                            data = arr[i];
-                            data.problem = (Math.random() < 0.7) ? "" : "No Power";
-                            model.updateTargetBindings(data);
-                        }
-                    }
 
 
 

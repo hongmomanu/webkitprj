@@ -22,15 +22,9 @@ Ext.define('Webdesktop.view.systemwatch.Systempanel', {
                     hidden: !Globle.isadmin,
                     menu: [
                         {
-                            text: '排班管理',
-                            action: 'workmanager',
+                            text: '系统服务器配置',
+                            action: 'systemmanager',
                             hidden: !Globle.isadmin
-                        },
-                        {
-                            text: '工作任务管理',
-                            action: 'missionmanager',
-                            hidden: !Globle.isadmin
-
                         }
                     ]
 
