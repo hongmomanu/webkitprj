@@ -33,6 +33,9 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             'addnewsystemwin button[action=add]':{
                 click: this.addnewsystem
             },
+            'systemmanagerpanel':{
+                itemclick:this.systemclick
+            },
             'systempanel':{
                 afterrender:function(){
                     if (window.goSamples) goSamples();
@@ -169,6 +172,10 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         var form = btn.up('form');
         CommonFunc.formSubmit(form,params,url,successFunc,failFunc,"正在提交。。。")
 
+    }
+    ,
+    systemclick:function(grid, record){
+        grid.up('panel').down('#del').enable()
     }
 
 
