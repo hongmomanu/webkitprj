@@ -1,4 +1,4 @@
-Ext.define('Webdesktop.view.duty.Systempanel', {
+Ext.define('Webdesktop.view.systemwatch.Systempanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.systempanel',
     //layout: 'fit',
