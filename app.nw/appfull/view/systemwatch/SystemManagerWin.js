@@ -10,15 +10,15 @@ Ext.define('Webdesktop.view.systemwatch.SystemManagerWin' ,{
     initComponent: function() {
         Ext.apply(this, {
             title: '系统服务配置管理',
-            height: 260,
+            height: 360,
             width: 520,
             closeAction : 'hide',
             modal:true,
             resizable:false,
             layout: 'fit',
-            items: {
+            items: [{
                 xtype:'systemmanagerpanel'
-            }
+            }]
 
         });
         this.callParent(arguments);

@@ -159,19 +159,28 @@ Ext.define('Webdesktop.controller.Systemwatch', {
     addnewsystem:function(btn){
         var url='server/addserver';
         var me=this;
+        var win=this.systemmanagerwin;
+        var panel=win.down('panel');
+        var sm =panel.getSelectionModel();
+        var selectitem=sm.getSelection();
+        var params={
+
+        };
+        if(selectitem.length==0){
+            params.parentid=-1;
+        }else{
+            params.parentid=selectitem[0].data.id;
+        }
         var successFunc = function (form, action) {
-            var grid=me.systemmanagerwin.down('grid');
-            grid.getStore().load();
+            var treepanel=me.systemmanagerwin.down('panel');
+            treepanel.getStore().load({node:selectitem[0]});
         };
         var failFunc = function (form, action) {
             Ext.Msg.alert("提示信息",action.result.msg);
         };
-        var params={
-            parentid:-1
-        };
+
         var form = btn.up('form');
         CommonFunc.formSubmit(form,params,url,successFunc,failFunc,"正在提交。。。")
-
     }
     ,
     systemclick:function(grid, record){

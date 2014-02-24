@@ -1,5 +1,5 @@
 Ext.define('Webdesktop.view.systemwatch.SystemManagerpanel', {
-    extend: 'Ext.grid.Panel',
+    extend: 'Ext.tree.Panel',
     alias:'widget.systemmanagerpanel',
     layout: 'fit',
 
@@ -21,10 +21,14 @@ Ext.define('Webdesktop.view.systemwatch.SystemManagerpanel', {
                 enableTextSelection:true,
                 stripeRows: true
             },
-
+            xtype: 'tree-grid',
             forceFit: true,
+            layout: 'fit',
+            anchor: '100% 60%',
+            useArrows: true,
+            rootVisible: true,
             columns: [
-                {header: '服务器名', dataIndex: 'servername'},
+                {header: '服务器名', dataIndex: 'servername',xtype: 'treecolumn'},
                 {header: '服务器地址',dataIndex: 'servervalue'},
                 {header: 'id',dataIndex: 'serverid',hidden:true}
             ],
