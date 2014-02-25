@@ -3,3 +3,42 @@
 .duty-gridrow-green
 {color: green; }
 .duty-action-col{background-image:url(images/rss_go.png)}
+
+#SysteminfoBox {
+    z-index: 300;
+    position: absolute;
+    left: -15px;
+}
+#infoBox {
+    border: 1px solid #999;
+    padding: 8px;
+    background-color: whitesmoke;
+    opacity:0.9;
+    position: relative;
+    width: 170px;
+    /*height: 60px;*/
+    font-family: arial, helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 11px;
+}
+#infoBox:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+div.infoTitle {
+    width: 60px;
+    font-weight: normal;
+    color:  #787878;
+    float: left;
+    margin-left: 4px;
+}
+
+div.infoValues {
+    width: 80px;
+    text-align: right;
+    float: right;
+}

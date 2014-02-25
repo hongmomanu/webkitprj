@@ -38,13 +38,17 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             },
             'systempanel':{
                 afterrender:function(){
+                    var me=this;
                     if (window.goSamples) goSamples();
                     var $ = go.GraphObject.make;
                     //myDiagram.redraw();
                     myDiagram =
                         $(go.Diagram, "SystemDiagram",
                             {
-                                initialContentAlignment: go.Spot.Center
+                                contentAlignment: go.Spot.Center,
+                                initialContentAlignment: go.Spot.Center,
+                                autoScale: go.Diagram.Uniform,
+                                isReadOnly: true
                             });
 
                     function load() {
@@ -99,10 +103,44 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                         if (s.isping) return "green";
                         else return "red";
                     }
+                    function updateInfoBox(mousePt, data) {
+
+                        var x ="<div id='infoBox'>" +
+                                "<div> 状态描述:</div>" +
+                                "<div class='infoTitle'>服务器名</div>" +
+                                "<div class='infoValues'>" + data.servername + "</div>" +
+                                "<div class='infoTitle'>ip地址</div>" +
+                                "<div class='infoValues'>" + data.servervalue + "</div>" +
+                                "<div class='infoTitle'>连接状态</div>" +
+                                "<div class='infoValues'>" + data.isping + "</div></div>";
+                        var box = document.getElementById("SysteminfoBox");
+                        box.innerHTML = x;
+                        box.style.left = mousePt.x + "px";
+                        box.style.top = mousePt.y+20 + "px";
+                    }
+
+                    function highlightNode(e, node) {
+                        if (node !== null) {
+                            var picture = node.findObject("Picture");
+                            picture.background = "#D0D3D4";
+                            if (me.lastStroked != null && me.lastStroked != picture) me.lastStroked.background = null;
+                            me.lastStroked = picture;
+
+
+                            updateInfoBox(e.viewPoint, node.data);
+                        } else {
+                            if (this.lastStroked != null) this.lastStroked.background = null;
+                            this.lastStroked = null;
+                            document.getElementById("SysteminfoBox").innerHTML = "";
+                        }
+                    }
 
                     myDiagram.nodeTemplate =
                         $(go.Node, "Vertical",
-                            { selectable: false},
+                            {
+                                selectable: false,
+                                mouseOver: function(e, obj) { highlightNode(e, obj) }
+                            },
                             { locationObjectName: "ICON" },
                             //new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
                             $(go.Panel, "Spot",
@@ -112,7 +150,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                                         { fill: null, stroke: null },
                                         new go.Binding("background", "isping", nodeProblemConverter)),*///错误背景
                                     $(go.Picture,
-                                        { margin: 5 },
+                                        { margin: 5,name:'Picture' },
                                         new go.Binding("source", "", nodeTypeImage))
                                 ),  // end Auto Panel
                                /* $(go.Shape, "Circle",
