@@ -44,15 +44,9 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                     myDiagram =
                         $(go.Diagram, "SystemDiagram",
                             {
-                                allowCopy: false,
-                                isReadOnly:true,
-                                allowDelete: false,
-                                allowSelect:false,
-                                allowDrop:false,
-                                allowMove: false,
                                 initialContentAlignment: go.Spot.Center
-
                             });
+
                     function load() {
                         var params={
                         };
