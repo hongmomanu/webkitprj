@@ -49,6 +49,28 @@ Ext.define('Webdesktop.view.systemwatch.AddNewSystemWin' ,{
                         allowBlank:false,
                         afterLabelTextTpl: required,
                         name: 'servervalue'
+                    },
+                    {
+                        xtype: 'textfield',
+                        itemId:'machinecss',
+                        fieldLabel: '服务器图标',
+                        name: 'machinecss'
+                    },
+                    {
+                        xtype:'combobox',
+                        fieldLabel: '服务应用种类',
+                        store:  Ext.create('Ext.data.Store', {
+                            fields: ['value', 'name'],
+                            data : [
+                                {"value":0, "name":"端口服务"},
+                                {"value":1, "name":"服务进程"}
+                            ]}),
+                        queryMode: 'local',
+                        displayField: 'name',
+                        valueField: 'value',
+                        hidden:true,
+                        name:'type'
+
                     }
 
                 ],
