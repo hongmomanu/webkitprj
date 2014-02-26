@@ -29,6 +29,18 @@ Ext.define('Webdesktop.view.systemwatch.Systempanel', {
                         }
                     ]
 
+                },
+                {
+                    xtype: 'image' ,
+                    src:'images/refresh.png',
+                    height:20,
+                    listeners: {
+                        click: {
+                            element: 'el', //bind to the underlying el property on the panel
+                            fn: function(){ console.log('click el'); }
+                        }
+                    }
+
                 }
 
 
