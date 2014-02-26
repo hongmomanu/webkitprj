@@ -13,7 +13,7 @@ Ext.application({
     appFolder: 'appfull',
 
     controllers: [
-        'Users','Duty','Systemwatch'
+        'Users','Duty','Systemwatch','Logmsg'
     ],
 
     launch: function() {

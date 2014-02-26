@@ -57,6 +57,33 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                         var successFunc = function (response, action) {
                             var res = Ext.JSON.decode(response.responseText);
                             var results=res.results;
+                            var msgwin=Ext.getCmp('logtmsgwin')
+                            if(!msgwin){
+                                msgwin=Ext.widget('alertmsgcornershowwin',{title:'警告窗口'});
+                            }
+                            var store=msgwin.down('grid').getStore();
+                            for(var i=0;i<results.length;i++){
+                                if(!results[i].isping){
+                                    msgwin.flyIn();
+                                    store.insert(0,
+                                        {
+                                            msg:"无法ping通,ip:"+results[i].servervalue,
+                                            msgtime:Ext.util.Format.date(new Date(), "H:i")
+                                        });
+
+                                }else{
+                                    Ext.each(results[i].apps,function(item,index){
+                                        if(!item.isconnect){
+                                            msgwin.flyIn();
+                                            store.insert(0,
+                                                {
+                                                    msg:""+item.servername+"("+results[i].servervalue+")异常",
+                                                    msgtime:Ext.util.Format.date(new Date(), "H:i")
+                                                });
+                                        }
+                                    });
+                                }
+                            }
                             var firstitem={"key":"-1", "servername":"浙江省地震局","isping":true, "machinecss":""};
                             var nodearr=[];
                             nodearr.push(firstitem);
