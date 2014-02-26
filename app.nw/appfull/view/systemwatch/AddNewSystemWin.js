@@ -11,7 +11,7 @@ Ext.define('Webdesktop.view.systemwatch.AddNewSystemWin' ,{
         var required = '<span style="color:red;font-weight:bold" data-qtip="必填字段">*</span>';
         Ext.apply(this, {
             title: '新增服务器',
-            height: 260,
+            height: 310,
             width: 520,
             closeAction : 'hide',
             modal:true,
@@ -55,6 +55,18 @@ Ext.define('Webdesktop.view.systemwatch.AddNewSystemWin' ,{
                         itemId:'machinecss',
                         fieldLabel: '服务器图标',
                         name: 'machinecss'
+                    },
+                    {
+                        xtype: 'textfield',
+                        itemId:'username',
+                        fieldLabel: '服务器登陆名',
+                        name: 'username'
+                    },
+                    {
+                        xtype: 'textfield',
+                        itemId:'password',
+                        fieldLabel: '服务器登陆密码',
+                        name: 'password'
                     },
                     {
                         xtype:'combobox',

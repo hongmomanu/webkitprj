@@ -112,7 +112,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                                 "<div class='infoTitle'>ip地址</div>" +
                                 "<div class='infoValues'>" + data.servervalue + "</div>" +
                                 "<div class='infoTitle'>连接状态</div>" +
-                                "<div class='infoValues'>" + data.isping + "</div></div>";
+                                "<div class='infoValues'>" + (data.isping?'正常':'断开') + "</div></div>";
                         var box = document.getElementById("SysteminfoBox");
                         box.innerHTML = x;
                         box.style.left = mousePt.x + "px";
@@ -134,6 +134,32 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                             document.getElementById("SysteminfoBox").innerHTML = "";
                         }
                     }
+
+                    // Make sure the infoBox is momentarily hidden if the user tries to mouse over it
+                    var infoBoxH = document.getElementById("SysteminfoBox");
+                    infoBoxH.addEventListener("mousemove", function() {
+                        var box = document.getElementById("SysteminfoBox");
+                        box.style.left = parseInt(box.style.left) + "px";
+                        box.style.top = parseInt(box.style.top)+30 + "px";
+                    }, false);
+
+                    var diagramDiv = document.getElementById("SystemDiagram");
+                    // Make sure the infoBox is hidden when the mouse is not over the Diagram
+                    diagramDiv.addEventListener("mouseout", function(e) {
+                        if (me.lastStroked != null) me.lastStroked.stroke = null;
+                        me.lastStroked = null;
+
+                        var infoBox = document.getElementById("infoBox");
+                        var elem = document.elementFromPoint(e.clientX, e.clientY);
+                        if (elem === infoBox || elem.parentNode === infoBox) {
+                            var box = document.getElementById("SysteminfoBox");
+                            box.style.left = parseInt(box.style.left) + "px";
+                            box.style.top = parseInt(box.style.top)+30 + "px";
+                        } else {
+                            var box = document.getElementById("SysteminfoBox");
+                            box.innerHTML = "";
+                        }
+                    }, false);
 
                     myDiagram.nodeTemplate =
                         $(go.Node, "Vertical",
@@ -204,6 +230,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         this.newsystemwin.show();
         var form_combobox=this.newsystemwin.down('combobox');
         var form_cssimg=this.newsystemwin.down('#machinecss');
+        var form_password=this.newsystemwin.down('#password');
+        var form_username=this.newsystemwin.down('#username');
         var win=this.systemmanagerwin;
         var panel=win.down('panel');
         var sm =panel.getSelectionModel();
@@ -211,9 +239,13 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         if(selectitem.length==0||selectitem[0].data.id==-1){
             form_combobox.hide();
             form_cssimg.show();
+            form_password.show();
+            form_username.show();
         }else{
             form_combobox.show();
             form_cssimg.hide();
+            form_password.hide();
+            form_username.hide();
         }
 
     },
