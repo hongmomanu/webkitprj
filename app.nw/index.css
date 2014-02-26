@@ -5,7 +5,7 @@
 .duty-action-col{background-image:url(images/rss_go.png)}
 
 #SysteminfoBox {
-    z-index: 300;
+    z-index: 3000;
     position: absolute;
     left: -15px;
 }

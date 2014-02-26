@@ -100,19 +100,34 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                     }
 
                     function nodeStatusConverter(s) {
-                        if (s.isping) return "green";
-                        else return "red";
+                        var all_arr=s.apps;
+                        var connected_arr=Ext.Array.filter(all_arr,function(item,index,array){
+                            return item.isconnect
+                        });
+                        if(s.isping&&all_arr.length==connected_arr.length){
+                            return "green";
+                        }else return "red";
                     }
                     function updateInfoBox(mousePt, data) {
+                        var all_arr=data.apps;
+                        var connected_arr=Ext.Array.filter(all_arr,function(item,index,array){
+                            return item.isconnect
+                        });
 
                         var x ="<div id='infoBox'>" +
                                 "<div> 状态描述:</div>" +
-                                "<div class='infoTitle'>服务器名</div>" +
-                                "<div class='infoValues'>" + data.servername + "</div>" +
                                 "<div class='infoTitle'>ip地址</div>" +
                                 "<div class='infoValues'>" + data.servervalue + "</div>" +
                                 "<div class='infoTitle'>连接状态</div>" +
-                                "<div class='infoValues'>" + (data.isping?'正常':'断开') + "</div></div>";
+                                "<div class='infoValues'>" + (data.isping?'正常':'断开') + "</div>"+
+                                (data.cpu===""?"":("<div class='infoTitle'>cpu占用率</div>" +
+                                "<div class='infoValues'>" + data.cpu + "</div>")) +
+                            "<div class='infoTitle'>服务状态</div>" +
+                            "<div class='infoValues'>" +
+                            ((data.isping&&all_arr.length==connected_arr.length)?("所有服务正常")
+                    :"有"+(all_arr.length-connected_arr.length)+"个服务异常")
+                            + "</div>"+
+                            "</div>";
                         var box = document.getElementById("SysteminfoBox");
                         box.innerHTML = x;
                         box.style.left = mousePt.x + "px";
@@ -129,8 +144,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
 
                             updateInfoBox(e.viewPoint, node.data);
                         } else {
-                            if (this.lastStroked != null) this.lastStroked.background = null;
-                            this.lastStroked = null;
+                            if (me.lastStroked != null) me.lastStroked.background = null;
+                            me.lastStroked = null;
                             document.getElementById("SysteminfoBox").innerHTML = "";
                         }
                     }
@@ -146,7 +161,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                     var diagramDiv = document.getElementById("SystemDiagram");
                     // Make sure the infoBox is hidden when the mouse is not over the Diagram
                     diagramDiv.addEventListener("mouseout", function(e) {
-                        if (me.lastStroked != null) me.lastStroked.stroke = null;
+                        if (me.lastStroked != null) me.lastStroked.background = null;
                         me.lastStroked = null;
 
                         var infoBox = document.getElementById("infoBox");
