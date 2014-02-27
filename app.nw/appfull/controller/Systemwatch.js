@@ -27,6 +27,9 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             'systempanel menuitem[action=systemmanager]': {
                 click: this.opensystemmanagerwin
             },
+            'systempanel image': {
+                refreshclick: this.refreshclick
+            },
             'systemmanagerpanel button[action=new]': {
                 click: this.addnewsystemwin
             },
@@ -42,6 +45,9 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                 }
             }
         });
+    },
+    refreshclick:function(btn){
+        this.loadsystemdata();
     },
     loadsystemdata: function () {
         var me = this;

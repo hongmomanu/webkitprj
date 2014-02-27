@@ -34,10 +34,16 @@ Ext.define('Webdesktop.view.systemwatch.Systempanel', {
                     xtype: 'image' ,
                     src:'images/refresh.png',
                     height:20,
+                    overCls:'overhand',
                     listeners: {
-                        click: {
-                            element: 'el', //bind to the underlying el property on the panel
-                            fn: function(){ console.log('click el'); }
+
+                        render: function(cmp) {
+                            Ext.create('Ext.tip.ToolTip', {
+                                target: cmp.el,
+                                html: "<b>刷新</b><br> "
+                            });
+
+                            cmp.getEl().on('click', function(){ this.fireEvent('refreshclick', cmp); }, cmp);
                         }
                     }
 
