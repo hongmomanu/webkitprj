@@ -83,7 +83,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                     msgwin.flyIn();
                     store.insert(0,
                         {
-                            msg: "网络异常:无法ping通(" + results[i].servervalue+")",
+                            msg: "网络异常",
+                            ip:results[i].servername + "(" + results[i].servervalue + ")",
                             msgtime: Ext.util.Format.date(new Date(), "H:i"),
                             status:'ping'
                         });
@@ -93,8 +94,9 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                         msgwin.flyIn();
                         store.insert(0,
                             {
-                                msg: "内存危机:"+(results[i].mem*100).toFixed(1)+"%"+results[i].servername + "(" + results[i].servervalue + ")",
+                                msg: "内存危机:"+(results[i].mem*100).toFixed(1)+"%",
                                 msgtime: Ext.util.Format.date(new Date(), "H:i"),
+                                ip:results[i].servername + "(" + results[i].servervalue + ")",
                                 status:'mem'
                             });
                     }
@@ -104,8 +106,9 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                             msgwin.flyIn();
                             store.insert(0,
                                 {
-                                    msg: "服务异常:" + item.servername + "(" + results[i].servervalue + ")",
+                                    msg: "服务异常:" + item.servername,
                                     msgtime: Ext.util.Format.date(new Date(), "H:i"),
+                                    ip:results[i].servername + "(" + results[i].servervalue + ")",
                                     status:'app'
                                 });
                         }
