@@ -56,6 +56,9 @@ Ext.define('Webdesktop.view.systemwatch.SystemAlertManagerWin' ,{
                         }),
                         valueField: 'value',
                         name: 'alertinterval'
+                    },
+                    {
+
                     }
 
                 ],

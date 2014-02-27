@@ -217,7 +217,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                 run: function(){
                     me.refreshclick();
                 },
-                interval: localStorage.alertinterval //1 分钟
+                interval: parseInt(localStorage.alertinterval)
             }
         }
         Ext.TaskManager.start(me.alertTask);
@@ -315,8 +315,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
     savesystemalertconfig:function(btn){
         var form=btn.up('form');
         localStorage.alertinterval=form.getValues().alertinterval;
-        this.alertTask.interval=localStorage.alertinterval;
-       //alert(1);
+        this.alertTask.interval=parseInt(localStorage.alertinterval);
+        btn.up('window').hide();
     },
     addnewsystemwin: function (btn) {
         if (!this.newsystemwin)this.newsystemwin = Ext.widget('addnewsystemwin');
