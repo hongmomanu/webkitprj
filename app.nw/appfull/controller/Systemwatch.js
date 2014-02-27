@@ -21,6 +21,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         'systemwatch.SystemManagers'
     ],
     alertinterval:60000,
+    alertmempercent:5,
+    alertdiskpercent:10,
     init: function () {
 
 
@@ -213,6 +215,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             );
         if(!me.alertTask){
             if(!localStorage.alertinterval)localStorage.alertinterval=me.alertinterval;
+            if(!localStorage.alertmempercent)localStorage.alertmempercent=me.alertmempercent;
+            if(!localStorage.alertdiskpercent)localStorage.alertdiskpercent=me.alertdiskpercent;
             me.alertTask={
                 run: function(){
                     me.refreshclick();
@@ -309,12 +313,19 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         this.systemalertmanagerwin.show();
         var form=this.systemalertmanagerwin.down('form').getForm();
         //testobj=this.systemalertmanagerwin.down('form');
-        form.setValues({alertinterval:parseInt(localStorage.alertinterval)});
+        form.setValues(
+            {
+                alertinterval:parseInt(localStorage.alertinterval),
+                alertdiskpercent:parseInt(localStorage.alertdiskpercent),
+                alertmempercent:parseInt(localStorage.alertmempercent)
+            });
 
     },
     savesystemalertconfig:function(btn){
         var form=btn.up('form');
         localStorage.alertinterval=form.getValues().alertinterval;
+        localStorage.alertmempercent=form.getValues().alertmempercent;
+        localStorage.alertdiskpercent=form.getValues().alertdiskpercent;
         this.alertTask.interval=parseInt(localStorage.alertinterval);
         btn.up('window').hide();
     },
