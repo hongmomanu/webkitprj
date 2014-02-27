@@ -26,6 +26,10 @@ Ext.define('Webdesktop.view.systemwatch.Systempanel', {
                             text: '系统服务器配置',
                             action: 'systemmanager',
                             hidden: !Globle.isadmin
+                        },{
+                            text: '报警信息配置',
+                            action: 'systemalertmanager',
+                            hidden: !Globle.isadmin
                         }
                     ]
 
