@@ -36,6 +36,10 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             'systemmanagerpanel button[action=new]': {
                 click: this.addnewsystemwin
             },
+            'systemalertmanagerwin button[action=save]': {
+                click: this.savesystemalertconfig
+
+            },
             'addnewsystemwin button[action=add]': {
                 click: this.addnewsystem
             },
@@ -208,11 +212,12 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                     new go.Binding("stroke", "color"))  // me.linkProblemConverter
             );
         if(!me.alertTask){
+            if(!localStorage.alertinterval)localStorage.alertinterval=me.alertinterval;
             me.alertTask={
                 run: function(){
                     me.refreshclick();
                 },
-                interval: me.alertinterval //1 分钟
+                interval: localStorage.alertinterval //1 分钟
             }
         }
         Ext.TaskManager.start(me.alertTask);
@@ -297,8 +302,21 @@ Ext.define('Webdesktop.controller.Systemwatch', {
 
     },
     opensystemalertmanagerwin:function(btn){
-        if (!this.systemalertmanagerwin)this.systemalertmanagerwin = Ext.widget('systemalertmanagerwin');
+        if (!this.systemalertmanagerwin){
+            this.systemalertmanagerwin = Ext.widget('systemalertmanagerwin');
+        }
+
         this.systemalertmanagerwin.show();
+        var form=this.systemalertmanagerwin.down('form').getForm();
+        //testobj=this.systemalertmanagerwin.down('form');
+        form.setValues({alertinterval:parseInt(localStorage.alertinterval)});
+
+    },
+    savesystemalertconfig:function(btn){
+        var form=btn.up('form');
+        localStorage.alertinterval=form.getValues().alertinterval;
+        this.alertTask.interval=localStorage.alertinterval;
+       //alert(1);
     },
     addnewsystemwin: function (btn) {
         if (!this.newsystemwin)this.newsystemwin = Ext.widget('addnewsystemwin');
