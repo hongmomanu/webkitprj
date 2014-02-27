@@ -15,6 +15,7 @@ Ext.define('Webdesktop.view.logmsg.AlertMsgCornerWin', {
             closable: false,
             shadow: false,
             resizable: false,
+            draggable:false,
             x: me.eBody.getWidth() - this.openMsgWinConfig.width, y: me.eBody.getHeight() - this.openMsgWinConfig.height,
             width: this.openMsgWinConfig.width,
             height: this.openMsgWinConfig.height,

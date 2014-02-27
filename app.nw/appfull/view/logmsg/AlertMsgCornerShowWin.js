@@ -19,7 +19,9 @@ Ext.define('Webdesktop.view.logmsg.AlertMsgCornerShowWin', {
             width: me.msgWinConfig.width,
             height: me.msgWinConfig.height,
             shadow: false,
+            draggable:false,
             layout:'fit',
+
             items: [
                 {xtype:'logmsgrid'}
             ],

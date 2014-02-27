@@ -19,7 +19,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
     stores: [
         'systemwatch.SystemManagers'
     ],
-
+    alertinterval:60000,
     init: function () {
 
 
@@ -47,6 +47,12 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         });
     },
     refreshclick:function(btn){
+        var msgwin = Ext.getCmp('logtmsgwin');
+        if(msgwin){
+            var store = msgwin.down('grid').getStore();
+            store.removeAll();
+        }
+
         this.loadsystemdata();
     },
     loadsystemdata: function () {
@@ -56,32 +62,43 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         var successFunc = function (response, action) {
             var res = Ext.JSON.decode(response.responseText);
             var results = res.results;
-            var msgwin = Ext.getCmp('logtmsgwin')
+            var msgwin = Ext.getCmp('logtmsgwin');
             if (!msgwin) {
                 msgwin = Ext.widget('alertmsgcornershowwin', {title: '警告窗口'});
             }
             var store = msgwin.down('grid').getStore();
+            var isalert=false;
             for (var i = 0; i < results.length; i++) {
                 if (!results[i].isping) {
+                    isalert=true;
                     msgwin.flyIn();
                     store.insert(0,
                         {
-                            msg: "无法ping通,ip:" + results[i].servervalue,
-                            msgtime: Ext.util.Format.date(new Date(), "H:i")
+                            msg: "网络异常:无法ping通(" + results[i].servervalue+")",
+                            msgtime: Ext.util.Format.date(new Date(), "H:i"),
+                            status:0
                         });
 
                 } else {
                     Ext.each(results[i].apps, function (item, index) {
                         if (!item.isconnect) {
+                            isalert=true;
                             msgwin.flyIn();
                             store.insert(0,
                                 {
-                                    msg: "" + item.servername + "(" + results[i].servervalue + ")异常",
-                                    msgtime: Ext.util.Format.date(new Date(), "H:i")
+                                    msg: "服务异常:" + item.servername + "(" + results[i].servervalue + ")",
+                                    msgtime: Ext.util.Format.date(new Date(), "H:i"),
+                                    status:-1
                                 });
                         }
                     });
                 }
+            }
+            if(isalert){
+                if(!me.alertsnd){
+                    me.alertsnd=new Audio("audio/song.ogg");
+                }
+                me.alertsnd.play();
             }
             var firstitem = {"key": "-1", "servername": "浙江省地震局", "isping": true, "machinecss": ""};
             var nodearr = [];
@@ -89,14 +106,10 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             nodearr = nodearr.concat(results);
             var linkDataArray = [];
             for (var i = 0; i < results.length; i++) {
-                var linkitem = {"from": results[i].key, "to": firstitem.key};
+                var linkitem = {"from": results[i].key, "to": firstitem.key,"color":results[i].isping?"green":"red"};
                 linkDataArray.push(linkitem);
             }
-            me.myDiagram.model = go.Model.fromJson(
-                {
-                    "nodeDataArray": nodearr,
-                    "linkDataArray": linkDataArray
-                });
+            me.myDiagram.model = new go.GraphLinksModel(nodearr,linkDataArray);
 
         };
         var failFunc = function (form, action) {
@@ -189,9 +202,17 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                 { corner: 3 },
                 $(go.Shape,
                     { strokeWidth: 2 },
-                    new go.Binding("stroke", "problem", me.linkProblemConverter))
+                    new go.Binding("stroke", "color"))  // me.linkProblemConverter
             );
-        this.loadsystemdata();
+        if(!me.alertTask){
+            me.alertTask={
+                run: function(){
+                    me.refreshclick();
+                },
+                interval: me.alertinterval //1 分钟
+            }
+        }
+        Ext.TaskManager.start(me.alertTask);
 
     },
     nodeProblemConverter: function (msg) {
