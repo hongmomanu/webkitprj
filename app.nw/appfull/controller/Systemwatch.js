@@ -11,7 +11,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         'systemwatch.Systempanel',
         'systemwatch.SystemManagerpanel',
         'systemwatch.AddNewSystemWin',
-        'systemwatch.SystemManagerWin'
+        'systemwatch.SystemManagerWin',
+        'systemwatch.SystemAlertManagerWin'
     ],
     models: [
         'systemwatch.SystemManager'
@@ -26,6 +27,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         this.control({
             'systempanel menuitem[action=systemmanager]': {
                 click: this.opensystemmanagerwin
+            },'systempanel menuitem[action=systemalertmanager]': {
+                click: this.opensystemalertmanagerwin
             },
             'systempanel image': {
                 refreshclick: this.refreshclick
@@ -292,6 +295,10 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         if (!this.systemmanagerwin)this.systemmanagerwin = Ext.widget('systemmanagerwin');
         this.systemmanagerwin.show();
 
+    },
+    opensystemalertmanagerwin:function(btn){
+        if (!this.systemalertmanagerwin)this.systemalertmanagerwin = Ext.widget('systemalertmanagerwin');
+        this.systemalertmanagerwin.show();
     },
     addnewsystemwin: function (btn) {
         if (!this.newsystemwin)this.newsystemwin = Ext.widget('addnewsystemwin');
