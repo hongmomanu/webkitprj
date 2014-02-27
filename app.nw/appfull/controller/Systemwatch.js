@@ -89,11 +89,11 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                         });
 
                 } else {
-                    if(results[i].mem!==""&&results[i].mem<localStorage.alertmempercent){
+                    if(results[i].mem!==""&&results[i].mem*100<localStorage.alertmempercent){
                         msgwin.flyIn();
                         store.insert(0,
                             {
-                                msg: "内存危机:"+results[i].mem+"%"+results[i].servername + "(" + results[i].servervalue + ")",
+                                msg: "内存危机:"+(results[i].mem*100).toFixed(1)+"%"+results[i].servername + "(" + results[i].servervalue + ")",
                                 msgtime: Ext.util.Format.date(new Date(), "H:i"),
                                 status:'mem'
                             });
