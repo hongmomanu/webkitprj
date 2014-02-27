@@ -64,6 +64,22 @@ Ext.define('Webdesktop.controller.Systemwatch', {
 
         this.loadsystemdata();
     },
+    memoryexception:function(item){
+        if(item.mem!==""&&item.mem*100<localStorage.alertmempercent){
+
+            var msgwin = Ext.getCmp('logtmsgwin');
+            var store = msgwin.down('grid').getStore();
+            this.isalert=true;
+            msgwin.flyIn();
+            store.insert(0,
+                {
+                    msg: "内存危机:"+(item.mem*100).toFixed(1)+"%",
+                    msgtime: Ext.util.Format.date(new Date(), "H:i"),
+                    ip:item.servername + "(" + item.servervalue + ")",
+                    status:'mem'
+                });
+            }
+    },
     loadsystemdata: function () {
         var me = this;
         var params = {
@@ -90,16 +106,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                         });
 
                 } else {
-                    if(results[i].mem!==""&&results[i].mem*100<localStorage.alertmempercent){
-                        msgwin.flyIn();
-                        store.insert(0,
-                            {
-                                msg: "内存危机:"+(results[i].mem*100).toFixed(1)+"%",
-                                msgtime: Ext.util.Format.date(new Date(), "H:i"),
-                                ip:results[i].servername + "(" + results[i].servervalue + ")",
-                                status:'mem'
-                            });
-                    }
+                    me.memoryexception(results[i]);
+
                     Ext.each(results[i].apps, function (item, index) {
                         if (!item.isconnect) {
                             isalert=true;
