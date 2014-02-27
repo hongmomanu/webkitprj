@@ -20,11 +20,15 @@ Ext.define('Webdesktop.view.logmsg.LogMsgGrid', {
                 scrollToTop: Ext.emptyFn,
                 enableTextSelection:true,
                 getRowClass: function (record, rowIndex, rowParams, store) {
-                    if (record.get('status') == 0) {
+                    var status=record.get('status');
+                    if ( status== 'ping') {
                         return 'duty-gridrow-red';
-                    } else if(record.get('status') == -1) {
+                    } else if(status == 'app') {
                         return 'duty-gridrow-pink';
-                    }else{
+                    }else if(status == 'mem'){
+                        return 'duty-gridrow-dark'
+                    }
+                    else{
                         return 'duty-gridrow-green';
                     }
                 },

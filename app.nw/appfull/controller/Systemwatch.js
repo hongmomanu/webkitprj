@@ -85,10 +85,19 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                         {
                             msg: "网络异常:无法ping通(" + results[i].servervalue+")",
                             msgtime: Ext.util.Format.date(new Date(), "H:i"),
-                            status:0
+                            status:'ping'
                         });
 
                 } else {
+                    if(results[i].mem!==""&&results[i].mem<localStorage.alertmempercent){
+                        msgwin.flyIn();
+                        store.insert(0,
+                            {
+                                msg: "内存危机:"+results[i].mem+"%"+results[i].servername + "(" + results[i].servervalue + ")",
+                                msgtime: Ext.util.Format.date(new Date(), "H:i"),
+                                status:'mem'
+                            });
+                    }
                     Ext.each(results[i].apps, function (item, index) {
                         if (!item.isconnect) {
                             isalert=true;
@@ -97,7 +106,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                                 {
                                     msg: "服务异常:" + item.servername + "(" + results[i].servervalue + ")",
                                     msgtime: Ext.util.Format.date(new Date(), "H:i"),
-                                    status:-1
+                                    status:'app'
                                 });
                         }
                     });
