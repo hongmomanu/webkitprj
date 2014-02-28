@@ -97,7 +97,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             {
                 serverid:item.key,
                 statustype:exceptiontype.ping,
-                logcontent:item.servervalue
+                logcontent:"无法ping通:"+item.servervalue
             });
     },
     appexception:function(item,itemchild,store,msgwin){
@@ -137,7 +137,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                         {
                             serverid:item.key,
                             statustype:exceptiontype.disk,
-                            logcontent:item.disk[i].name+":"+item.disk[i].value
+                            logcontent:item.disk[i].name+":"+item.disk[i].value+
+                                "(" + item.servervalue + ")"
                         });
                 }
 
@@ -160,7 +161,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                 {
                     serverid:item.key,
                     statustype:exceptiontype.mem,
-                    logcontent:item.servervalue
+                    logcontent:"内存空闲:"+(item.mem*100).toFixed(1)+"%("+item.servervalue
+                        +")"
                 });
             }
     },
@@ -199,7 +201,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                         {
                             serverid:results[i].key,
                             statustype:exceptiontype.ok,
-                            logcontent:exceptiontype.ok
+                            logcontent:"所有服务:"+exceptiontype.ok+"("+results[i].servervalue+")"
                         });
                 }else{
                     if(!me.alertsnd)me.alertsnd=new Audio("audio/song.ogg");

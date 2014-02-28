@@ -36,14 +36,26 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
 
             forceFit: true,
             columns: [
-                {header: '日志内容', dataIndex: 'logcontent',flex:1},
+                {header: '事件内容', dataIndex: 'logcontent',flex:1},
                 {header: '日志类型', dataIndex: 'statustype',flex:1},
-                {header: '日志时间',dataIndex: 'time',width:100}
+                {header: '日志时间',dataIndex: 'time',width:120}
             ],
             flex: 1,
             tbar:[
                 {
-                    xtype:'textfield'
+                    xtype:'textfield',
+                    listeners: {
+                        "specialkey": function (field, e) {
+                            if (e.keyCode == 13) {
+                                var keyword = field.getValue().replace(/\s+/g, "");
+                                var panel=this.up('panel');
+                                var store=panel.getStore();
+                                store.proxy.extraParams.keyword = keyword;
+                                store.loadPage(1);
+
+                            }
+                        }
+                    }
                 }
             ],
             bbar: Ext.create('Ext.PagingToolbar', {
