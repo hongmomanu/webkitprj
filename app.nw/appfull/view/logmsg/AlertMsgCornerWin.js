@@ -7,7 +7,7 @@ Ext.define('Webdesktop.view.logmsg.AlertMsgCornerWin', {
     alias: 'widget.alertmsgcornerwin',
     requires: [
     ],
-    openMsgWinConfig: { width: 53, height: 40 },
+    openMsgWinConfig: { width: 63, height: 30 },
     eBody:Ext.getBody(),
     initComponent: function () {
         var me=this;

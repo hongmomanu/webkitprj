@@ -98,26 +98,22 @@ Ext.define('Webdesktop.controller.Users', {
 
     },
     maketodaymission:function(){
-       if(Globle.dutyuserid===Globle.userid){
-           var params = {
-               day:Ext.util.Format.date(new Date(), "Y-m-d"),
-               userid:Globle.userid
-           };
-           var successFunc = function (response, action) {
-               var res = Ext.JSON.decode(response.responseText);
-               if(res.success){
-                   Ext.getStore('duty.DutyMissions').load();
-               }
+       var params = {
+           day:Ext.util.Format.date(new Date(), "Y-m-d"),
+           userid:Globle.dutyuserid
+       };
+       var successFunc = function (response, action) {
+           var res = Ext.JSON.decode(response.responseText);
+           if(res.success){
+               Ext.getStore('duty.DutyMissions').load();
+           }
 
-           };
-           var failFunc = function (form, action) {
-               Ext.Msg.alert("提示信息", "生成值日任务失败!");
-           };
-           CommonFunc.ajaxSend(params, 'maketodaymission', successFunc, failFunc,'GET');
-       }
-        else{
-           //alert("no");
-       }
+       };
+       var failFunc = function (form, action) {
+           Ext.Msg.alert("提示信息", "生成值日任务失败!");
+       };
+       CommonFunc.ajaxSend(params, 'maketodaymission', successFunc, failFunc,'GET');
+
     },
     openconfigwin:function(btn){
 

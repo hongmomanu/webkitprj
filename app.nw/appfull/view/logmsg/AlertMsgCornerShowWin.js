@@ -52,6 +52,8 @@ Ext.define('Webdesktop.view.logmsg.AlertMsgCornerShowWin', {
                     y: me.eBody.getHeight()
                 });
                 me.openMsgWin.flyIn();
+                var lognums=me.down('grid').getStore().getCount();
+                me.openMsgWin.down('button').setText(lognums+"个异常");
                 myWin.isFlyIn = false;
             }
             //自动设置位置

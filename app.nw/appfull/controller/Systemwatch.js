@@ -64,11 +64,32 @@ Ext.define('Webdesktop.controller.Systemwatch', {
 
         this.loadsystemdata();
     },
-    memoryexception:function(item){
+    pingexception:function(item,store,msgwin){
+        this.isalert=true;
+        msgwin.flyIn();
+        store.insert(0,
+            {
+                msg: "网络异常",
+                ip:item.servername + "(" + item.servervalue + ")",
+                msgtime: Ext.util.Format.date(new Date(), "H:i"),
+                status:'ping'
+            });
+    },
+    appexception:function(item,itemchild,store,msgwin){
+        if (!itemchild.isconnect) {
+            this.isalert=true;
+            msgwin.flyIn();
+            store.insert(0,
+                {
+                    msg: "服务异常:" + itemchild.servername,
+                    msgtime: Ext.util.Format.date(new Date(), "H:i"),
+                    ip:item.servername + "(" + item.servervalue + ")",
+                    status:'app'
+                });
+        }
+    },
+    memoryexception:function(item,store,msgwin){
         if(item.mem!==""&&item.mem*100<localStorage.alertmempercent){
-
-            var msgwin = Ext.getCmp('logtmsgwin');
-            var store = msgwin.down('grid').getStore();
             this.isalert=true;
             msgwin.flyIn();
             store.insert(0,
@@ -92,42 +113,26 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                 msgwin = Ext.widget('alertmsgcornershowwin', {title: '警告窗口'});
             }
             var store = msgwin.down('grid').getStore();
-            var isalert=false;
+            me.isalert=false;
             for (var i = 0; i < results.length; i++) {
                 if (!results[i].isping) {
-                    isalert=true;
-                    msgwin.flyIn();
-                    store.insert(0,
-                        {
-                            msg: "网络异常",
-                            ip:results[i].servername + "(" + results[i].servervalue + ")",
-                            msgtime: Ext.util.Format.date(new Date(), "H:i"),
-                            status:'ping'
-                        });
+                    me.pingexception(results[i],store,msgwin);
 
                 } else {
-                    me.memoryexception(results[i]);
+                    me.memoryexception(results[i],store,msgwin);
 
                     Ext.each(results[i].apps, function (item, index) {
-                        if (!item.isconnect) {
-                            isalert=true;
-                            msgwin.flyIn();
-                            store.insert(0,
-                                {
-                                    msg: "服务异常:" + item.servername,
-                                    msgtime: Ext.util.Format.date(new Date(), "H:i"),
-                                    ip:results[i].servername + "(" + results[i].servervalue + ")",
-                                    status:'app'
-                                });
-                        }
+                        me.appexception(results[i],item,store,msgwin);
+
                     });
                 }
             }
-            if(isalert){
+            if(me.isalert){
                 if(!me.alertsnd){
                     me.alertsnd=new Audio("audio/song.ogg");
                 }
                 me.alertsnd.play();
+
             }
             var firstitem = {"key": "-1", "servername": "浙江省地震局", "isping": true, "machinecss": ""};
             var nodearr = [];
