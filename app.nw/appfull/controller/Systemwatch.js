@@ -116,6 +116,31 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             //this.sendsystemlog(item.key,exceptiontype.app,itemchild.servername);
         }
     },
+    diskexception:function(item,store,msgwin){
+         if(item.disk.length>0){
+            for(var i=0;i<item.disk.length;i++){
+                if(parseFloat(item.disk.value)<localStorage.alertdiskpercent){
+                    this.isalert=true;
+                    msgwin.flyIn();
+                    store.insert(0,
+                        {
+                            msg: exceptiontype.disk+":"+item.disk[i].value,
+                            msgtime: Ext.util.Format.date(new Date(), "H:i"),
+                            ip:item.disk[i].name + "(" + item.servervalue + ")",
+                            status:'disk'
+                        });
+                    this.sendlog_arr.push(
+                        {
+                            serverid:item.key,
+                            statustype:exceptiontype.disk,
+                            logcontent:item.disk[i].name+":"+item.disk[i].value
+                        });
+                }
+
+            }
+
+         }
+    },
     memoryexception:function(item,store,msgwin){
         if(item.mem!==""&&item.mem*100<localStorage.alertmempercent){
             this.isalert=true;
@@ -157,6 +182,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                 } else {
 
                     me.memoryexception(results[i],store,msgwin);
+                    me.diskexception(results[i],store,msgwin);
 
                     Ext.each(results[i].apps, function (item, index) {
 
