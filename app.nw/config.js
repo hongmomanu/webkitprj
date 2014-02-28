@@ -12,3 +12,11 @@ var Globle={
 
 };
 
+var exceptiontype={
+    ping:"网络异常",
+    mem:"内存危机",
+    app:"服务异常",
+    disk:"磁盘危机",
+    ok:"正常"
+}
+

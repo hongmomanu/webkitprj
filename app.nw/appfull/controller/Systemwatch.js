@@ -64,15 +64,36 @@ Ext.define('Webdesktop.controller.Systemwatch', {
 
         this.loadsystemdata();
     },
+
+    sendsystemlogs:function(systemlogs){
+
+        var params={
+            systemlogs:Ext.JSON.encode(systemlogs)
+        };
+        var successFunc = function (response, action) {
+
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息", "删除失败!");
+        };
+        CommonFunc.ajaxSend(params,'server/sendsystemlogs',successFunc,failFunc,'POST');
+    },
+
     pingexception:function(item,store,msgwin){
         this.isalert=true;
         msgwin.flyIn();
         store.insert(0,
             {
-                msg: "网络异常",
+                msg: exceptiontype.ping,
                 ip:item.servername + "(" + item.servervalue + ")",
                 msgtime: Ext.util.Format.date(new Date(), "H:i"),
                 status:'ping'
+            });
+        this.sendlog_arr.push(
+            {
+                serverid:item.key,
+                statustype:exceptiontype.ping,
+                logcontent:item.servervalue
             });
     },
     appexception:function(item,itemchild,store,msgwin){
@@ -81,11 +102,18 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             msgwin.flyIn();
             store.insert(0,
                 {
-                    msg: "服务异常:" + itemchild.servername,
+                    msg: exceptiontype.app+":" + itemchild.servername,
                     msgtime: Ext.util.Format.date(new Date(), "H:i"),
                     ip:item.servername + "(" + item.servervalue + ")",
                     status:'app'
                 });
+            this.sendlog_arr.push(
+                {
+                    serverid:item.key,
+                    statustype:exceptiontype.app,
+                    logcontent:itemchild.servername
+                });
+            //this.sendsystemlog(item.key,exceptiontype.app,itemchild.servername);
         }
     },
     memoryexception:function(item,store,msgwin){
@@ -94,10 +122,16 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             msgwin.flyIn();
             store.insert(0,
                 {
-                    msg: "内存危机:"+(item.mem*100).toFixed(1)+"%",
+                    msg: exceptiontype.mem+":"+(item.mem*100).toFixed(1)+"%",
                     msgtime: Ext.util.Format.date(new Date(), "H:i"),
                     ip:item.servername + "(" + item.servervalue + ")",
                     status:'mem'
+                });
+            this.sendlog_arr.push(
+                {
+                    serverid:item.key,
+                    statustype:exceptiontype.mem,
+                    logcontent:item.servervalue
                 });
             }
     },
@@ -113,27 +147,38 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                 msgwin = Ext.widget('alertmsgcornershowwin', {title: '警告窗口'});
             }
             var store = msgwin.down('grid').getStore();
-            me.isalert=false;
+            me.sendlog_arr=[];
             for (var i = 0; i < results.length; i++) {
+                me.isalert=false;
                 if (!results[i].isping) {
+
                     me.pingexception(results[i],store,msgwin);
 
                 } else {
+
                     me.memoryexception(results[i],store,msgwin);
 
                     Ext.each(results[i].apps, function (item, index) {
+
                         me.appexception(results[i],item,store,msgwin);
 
                     });
                 }
-            }
-            if(me.isalert){
-                if(!me.alertsnd){
-                    me.alertsnd=new Audio("audio/song.ogg");
+                if(!me.isalert){
+                    me.sendlog_arr.push(
+                        {
+                            serverid:results[i].key,
+                            statustype:exceptiontype.ok,
+                            logcontent:exceptiontype.ok
+                        });
+                }else{
+                    if(!me.alertsnd)me.alertsnd=new Audio("audio/song.ogg");
+                    me.alertsnd.play();
                 }
-                me.alertsnd.play();
-
             }
+
+
+            me.sendsystemlogs(me.sendlog_arr);
             var firstitem = {"key": "-1", "servername": "浙江省地震局", "isping": true, "machinecss": ""};
             var nodearr = [];
             nodearr.push(firstitem);
