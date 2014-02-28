@@ -158,8 +158,22 @@ Ext.define('Webdesktop.view.Viewport', {
                                     ],
                                     items:[
                                         {
-                                            xtype:'logsystemgrid'
+                                            xtype:'tabpanel',
+                                            items:[
+                                                {
+                                                    title:'系统监视日志管理',
+                                                    xtype:'logsystemgrid'
+                                                },
+                                                {
+                                                    title:'值班日志管理',
+                                                    html:""
+                                                },{
+                                                    title:'实时数据流日志管理',
+                                                    html:''
+                                                }
+                                            ]
                                         }
+
                                     ],
                                     region:'east'
 
