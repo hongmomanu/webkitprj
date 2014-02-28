@@ -14,7 +14,8 @@ Ext.define('Webdesktop.controller.Duty', {
          'duty.AddNewMissionWin',
          'duty.MissionManagerpanel',
          'duty.MissionManagerWin',
-         'duty.WorkManagerpanel'
+         'duty.WorkManagerpanel',
+         'conmmon.AnimateWin'
     ],
     models: [
         'duty.DutyMission',
