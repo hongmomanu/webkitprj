@@ -17,17 +17,19 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
                 scrollToTop: Ext.emptyFn,
                 enableTextSelection:true,
                 getRowClass: function (record, rowIndex, rowParams, store) {
-                    /*var status=record.get('status');
-                    if ( status== 'ping') {
+                    var status=record.get('statustype');
+                    if ( status== exceptiontype.ping) {
                         return 'duty-gridrow-red';
-                    } else if(status == 'app') {
+                    } else if(status == exceptiontype.app) {
                         return 'duty-gridrow-pink';
-                    }else if(status == 'mem'){
+                    }else if(status == exceptiontype.mem){
                         return 'duty-gridrow-dark'
+                    }else if(status == exceptiontype.disk){
+                        return 'duty-gridrow-disk'
                     }
-                    else{
+                    else if(status==exceptiontype.ok){
                         return 'duty-gridrow-green';
-                    }*/
+                    }
                 },
                 stripeRows: true
             },
@@ -44,6 +46,12 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
                     xtype:'textfield'
                 }
             ],
+            bbar: Ext.create('Ext.PagingToolbar', {
+                store: 'logmsg.LogSystems',
+                displayInfo: true,
+                displayMsg: '显示 {0} - {1}条记录,共 {2}条记录',
+                emptyMsg: "无记录"
+            }),
             store: 'logmsg.LogSystems'
         });
         me.callParent(arguments);
