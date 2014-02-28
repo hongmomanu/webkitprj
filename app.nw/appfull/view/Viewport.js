@@ -119,17 +119,48 @@ Ext.define('Webdesktop.view.Viewport', {
                                 {
                                     xtype:'panel',
                                     flex: 1,
+                                    title:'地震实时数据流处理',
                                     layout:'fit',
                                     collapsible: false,
-                                    html:'text',
+                                    items:[
+                                        {
+                                            xtype:'panel'
+                                        }
+                                    ],
+                                    tools: [
+                                        {
+                                            type: 'maximize',
+                                            tooltip:'窗口最大化',
+                                            handler: function (a, b, c) {
+                                                var panel=c.up('panel').down('panel');
+                                                CommonFunc.maxpanel(panel,'地震实时数据流处理',c);
+                                            }
+                                        }
+                                    ],
                                     region:'center'
 
                                 },
                                 {
                                     xtype:'panel',
                                     flex: 1,
+                                    title:'系统日志',
                                     layout:'fit',
-                                    html:'text',
+                                    collapsed: true,
+                                    tools: [
+                                        {
+                                            type: 'maximize',
+                                            tooltip:'窗口最大化',
+                                            handler: function (a, b, c) {
+                                                var panel=c.up('panel').down('panel');
+                                                CommonFunc.maxpanel(panel,'系统日志',c);
+                                            }
+                                        }
+                                    ],
+                                    items:[
+                                        {
+                                            xtype:'panel'
+                                        }
+                                    ],
                                     region:'east'
 
                                 }
