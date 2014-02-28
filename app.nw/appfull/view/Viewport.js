@@ -43,7 +43,7 @@ Ext.define('Webdesktop.view.Viewport', {
                             },
                             defaults: {
                                 split: true,
-                                //collapsible: true,
+                                collapsible: true,
                                 animCollapse: true,
                                 bodyPadding: 5
                             },
@@ -76,6 +76,7 @@ Ext.define('Webdesktop.view.Viewport', {
                                 {
                                     xtype:'panel',
                                     title:'服务器状态监测',
+                                    collapsible: false,
                                     layout:'fit',
                                     region:'center',
                                     flex: 1,
@@ -97,20 +98,39 @@ Ext.define('Webdesktop.view.Viewport', {
 
                                 }
                             ]
-                        }, {
+                        },
+                        {
                             flex: 1,
                             region: 'center',
+                            collapsible: true,
+                            animCollapse: true,
                             xtype: 'container',
                             layout: {
-                                //type: 'hbox',
-                                //align: 'stretch'
-                                type:'fit'
+                                type: 'border',
+                                align: 'stretch'
+                            },
+                            defaults: {
+                                split: true,
+                                collapsible: true,
+                                animCollapse: true,
+                                bodyPadding: 5
                             },
                             items: [
                                 {
                                     xtype:'panel',
                                     flex: 1,
-                                    html:'text'
+                                    layout:'fit',
+                                    collapsible: false,
+                                    html:'text',
+                                    region:'center'
+
+                                },
+                                {
+                                    xtype:'panel',
+                                    flex: 1,
+                                    layout:'fit',
+                                    html:'text',
+                                    region:'east'
 
                                 }
 
