@@ -119,7 +119,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
     diskexception:function(item,store,msgwin){
          if(item.disk.length>0){
             for(var i=0;i<item.disk.length;i++){
-                if(parseFloat(item.disk.value)<localStorage.alertdiskpercent){
+                if((100-parseFloat(item.disk[i].value))<parseFloat(localStorage.alertdiskpercent)){
                     this.isalert=true;
                     msgwin.flyIn();
                     store.insert(0,
@@ -341,7 +341,9 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             "<div class='infoTitle'>连接状态</div>" +
             "<div class='infoValues'>" + (data.isping ? '正常' : '断开') + "</div>" +
             (data.cpu === "" ? "" : ("<div class='infoTitle'>cpu占用率</div>" +
-                "<div class='infoValues'>" + data.cpu + "</div>")) +
+                "<div class='infoValues'>" + data.cpu + "%</div>")) +
+            (data.mem === "" ? "" : ("<div class='infoTitle'>内存占用率</div>" +
+                "<div class='infoValues'>" + ((1-data.mem)*100).toFixed(1) + "%</div>")) +
             "<div class='infoTitle'>服务状态</div>" +
             "<div class='infoValues'>" +
             ((data.isping && all_arr.length == connected_arr.length) ? ("所有服务正常")
