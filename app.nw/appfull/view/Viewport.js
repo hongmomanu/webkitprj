@@ -158,7 +158,7 @@ Ext.define('Webdesktop.view.Viewport', {
                                     ],
                                     items:[
                                         {
-                                            xtype:'panel'
+                                            xtype:'logsystemgrid'
                                         }
                                     ],
                                     region:'east'
