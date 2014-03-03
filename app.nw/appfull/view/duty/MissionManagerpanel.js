@@ -25,8 +25,8 @@ Ext.define('Webdesktop.view.duty.MissionManagerpanel', {
             forceFit: true,
             columns: [
                 {header: '值班任务', dataIndex: 'missionname'},
-                {header: '任务提醒时间',dataIndex: 'missiontime'},
-                {header: '提醒时间间隔',dataIndex: 'missioninterval'}
+                {header: '到点提醒时间',dataIndex: 'missiontime'},
+                {header: '提醒时间间隔',dataIndex: 'missioninterval',hidden:true}
             ],
             flex: 1,
             tbar:[

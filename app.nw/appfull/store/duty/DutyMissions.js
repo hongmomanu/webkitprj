@@ -4,7 +4,7 @@ Ext.define('Webdesktop.store.duty.DutyMissions', {
     alias : 'widget.usermanagers',
 
     pageSize: 10000,
-    autoLoad:true,
+    autoLoad:false,
     proxy:{
         type: 'ajax',
         extraParams:{

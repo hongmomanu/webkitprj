@@ -40,6 +40,13 @@ Ext.define('Webdesktop.controller.Duty', {
             'dutypanel menuitem[action=missionmanager]':{
                 click: this.openmissionmanagerwin
             },
+            'dutypanel':{
+              afterrender:function(panel){
+                  var store=panel.getStore();
+                  store.load();
+                  //console.log(panel);
+              }
+            },
             'workmanagerpanel':{
                 itemclick:this.dutyclick
             },
@@ -59,9 +66,69 @@ Ext.define('Webdesktop.controller.Duty', {
                 click: this.delduty
             }
         });
+        this.checkoutdutytaskinit();
+
+    },
+    checkdutytask:null,
+    dutyalertinterval:60000,
+    isfirstduty:true,
+
+    checkoutdutytaskinit:function(){
+        var me=this;
+        Ext.getStore('duty.DutyMissions').on('load', function (store, options) {
+
+            if(!me.checkdutytask){
+                if(!localStorage.dutyalertinterval)localStorage.dutyalertinterval=me.dutyalertinterval;
+                me.checkdutytask={
+                    run: function(){
+                        //me.refreshclick();
+                        if(!me.isfirstduty){
+                            store.load() ;
+
+                        }else{
+                            me.isfirstduty=false;
+                        };
+                    },
+                    interval: parseInt(localStorage.dutyalertinterval)
+                }
+                Ext.TaskManager.start(me.checkdutytask);
+            }else{
+                me.dutyshowalert(store);
+
+            }
+            //alert(1);
+        });
+        Ext.getStore('duty.DutyMissions').load();
     },
 
+    dutyshowalert:function(store){
+        var items=store.data.items;
+        var html='';
+        for(var i=0;i<items.length;i++){
+            var missionstatus= items[i].data.missionstatus;
+            var time=items[i].data.missiontime;
+            if(missionstatus==0&&time!=''){
+                var datetime=Ext.Date.parse(time, "H:i");
+                var now=new Date();
+                if(datetime.getHours()<=now.getHours()){
+                    html+=items[i].data.missionname+',未执行</br>';
+                }
 
+            }
+
+        }
+        if(!this.dutyalertwin){
+            this.dutyalertwin=Ext.widget('alertmsgwin',{title: '值班任务提醒',
+                html: html,
+                iconCls: 'error' });
+        }else{
+            this.dutyalertwin.update(html);
+        }
+        if(html!==''){
+            this.dutyalertwin.show();
+        }
+
+    },
     openworkmanagerwin:function(btn){
         if(!this.workmanagerwin)this.workmanagerwin= Ext.widget('dutymanagerwin');
         this.workmanagerwin.show();

@@ -9,6 +9,10 @@ Ext.define('Webdesktop.model.duty.DutyMission', {
             type:'string'
         },
         {
+            name: 'missiontime',
+            type:'string'
+        },
+        {
             name:'missionstatus',
             type:'int'
         },
