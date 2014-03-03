@@ -42,7 +42,9 @@ Ext.define('Webdesktop.view.systemwatch.SystemManagerpanel', {
                 },
                 {
                     text:'编辑',
+                    itemId:'edit',
                     action:'edit',
+                    disabled:true,
                     hidden: !Globle.isadmin
 
                 }

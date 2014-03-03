@@ -11,6 +11,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         'systemwatch.Systempanel',
         'systemwatch.SystemManagerpanel',
         'systemwatch.AddNewSystemWin',
+        'systemwatch.EditSystemWin',
         'systemwatch.SystemManagerWin',
         'systemwatch.SystemAlertManagerWin'
     ],
@@ -39,12 +40,18 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             'systemmanagerpanel button[action=new]': {
                 click: this.addnewsystemwin
             },
+            'systemmanagerpanel button[action=edit]': {
+                click: this.editsystemwin
+            },
             'systemalertmanagerwin button[action=save]': {
                 click: this.savesystemalertconfig
 
             },
             'addnewsystemwin button[action=add]': {
                 click: this.addnewsystem
+            },
+            'editsystemwin button[action=save]': {
+                click: this.savesystem
             },
             'systemmanagerpanel': {
                 itemclick: this.systemclick
@@ -433,6 +440,32 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         this.alertTask.interval=parseInt(localStorage.alertinterval);
         btn.up('window').hide();
     },
+    editsystemwin:function(btn){
+        if (!this.editsystem_win)this.editsystem_win = Ext.widget('editsystemwin');
+        this.editsystem_win.show();
+        var form_combobox = this.editsystem_win.down('combobox');
+        var form_cssimg = this.editsystem_win.down('#machinecss');
+        var form_password = this.editsystem_win.down('#password');
+        var form_username = this.editsystem_win.down('#username');
+        var win = this.systemmanagerwin;
+        var panel = win.down('panel');
+        var sm = panel.getSelectionModel();
+        var selectitem = sm.getSelection();
+        if (selectitem[0].data.parentId == -1) {
+            form_combobox.hide();
+            form_cssimg.show();
+            form_password.show();
+            form_username.show();
+        } else {
+            form_combobox.show();
+            form_cssimg.hide();
+            form_password.hide();
+            form_username.hide();
+        }
+        var form=this.editsystem_win.down('form').getForm();
+        form.setValues(selectitem[0].raw);
+
+    },
     addnewsystemwin: function (btn) {
         if (!this.newsystemwin)this.newsystemwin = Ext.widget('addnewsystemwin');
         this.newsystemwin.show();
@@ -456,6 +489,30 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             form_username.hide();
         }
 
+    },
+    savesystem:function(btn){
+        var url = 'server/saveserver';
+        var me = this;
+        var win = this.systemmanagerwin;
+        var panel = win.down('panel');
+        var sm = panel.getSelectionModel();
+        var selectitem = sm.getSelection();
+        var params = {
+            id : selectitem[0].data.id
+        };
+
+        var successFunc = function (form, action) {
+            var treepanel = me.systemmanagerwin.down('panel');
+            //testobj=selectitem[0];
+            btn.up('window').hide();
+            treepanel.getStore().load({node: selectitem[0].parentNode});
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息", action.result.msg);
+        };
+
+        var form = btn.up('form');
+        CommonFunc.formSubmit(form, params, url, successFunc, failFunc, "正在提交。。。")
     },
     addnewsystem: function (btn) {
         var url = 'server/addserver';
@@ -484,7 +541,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         CommonFunc.formSubmit(form, params, url, successFunc, failFunc, "正在提交。。。")
     },
     systemclick: function (grid, record) {
-        grid.up('panel').down('#del').enable()
+        grid.up('panel').down('#del').enable();
+        grid.up('panel').down('#edit').enable();
     }
 
 
