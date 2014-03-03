@@ -503,7 +503,6 @@ Ext.define('Webdesktop.controller.Systemwatch', {
 
         var successFunc = function (form, action) {
             var treepanel = me.systemmanagerwin.down('panel');
-            //testobj=selectitem[0];
             btn.up('window').hide();
             treepanel.getStore().load({node: selectitem[0].parentNode});
         };
