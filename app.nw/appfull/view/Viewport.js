@@ -159,6 +159,16 @@ Ext.define('Webdesktop.view.Viewport', {
                                     items:[
                                         {
                                             xtype:'tabpanel',
+                                            activeTab: 0,
+                                            defaults: {
+                                                listeners: {
+                                                    activate: function(tab, eOpts) {
+                                                        var store=tab.getStore();
+                                                        store.load();
+
+                                                    }
+                                                }
+                                            },
                                             items:[
                                                 {
                                                     title:'系统监视日志管理',

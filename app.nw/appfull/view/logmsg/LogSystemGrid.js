@@ -4,6 +4,7 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
     layout: 'fit',
     requires: [
     ],
+
     initComponent: function() {
         var me = this;
         Ext.apply(me, {

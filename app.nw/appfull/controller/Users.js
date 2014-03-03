@@ -57,23 +57,23 @@ Ext.define('Webdesktop.controller.Users', {
              me.getcurrentduty(callback);
             var system_cl=me.application.getController("Systemwatch");
             system_cl.sendsystemlogs([{userid:action.result.result.id,
-                statustype:dutylogtype.log,
-                logcontent:dutylogtype.logsucc}],'duty/senddutylogs');
+                statustype:dutylogtype.logsucc,
+                logcontent:action.result.result.username}],'duty/senddutylogs');
              //me.desktop_widget=Ext.widget('maindesktopview');
 
         };
 
         var failFunc = function (form, action) {
             if(action.response.status==200){
-                Ext.Msg.alert("登陆失败", action.result.msg);
+                Ext.Msg.alert("登陆失败", action.result.result.msg);
             }else{
                 Ext.Msg.alert("登陆失败", "找不到服务");
             }
 
             var system_cl=me.application.getController("Systemwatch");
             system_cl.sendsystemlogs([{userid:action.result.result.id,
-                statustype:dutylogtype.log,
-                logcontent:dutylogtype.logfail}],'duty/senddutylogs');
+                statustype:dutylogtype.logfail,
+                logcontent:action.result.result.username}],'duty/senddutylogs');
 
         };
 

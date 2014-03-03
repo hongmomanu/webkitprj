@@ -25,9 +25,17 @@ Ext.define('Webdesktop.controller.Logmsg', {
     ],
 
     init: function() {
-        /*this.control({
+        this.control({
 
-        });*/
+            'logdutygrid,logsystemgrid':{
+
+                gridshowfresh:function(grid){
+                   var store=grid.getStore();
+                    store.load();
+                }
+            }
+
+        });
        /* Ext.widget('alertmsgwin',{title: '提示窗口',
             html: '测试信息',
             iconCls: 'error' });*/

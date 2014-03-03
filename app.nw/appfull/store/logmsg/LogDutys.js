@@ -1,7 +1,7 @@
 Ext.define('Webdesktop.store.logmsg.LogDutys', {
     extend: 'Ext.data.Store',
     model: 'Webdesktop.model.logmsg.LogDuty',
-    autoLoad:true,
+    autoLoad:false,
     proxy:{
         type: 'ajax',
         url: CommonFunc.geturl()+'log/getlogduty',

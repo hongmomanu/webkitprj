@@ -4,6 +4,11 @@ Ext.define('Webdesktop.view.logmsg.LogDutyGrid', {
     layout: 'fit',
     requires: [
     ],
+    /*listeners: {
+        show: function(panel) {
+            this.fireEvent('gridshowfresh',this);
+        }
+    },*/
     initComponent: function() {
         var me = this;
         Ext.apply(me, {
@@ -18,18 +23,18 @@ Ext.define('Webdesktop.view.logmsg.LogDutyGrid', {
                 enableTextSelection:true,
                 getRowClass: function (record, rowIndex, rowParams, store) {
                     var status=record.get('statustype');
-                   /* if ( status== exceptiontype.ping) {
+                    if ( status== dutylogtype.logfail) {
                         return 'duty-gridrow-red';
-                    } else if(status == exceptiontype.app) {
+                    } else if(status == dutylogtype.logoutfail) {
                         return 'duty-gridrow-pink';
-                    }else if(status == exceptiontype.mem){
-                        return 'duty-gridrow-dark'
-                    }else if(status == exceptiontype.disk){
-                        return 'duty-gridrow-disk'
+                    }else if(status == dutylogtype.logsucc){
+                        return 'duty-gridrow-green'
+                    }else if(status == exceptiontype.logoutsucc){
+                        return 'duty-gridrow-green'
                     }
                     else if(status==exceptiontype.ok){
-                        return 'duty-gridrow-green';
-                    }*/
+                        return 'duty-gridrow-dark';
+                    }
                 },
                 stripeRows: true
             },

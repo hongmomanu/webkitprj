@@ -1,7 +1,7 @@
 Ext.define('Webdesktop.store.logmsg.LogSystems', {
     extend: 'Ext.data.Store',
     model: 'Webdesktop.model.logmsg.LogSystem',
-    autoLoad:true,
+    autoLoad:false,
     proxy:{
         type: 'ajax',
         url: CommonFunc.geturl()+'log/getlogsystem',
