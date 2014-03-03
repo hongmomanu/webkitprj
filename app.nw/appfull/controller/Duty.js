@@ -15,6 +15,7 @@ Ext.define('Webdesktop.controller.Duty', {
          'duty.MissionManagerpanel',
          'duty.MissionManagerWin',
          'duty.WorkManagerpanel',
+         'duty.DutyConfigManagerWin',
          'conmmon.AnimateWin'
     ],
     models: [
@@ -39,6 +40,13 @@ Ext.define('Webdesktop.controller.Duty', {
             },
             'dutypanel menuitem[action=missionmanager]':{
                 click: this.openmissionmanagerwin
+            },
+            'dutypanel menuitem[action=dutymanager]':{
+                click: this.opendutymanagerconfigwin
+            },
+            'dutyconfigmanagerwin button[action=save]': {
+                click: this.savedutyconfig
+
             },
             'dutypanel':{
               afterrender:function(panel){
@@ -72,7 +80,12 @@ Ext.define('Webdesktop.controller.Duty', {
     checkdutytask:null,
     dutyalertinterval:60000,
     isfirstduty:true,
-
+    savedutyconfig:function(btn){
+        var form=btn.up('form');
+        localStorage.dutyalertinterval=form.getValues().dutyalertinterval;
+        this.checkdutytask.interval=parseInt(localStorage.dutyalertinterval);
+        btn.up('window').hide();
+    },
     checkoutdutytaskinit:function(){
         var me=this;
         Ext.getStore('duty.DutyMissions').on('load', function (store, options) {
@@ -134,6 +147,17 @@ Ext.define('Webdesktop.controller.Duty', {
     openmissionmanagerwin:function(btn){
         if(!this.missionmanagerwin)this.missionmanagerwin= Ext.widget('missionmanagerwin');
         this.missionmanagerwin.show();
+    },
+    opendutymanagerconfigwin:function(btn){
+        if(!this.dutyconfigmanagerwin)this.dutyconfigmanagerwin= Ext.widget('dutyconfigmanagerwin');
+        this.dutyconfigmanagerwin.show();
+        var form=this.dutyconfigmanagerwin.down('form').getForm();
+        //testobj=this.systemalertmanagerwin.down('form');
+        form.setValues(
+            {
+                dutyalertinterval:parseInt(localStorage.dutyalertinterval)
+            });
+
     },
     addnewmissionwin:function(btn){
         if(!this.newmissionwin)this.newmissionwin= Ext.widget('addnewmissionwin');

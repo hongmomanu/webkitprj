@@ -109,6 +109,11 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                             text: '用户管理',
                             action: 'usermanager',
                             hidden: !Globle.isadmin
+                        },
+                        {
+                            text: '值班配置',
+                            action: 'dutymanager',
+                            hidden: !Globle.isadmin
                         }
                     ]
 
