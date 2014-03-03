@@ -18,5 +18,11 @@ var exceptiontype={
     app:"服务异常",
     disk:"磁盘危机",
     ok:"正常"
+};
+
+var dutylogtype={
+    log:'登陆',
+    logout:'注销'
+
 }
 
