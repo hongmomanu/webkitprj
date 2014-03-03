@@ -118,14 +118,11 @@ Ext.define('Webdesktop.controller.Duty', {
 
         }
         if(!this.dutyalertwin){
-            this.dutyalertwin=Ext.widget('alertmsgwin',{title: '值班任务提醒',
-                html: html,
-                iconCls: 'error' });
-        }else{
-            this.dutyalertwin.update(html);
+            this.dutyalertwin=Ext.widget('alertmsgwin',{title: '值班任务提醒'});
         }
         if(html!==''){
             this.dutyalertwin.show();
+            this.dutyalertwin.update(html);
         }
 
     },

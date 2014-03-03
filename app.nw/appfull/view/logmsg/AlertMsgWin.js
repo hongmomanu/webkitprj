@@ -9,12 +9,12 @@ Ext.define('Webdesktop.view.logmsg.AlertMsgWin' ,{
     ],
     initComponent: function() {
         Ext.apply(this, {
-            iconCls: this.iconCls || 'information',
             width: 250,
             height: 150,
             autoScroll: true,
             autoDestroy: true,
             plain: false,
+            closeAction:'hide',
             shadow:false
         });
 
