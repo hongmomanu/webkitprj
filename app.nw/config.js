@@ -22,7 +22,12 @@ var exceptiontype={
 
 var dutylogtype={
     log:'登陆',
-    logout:'注销'
+    logsucc:'登陆成功',
+    logfail:'登陆失败',
+    logout:'注销',
+    logoutsucc:'注销成功',
+    logoutfail:'注销势必',
+    ok:'完成'
 
-}
+};
 

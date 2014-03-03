@@ -12,13 +12,16 @@ Ext.define('Webdesktop.controller.Logmsg', {
         'logmsg.AlertMsgCornerWin',
         'logmsg.LogMsgGrid',
         'logmsg.AlertMsgCornerShowWin',
-        'logmsg.LogSystemGrid'
+        'logmsg.LogSystemGrid',
+        'logmsg.LogDutyGrid'
     ],
     models: [
-        'logmsg.LogSystem'
+        'logmsg.LogSystem',
+        'logmsg.LogDuty'
     ],
     stores: [
-        'logmsg.LogSystems'
+        'logmsg.LogSystems',
+        'logmsg.LogDutys'
     ],
 
     init: function() {

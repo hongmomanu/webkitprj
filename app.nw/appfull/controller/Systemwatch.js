@@ -69,7 +69,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         this.loadsystemdata();
     },
 
-    sendsystemlogs:function(systemlogs){
+    sendsystemlogs:function(systemlogs,url){
 
         var params={
             systemlogs:Ext.JSON.encode(systemlogs)
@@ -78,9 +78,9 @@ Ext.define('Webdesktop.controller.Systemwatch', {
 
         };
         var failFunc = function (form, action) {
-            Ext.Msg.alert("提示信息", "删除失败!");
+            Ext.Msg.alert("提示信息", "失败!");
         };
-        CommonFunc.ajaxSend(params,'server/sendsystemlogs',successFunc,failFunc,'POST');
+        CommonFunc.ajaxSend(params,url,successFunc,failFunc,'POST');
     },
 
     pingexception:function(item,store,msgwin){
@@ -210,7 +210,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             }
 
 
-            me.sendsystemlogs(me.sendlog_arr);
+            me.sendsystemlogs(me.sendlog_arr,'server/sendsystemlogs');
             var firstitem = {"key": "-1", "servername": "浙江省地震局", "isping": true, "machinecss": ""};
             var nodearr = [];
             nodearr.push(firstitem);

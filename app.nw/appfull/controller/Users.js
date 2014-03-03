@@ -55,10 +55,11 @@ Ext.define('Webdesktop.controller.Users', {
                  Ext.widget('viewport');
              }
              me.getcurrentduty(callback);
+            var system_cl=me.application.getController("Systemwatch");
+            system_cl.sendsystemlogs([{userid:action.result.result.id,
+                statustype:dutylogtype.log,
+                logcontent:dutylogtype.logsucc}],'duty/senddutylogs');
              //me.desktop_widget=Ext.widget('maindesktopview');
-
-
-
 
         };
 
@@ -69,6 +70,10 @@ Ext.define('Webdesktop.controller.Users', {
                 Ext.Msg.alert("登陆失败", "找不到服务");
             }
 
+            var system_cl=me.application.getController("Systemwatch");
+            system_cl.sendsystemlogs([{userid:action.result.result.id,
+                statustype:dutylogtype.log,
+                logcontent:dutylogtype.logfail}],'duty/senddutylogs');
 
         };
 
@@ -76,6 +81,7 @@ Ext.define('Webdesktop.controller.Users', {
 
 
     },
+
     getcurrentduty:function(callback){
         var me=this;
         var params = {
@@ -89,6 +95,7 @@ Ext.define('Webdesktop.controller.Users', {
             Globle.dutyenumid=res[0].enumid;
             callback();
             me.maketodaymission();
+
         };
         var failFunc = function (form, action) {
             Ext.Msg.alert("提示信息", "获取今日值班人员失败!");

@@ -166,7 +166,7 @@ Ext.define('Webdesktop.view.Viewport', {
                                                 },
                                                 {
                                                     title:'值班日志管理',
-                                                    html:""
+                                                    xtype:'logdutygrid'
                                                 },{
                                                     title:'实时数据流日志管理',
                                                     html:''
