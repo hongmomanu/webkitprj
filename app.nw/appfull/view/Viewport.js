@@ -163,9 +163,10 @@ Ext.define('Webdesktop.view.Viewport', {
                                             defaults: {
                                                 listeners: {
                                                     activate: function(tab, eOpts) {
-                                                        var store=tab.getStore();
-                                                        store.load();
-
+                                                        if(tab.getStore){
+                                                            var store=tab.getStore();
+                                                            store.load();
+                                                        }
                                                     }
                                                 }
                                             },
