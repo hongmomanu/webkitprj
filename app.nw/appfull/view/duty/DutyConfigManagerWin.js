@@ -55,6 +55,21 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
                         }),
                         valueField: 'value',
                         name: 'dutyalertinterval'
+                    },
+                    {
+                        xtype:'textfield',
+                        name:'eqimurl',
+                        fieldLabel:'eqim地址'
+                    },
+                    {
+                        xtype:'textfield',
+                        name:'eqimusername',
+                        fieldLabel:'eqim用户名'
+                    },
+                    {
+                        xtype:'textfield',
+                        name:'eqimpassword',
+                        fieldLabel:'eqim密码'
                     }
 
 

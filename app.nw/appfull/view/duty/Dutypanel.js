@@ -66,7 +66,7 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                         handler: function(grid, rowIndex, colIndex) {
                             var rec = grid.getStore().getAt(rowIndex);
 
-                            me.fireEvent('dutyclick',rec);
+                            me.fireEvent('dutyclick',rec,grid);
 
                         }
                     }

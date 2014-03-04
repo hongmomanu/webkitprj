@@ -53,9 +53,15 @@ Ext.define('Webdesktop.controller.Duty', {
                   var store=panel.getStore();
                   store.load();
               },
-              dutyclick:function(rec){
-                  //console.log(rec);
-                  Ext.Msg.alert('测试', '测试' + rec.get('missionname'));
+              dutyclick:function(rec,grid){
+                  var missioname=rec.get('missionname');
+                  var eventMap={};
+                  eventMap[missiontype.eqim]=this.eqimclick;
+                  eventMap[missiontype.record]=this.recordclick;
+                  eventMap[missiontype.waveform]=this.waveformclick;
+                  eventMap[missiontype.archivefile]=this.archivefileclick;
+                  eventMap[missiontype.cataloging]=this.catalogingclick;
+                  eventMap[missioname](rec,grid);
               }
             },
             'workmanagerpanel':{
@@ -83,9 +89,50 @@ Ext.define('Webdesktop.controller.Duty', {
     checkdutytask:null,
     dutyalertinterval:60000,
     isfirstduty:true,
+
+    eqimclick:function(rec,grid){
+
+        var params={
+            id:rec.raw.id,
+            username:localStorage.eqimusername,
+            password:localStorage.eqimpassword,
+            url:localStorage.eqimurl
+        };
+        var successFunc = function (response, action) {
+            console.log(response);
+            var res = Ext.JSON.decode(response.responseText);
+            if(res.success){
+                var html=res.msg;
+                console.log($(html).find('div'));
+            }else{
+                Ext.Msg.alert("提示信息", "eqim 网络不通!");
+            }
+
+            //btn.up('panel').getStore().load();
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息", "操作失败..!");
+        };
+        CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
+    },
+    recordclick:function(rec){
+      alert(2);
+    },
+    waveformclick:function(rec){
+        alert(3);
+    },
+    archivefileclick:function(rec){
+       alert(4);
+    },
+    catalogingclick:function(rec){
+       alert(5);
+    },
     savedutyconfig:function(btn){
         var form=btn.up('form');
         localStorage.dutyalertinterval=form.getValues().dutyalertinterval;
+        localStorage.eqimurl=form.getValues().eqimurl;
+        localStorage.eqimusername=form.getValues().eqimusername;
+        localStorage.eqimpassword=form.getValues().eqimpassword;
         this.checkdutytask.interval=parseInt(localStorage.dutyalertinterval);
         btn.up('window').hide();
     },
@@ -158,7 +205,10 @@ Ext.define('Webdesktop.controller.Duty', {
         //testobj=this.systemalertmanagerwin.down('form');
         form.setValues(
             {
-                dutyalertinterval:parseInt(localStorage.dutyalertinterval)
+                dutyalertinterval:parseInt(localStorage.dutyalertinterval),
+                eqimurl:localStorage.eqimurl,
+                eqimusername:localStorage.eqimusername,
+                eqimpassword:localStorage.eqimpassword
             });
 
     },

@@ -28,4 +28,12 @@ var dutylogtype={
     ok:'完成'
 
 };
+var missiontype={
+    eqim:'国家局EQIM系统检查',
+    record:'断记统计上传',
+    waveform:'波形归档备份',
+    archivefile:'归档文件和事件文件检查',
+    cataloging:'编目地震'
+
+}
 
