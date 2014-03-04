@@ -34,6 +34,8 @@ Ext.define('Webdesktop.view.logmsg.LogDutyGrid', {
                     }
                     else if(status==exceptiontype.ok){
                         return 'duty-gridrow-dark';
+                    }else if(status=missiontype.eqim){
+                        return 'duty-gridrow-disk';
                     }
                 },
                 stripeRows: true

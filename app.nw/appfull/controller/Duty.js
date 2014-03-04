@@ -56,11 +56,11 @@ Ext.define('Webdesktop.controller.Duty', {
               dutyclick:function(rec,grid){
                   var missioname=rec.get('missionname');
                   var eventMap={};
-                  eventMap[missiontype.eqim]=this.eqimclick;
-                  eventMap[missiontype.record]=this.recordclick;
-                  eventMap[missiontype.waveform]=this.waveformclick;
-                  eventMap[missiontype.archivefile]=this.archivefileclick;
-                  eventMap[missiontype.cataloging]=this.catalogingclick;
+                  eventMap[missiontype.eqim]=Ext.bind(this.eqimclick,this);
+                  eventMap[missiontype.record]=Ext.bind(this.recordclick,this);
+                  eventMap[missiontype.waveform]=Ext.bind(this.waveformclick,this);
+                  eventMap[missiontype.archivefile]=Ext.bind(this.archivefileclick,this);
+                  eventMap[missiontype.cataloging]=Ext.bind(this.catalogingclick,this);
                   eventMap[missioname](rec,grid);
               }
             },
@@ -90,8 +90,29 @@ Ext.define('Webdesktop.controller.Duty', {
     dutyalertinterval:60000,
     isfirstduty:true,
 
-    eqimclick:function(rec,grid){
+    completeduty:function(rec,grid){
+       var params={
+           id:rec.raw.id
+       };
+        var successFunc = function (response, action) {
+            var res = Ext.JSON.decode(response.responseText);
+            if(res.success){
+                grid.getStore().load();
 
+            }else{
+                Ext.Msg.alert("提示信息", "更新失败!");
+            }
+
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息", "操作失败..!");
+        };
+        CommonFunc.ajaxSend(params,'duty/completeduty',successFunc,failFunc,'POST');
+
+    },
+    eqimclick:function(rec,grid){
+        var me=this;
+        //console.log(me);
         var params={
             id:rec.raw.id,
             username:localStorage.eqimusername,
@@ -99,11 +120,14 @@ Ext.define('Webdesktop.controller.Duty', {
             url:localStorage.eqimurl
         };
         var successFunc = function (response, action) {
-            console.log(response);
             var res = Ext.JSON.decode(response.responseText);
             if(res.success){
                 var html=res.msg;
-                console.log($(html).find('div'));
+                me.completeduty(rec,grid);
+                var system_cl=me.application.getController("Systemwatch");
+                system_cl.sendsystemlogs([{userid:Globle.userid,
+                    statustype:missiontype.eqim,
+                    logcontent:'今日无消息公示'}],'duty/senddutylogs');
             }else{
                 Ext.Msg.alert("提示信息", "eqim 网络不通!");
             }
