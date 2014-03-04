@@ -65,7 +65,9 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                         tooltip: '点击完成值班任务',
                         handler: function(grid, rowIndex, colIndex) {
                             var rec = grid.getStore().getAt(rowIndex);
-                            Ext.Msg.alert('测试', '测试' + rec.get('missionname'));
+
+                            me.fireEvent('dutyclick',rec);
+
                         }
                     }
                     ]

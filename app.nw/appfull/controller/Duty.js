@@ -52,7 +52,10 @@ Ext.define('Webdesktop.controller.Duty', {
               afterrender:function(panel){
                   var store=panel.getStore();
                   store.load();
-                  //console.log(panel);
+              },
+              dutyclick:function(rec){
+                  //console.log(rec);
+                  Ext.Msg.alert('测试', '测试' + rec.get('missionname'));
               }
             },
             'workmanagerpanel':{
