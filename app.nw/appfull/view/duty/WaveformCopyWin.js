@@ -36,12 +36,12 @@ Ext.define('Webdesktop.view.duty.WaveformCopyWin' ,{
                     {
                         xtype: 'textfield',
                         fieldLabel: '源文件夹',
-                        name: 'sourcefolder'
+                        name: 'sourcedir'
                     },
                     {
                         xtype: 'textfield',
                         fieldLabel: '目标文件夹',
-                        name: 'targetfolder'
+                        name: 'targetdir'
                     }
 
                 ],
@@ -54,7 +54,7 @@ Ext.define('Webdesktop.view.duty.WaveformCopyWin' ,{
                     } ,
                     {
                         text: '拷贝',
-                        action: 'add'
+                        action: 'copy'
                     }
                 ],
                 border: false
