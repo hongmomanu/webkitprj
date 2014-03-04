@@ -71,6 +71,9 @@ Ext.define('Webdesktop.controller.Duty', {
             'workmanagerpanel button[action=new]':{
                 click: this.addnewworkwin
             },
+            'waveformcopywin button[action=copy]':{
+                click: this.copywaveform
+            },
             'missionmanagerpanel button[action=new]':{
                 click: this.addnewmissionwin
             },
@@ -111,9 +114,7 @@ Ext.define('Webdesktop.controller.Duty', {
         CommonFunc.ajaxSend(params,'duty/completeduty',successFunc,failFunc,'POST');
 
     },
-    waveformclick:function(rec,grid){
 
-    },
     eqimclick:function(rec,grid){
         var me=this;
         //console.log(me);
@@ -149,6 +150,18 @@ Ext.define('Webdesktop.controller.Duty', {
     waveformclick:function(rec,grid){
         if(!this.waveformcopywin)this.waveformcopywin= Ext.widget('waveformcopywin');
         this.waveformcopywin.show();
+        this.waveformcopywin.linkdata={
+            grid:grid,
+            rec:rec
+        };
+
+        var form=this.waveformcopywin.down('form').getForm();
+        form.setValues(
+            {
+                targetdir:localStorage.targetdir,
+                sourcedir:localStorage.sourcedir
+            });
+
         //alert(3);
     },
     archivefileclick:function(rec){
@@ -246,6 +259,23 @@ Ext.define('Webdesktop.controller.Duty', {
         if(!this.newmissionwin)this.newmissionwin= Ext.widget('addnewmissionwin');
         this.newmissionwin.show();
     },
+
+    copywaveform:function(btn){
+        var me=this;
+        var win=btn.up('window');
+        var form = btn.up('form');
+        var successFunc = function (forms, action) {
+            localStorage.sourcedir=form.getValues()['sourcedir'];
+            localStorage.targetdir=form.getValues()['targetdir'];
+            me.completeduty(win.linkdata.rec,win.linkdata.grid);
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息", "源目录不存在");
+        };
+
+        CommonFunc.formSubmit(form, {}, 'duty/copywavefile', successFunc, failFunc, "正在提交。。。");
+    },
+
     addnewworkwin:function(btn){
         if(!this.newworkwin)this.newworkwin= Ext.widget('addnewworkwin');
         this.newworkwin.show();
