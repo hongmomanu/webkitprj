@@ -14,6 +14,7 @@ Ext.define('Webdesktop.controller.Duty', {
          'duty.AddNewMissionWin',
          'duty.MissionManagerpanel',
          'duty.MissionManagerWin',
+         'duty.WaveformCopyWin',
          'duty.WorkManagerpanel',
          'duty.DutyConfigManagerWin',
          'conmmon.AnimateWin'
@@ -110,6 +111,9 @@ Ext.define('Webdesktop.controller.Duty', {
         CommonFunc.ajaxSend(params,'duty/completeduty',successFunc,failFunc,'POST');
 
     },
+    waveformclick:function(rec,grid){
+
+    },
     eqimclick:function(rec,grid){
         var me=this;
         //console.log(me);
@@ -142,8 +146,10 @@ Ext.define('Webdesktop.controller.Duty', {
     recordclick:function(rec){
       alert(2);
     },
-    waveformclick:function(rec){
-        alert(3);
+    waveformclick:function(rec,grid){
+        if(!this.waveformcopywin)this.waveformcopywin= Ext.widget('waveformcopywin');
+        this.waveformcopywin.show();
+        //alert(3);
     },
     archivefileclick:function(rec){
        alert(4);
