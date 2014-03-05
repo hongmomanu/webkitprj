@@ -1,7 +1,7 @@
 /**
  * Created by jack on 14-2-18.
  */
-Ext.define('Webdesktop.model.duty.User', {
+Ext.define('Webdesktop.model.user.User', {
     extend: 'Ext.data.Model',
     fields: [
         {
@@ -14,6 +14,10 @@ Ext.define('Webdesktop.model.duty.User', {
         },
         {
             name: 'displayname',
+            type:'string'
+        },
+        {
+            name: 'telnum',
             type:'string'
         },
         {

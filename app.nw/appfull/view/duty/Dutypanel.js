@@ -55,7 +55,10 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                     items: [{
 
                         getClass: function(v, meta, rec) {
-                            if (rec.get('missionstatus') == 0) {
+                            var time=rec.get('missiontime');
+                            var datetime=Ext.Date.parse(time, "H:i");
+                            var now=new Date();
+                            if (rec.get('missionstatus') == 0&&(datetime.getHours()<=now.getHours())) {
                                 return 'duty-action-col';
                             } else {
                                 return 'no';

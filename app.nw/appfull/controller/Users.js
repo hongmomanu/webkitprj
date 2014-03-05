@@ -11,7 +11,16 @@ Ext.define('Webdesktop.controller.Users', {
         'user.Login',
         'user.Lockwin',
         'user.Config',
+        'user.UserManagerWin',
+        'user.UserManagerpanel',
         'Viewport'
+    ],
+
+    models: [
+        'user.User'
+    ],
+    stores: [
+        'user.Users'
     ],
 
     init: function() {
@@ -30,11 +39,18 @@ Ext.define('Webdesktop.controller.Users', {
             },'webdesktop_lockwin button[action=unlockwin]':{
                 click: this.unlockwin
 
+            },
+            'dutypanel menuitem[action=usermanager]':{
+                click: this.openusermanagerwin
             }
 
         });
 
 
+    },
+    openusermanagerwin:function(btn){
+        if(!this.usermanagerwin)this.usermanagerwin= Ext.widget('usermanagerwin');
+        this.usermanagerwin.show();
     },
     desktop_widget:null,
     user_login:function(btn){

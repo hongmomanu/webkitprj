@@ -12,6 +12,7 @@ Ext.define('Webdesktop.controller.Duty', {
          'duty.DutyManagerWin',
          'duty.AddNewWorkWin',
          'duty.AddNewMissionWin',
+         'duty.EditMissionItemWin',
          'duty.MissionManagerpanel',
          'duty.MissionManagerWin',
          'duty.WaveformCopyWin',
@@ -22,13 +23,11 @@ Ext.define('Webdesktop.controller.Duty', {
     ],
     models: [
         'duty.DutyMission',
-        'duty.User',
         'duty.MissionManager',
         'duty.WorkManager'
     ],
     stores: [
         'duty.DutyMissions',
-        'duty.Users',
         'duty.MissionManagers',
         'duty.WorkManagers'
     ],
@@ -40,6 +39,7 @@ Ext.define('Webdesktop.controller.Duty', {
             'dutypanel menuitem[action=workmanager]':{
                 click: this.openworkmanagerwin
             },
+
             'dutypanel menuitem[action=missionmanager]':{
                 click: this.openmissionmanagerwin
             },
@@ -51,7 +51,9 @@ Ext.define('Webdesktop.controller.Duty', {
             },
             'dutyconfigmanagerwin button[action=save]': {
                 click: this.savedutyconfig
-
+            },
+            'editmissionitemwin button[action=save]': {
+                click: this.savemissionconfig
             },
             'dutypanel':{
               afterrender:function(panel){
@@ -75,6 +77,7 @@ Ext.define('Webdesktop.controller.Duty', {
             'workmanagerpanel button[action=new]':{
                 click: this.addnewworkwin
             },
+
             'waveformcopywin button[action=copy]':{
                 click: this.copywaveform
             },
@@ -83,6 +86,9 @@ Ext.define('Webdesktop.controller.Duty', {
             },
             'missionmanagerpanel button[action=new]':{
                 click: this.addnewmissionwin
+            },
+            'missionmanagerpanel button[action=edit]':{
+                click: this.editmissionwin
             },
             'addnewworkwin button[action=add]':{
                 click: this.addnewduty
@@ -192,6 +198,28 @@ Ext.define('Webdesktop.controller.Duty', {
     },
     catalogingclick:function(rec){
        alert(5);
+    },
+    savemissionconfig:function(btn){
+        var url = 'duty/savemission';
+        var me = this;
+        var win = this.missionmanagerwin;
+        var panel = win.down('panel');
+        var sm = panel.getSelectionModel();
+        var selectitem = sm.getSelection();
+        var params = {
+            id : selectitem[0].data.id
+        };
+
+        var successFunc = function (form, action) {
+            panel.getStore().load();
+            btn.up('window').hide();
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息", "更新失败");
+        };
+
+        var form = btn.up('form');
+        CommonFunc.formSubmit(form, params, url, successFunc, failFunc, "正在提交。。。")
     },
     savedutyconfig:function(btn){
         var form=btn.up('form');
@@ -347,6 +375,17 @@ Ext.define('Webdesktop.controller.Duty', {
         };
 
         CommonFunc.formSubmit(form, {}, 'duty/copywavefile', successFunc, failFunc, "正在提交。。。");
+    },
+
+    editmissionwin:function(btn){
+        if(!this.editmissionitemwin)this.editmissionitemwin= Ext.widget('editmissionitemwin');
+        this.editmissionitemwin.show();
+        var sm = btn.up('panel').getSelectionModel();
+        var selectitem=sm.getSelection();
+        var item=selectitem[0].data;
+        var form=this.editmissionitemwin.down('form').getForm();
+        form.setValues(item);
+
     },
 
     addnewworkwin:function(btn){
