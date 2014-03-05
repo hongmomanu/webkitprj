@@ -42,7 +42,7 @@ Ext.define('Webdesktop.view.duty.ArchiveFileWin' ,{
                     {
                         xtype: 'textfield',
                         allowBlank:false,
-                        fieldLabel: '文件异常筏值',
+                        fieldLabel: '文件异常筏值(单位:M)',
                         name: 'archiveminsize'
                     }
 
