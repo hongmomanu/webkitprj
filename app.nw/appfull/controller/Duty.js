@@ -46,6 +46,9 @@ Ext.define('Webdesktop.controller.Duty', {
             'dutypanel menuitem[action=dutymanager]':{
                 click: this.opendutymanagerconfigwin
             },
+            'dutypanel menuitem[action=logout]':{
+                click: this.logoutsystem
+            },
             'dutyconfigmanagerwin button[action=save]': {
                 click: this.savedutyconfig
 
@@ -207,10 +210,8 @@ Ext.define('Webdesktop.controller.Duty', {
                 if(!localStorage.dutyalertinterval)localStorage.dutyalertinterval=me.dutyalertinterval;
                 me.checkdutytask={
                     run: function(){
-                        //me.refreshclick();
                         if(!me.isfirstduty){
                             store.load() ;
-
                         }else{
                             me.isfirstduty=false;
                         };
@@ -219,6 +220,7 @@ Ext.define('Webdesktop.controller.Duty', {
                 }
                 Ext.TaskManager.start(me.checkdutytask);
             }else{
+                me.anotherdayproc();
                 me.dutyshowalert(store);
 
             }
@@ -227,6 +229,13 @@ Ext.define('Webdesktop.controller.Duty', {
         Ext.getStore('duty.DutyMissions').load();
     },
 
+    anotherdayproc:function(){
+       var now =new Date();
+       if(now.getDay()!=Globle.logintime.getDay()){
+           var user_cl=me.application.getController("Users");
+           user_cl.maketodaymission();
+       }
+    },
     dutyshowalert:function(store){
         var items=store.data.items;
         var html='';
@@ -260,6 +269,9 @@ Ext.define('Webdesktop.controller.Duty', {
     openmissionmanagerwin:function(btn){
         if(!this.missionmanagerwin)this.missionmanagerwin= Ext.widget('missionmanagerwin');
         this.missionmanagerwin.show();
+    },
+    logoutsystem:function(btn){
+        window.location.reload();
     },
     opendutymanagerconfigwin:function(btn){
         if(!this.dutyconfigmanagerwin)this.dutyconfigmanagerwin= Ext.widget('dutyconfigmanagerwin');

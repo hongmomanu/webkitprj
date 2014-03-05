@@ -51,9 +51,10 @@ Ext.define('Webdesktop.controller.Users', {
              Globle.userid=action.result.result.id;
              Globle.displayname=action.result.result.displayname;
              Globle.isadmin=action.result.result.admin==1;
+             Globle.logintime=new Date();
              var callback=function(){
                  Ext.widget('viewport');
-             }
+             };
              me.getcurrentduty(callback);
             var system_cl=me.application.getController("Systemwatch");
             system_cl.sendsystemlogs([{userid:action.result.result.id,
