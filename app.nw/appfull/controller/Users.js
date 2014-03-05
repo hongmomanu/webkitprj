@@ -39,8 +39,8 @@ Ext.define('Webdesktop.controller.Users', {
     desktop_widget:null,
     user_login:function(btn){
         var me=this;
-        var form =btn.up('form');
-        var win=form.up('window');
+        var loginform =btn.up('form');
+        var win=loginform.up('window');
         var params={};
         var url="login";
         var me=this;
@@ -65,20 +65,21 @@ Ext.define('Webdesktop.controller.Users', {
         };
 
         var failFunc = function (form, action) {
+            //console.log(action);
             if(action.response.status==200){
-                Ext.Msg.alert("登陆失败", action.result.result.msg);
+                Ext.Msg.alert("登陆失败", action.result.msg);
             }else{
                 Ext.Msg.alert("登陆失败", "找不到服务");
             }
 
             var system_cl=me.application.getController("Systemwatch");
-            system_cl.sendsystemlogs([{userid:action.result.result.id,
+            system_cl.sendsystemlogs([{
                 statustype:dutylogtype.logfail,
-                logcontent:action.result.result.username}],'duty/senddutylogs');
+                logcontent:action.result.username}],'duty/senddutylogs');
 
         };
 
-        CommonFunc.formSubmit(form, params, url, successFunc, failFunc,"正在验证登陆");
+        CommonFunc.formSubmit(loginform, params, url, successFunc, failFunc,"正在验证登陆");
 
 
     },
