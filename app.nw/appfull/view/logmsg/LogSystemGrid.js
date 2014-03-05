@@ -57,6 +57,12 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
                             }
                         }
                     }
+                },{
+                    xtype:'datefield',
+                    name: 'bgday'
+                },{
+                    xtype:'datefield',
+                    name: 'edday'
                 }
             ],
             bbar: Ext.create('Ext.PagingToolbar', {
