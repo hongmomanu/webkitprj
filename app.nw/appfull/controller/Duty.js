@@ -15,6 +15,7 @@ Ext.define('Webdesktop.controller.Duty', {
          'duty.MissionManagerpanel',
          'duty.MissionManagerWin',
          'duty.WaveformCopyWin',
+         'duty.ArchiveFileWin',
          'duty.WorkManagerpanel',
          'duty.DutyConfigManagerWin',
          'conmmon.AnimateWin'
@@ -74,6 +75,9 @@ Ext.define('Webdesktop.controller.Duty', {
             'waveformcopywin button[action=copy]':{
                 click: this.copywaveform
             },
+            'archivefilewin button[action=check]':{
+                click: this.checkarchive
+            },
             'missionmanagerpanel button[action=new]':{
                 click: this.addnewmissionwin
             },
@@ -131,10 +135,14 @@ Ext.define('Webdesktop.controller.Duty', {
                 me.completeduty(rec,grid);
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([{userid:Globle.userid,
-                    statustype:missiontype.eqim,
-                    logcontent:'今日无消息公示'}],'duty/senddutylogs');
+                    statustype:missiontype.eqimsucc,
+                    logcontent:missiontype.eqimsucc}],'duty/senddutylogs');
             }else{
                 Ext.Msg.alert("提示信息", "eqim 网络不通!");
+                var system_cl=me.application.getController("Systemwatch");
+                system_cl.sendsystemlogs([{userid:Globle.userid,
+                    statustype:missiontype.eqimfail,
+                    logcontent:"eqim 网络不通!"}],'duty/senddutylogs');
             }
 
             //btn.up('panel').getStore().load();
@@ -162,10 +170,22 @@ Ext.define('Webdesktop.controller.Duty', {
                 sourcedir:localStorage.sourcedir
             });
 
-        //alert(3);
     },
-    archivefileclick:function(rec){
-       alert(4);
+    archivefileclick:function(rec,grid){
+        if(!this.archivefilewin)this.archivefilewin= Ext.widget('archivefilewin');
+        this.archivefilewin.show();
+        this.archivefilewin.linkdata={
+            grid:grid,
+            rec:rec
+        };
+
+        var form=this.archivefilewin.down('form').getForm();
+        form.setValues(
+            {
+                earthplatformlist:localStorage.earthplatformlist,
+                archiveminsize:localStorage.archiveminsize
+            });
+
     },
     catalogingclick:function(rec){
        alert(5);
@@ -259,7 +279,38 @@ Ext.define('Webdesktop.controller.Duty', {
         if(!this.newmissionwin)this.newmissionwin= Ext.widget('addnewmissionwin');
         this.newmissionwin.show();
     },
+    checkarchive:function(btn){
+        var me=this;
+        var win=btn.up('window');
+        var params={
+            sourcedir:localStorage.sourcedir
+        }
+        var form = btn.up('form');
+        localStorage.earthplatformlist=form.getValues()['earthplatformlist'];
+        localStorage.archiveminsize=form.getValues()['archiveminsize'];
+        var successFunc = function (forms, action) {
 
+            me.completeduty(win.linkdata.rec,win.linkdata.grid);
+            var system_cl=me.application.getController("Systemwatch");
+            system_cl.sendsystemlogs([{userid:Globle.userid,
+                statustype:missiontype.archivefilesucc,
+                logcontent:missiontype.archivefilesucc}],'duty/senddutylogs');
+            win.close();
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("文件异常", action.result.results);
+            var system_cl=me.application.getController("Systemwatch");
+            system_cl.sendsystemlogs([
+                {
+                    userid:Globle.userid,
+                    statustype:missiontype.archivefilefail,
+                    logcontent:action.result.results.join(",")
+                }
+            ],'duty/senddutylogs');
+        };
+        CommonFunc.formSubmit(form, params, 'duty/checkarchive', successFunc, failFunc, "正在提交。。。");
+
+    },
     copywaveform:function(btn){
         var me=this;
         var win=btn.up('window');
@@ -268,9 +319,19 @@ Ext.define('Webdesktop.controller.Duty', {
             localStorage.sourcedir=form.getValues()['sourcedir'];
             localStorage.targetdir=form.getValues()['targetdir'];
             me.completeduty(win.linkdata.rec,win.linkdata.grid);
+            var system_cl=me.application.getController("Systemwatch");
+            system_cl.sendsystemlogs([{userid:Globle.userid,
+                statustype:missiontype.waveformsucc,
+                logcontent:missiontype.waveformsucc}],'duty/senddutylogs');
+            win.hide();
         };
         var failFunc = function (form, action) {
             Ext.Msg.alert("提示信息", "源目录不存在");
+            win.hide();
+            var system_cl=me.application.getController("Systemwatch");
+            system_cl.sendsystemlogs([{userid:Globle.userid,
+                statustype:missiontype.waveformfail,
+                logcontent:"源目录不存在"}],'duty/senddutylogs');
         };
 
         CommonFunc.formSubmit(form, {}, 'duty/copywavefile', successFunc, failFunc, "正在提交。。。");

@@ -77,10 +77,11 @@ Ext.define('Webdesktop.controller.Systemwatch', {
     },
 
     sendsystemlogs:function(systemlogs,url){
-
+        console.log(systemlogs)
         var params={
             systemlogs:Ext.JSON.encode(systemlogs)
         };
+        console.log(params);
         var successFunc = function (response, action) {
 
         };

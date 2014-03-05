@@ -24,15 +24,23 @@ var dutylogtype={
     logsucc:'登陆成功',
     logfail:'登陆失败',
     logoutsucc:'注销成功',
-    logoutfail:'注销势必',
+    logoutfail:'注销失败',
     ok:'完成'
 
 };
 var missiontype={
     eqim:'国家局EQIM系统检查',
+    eqimsucc:'国家局EQIM系统检查完成',
+    eqimfail:'国家局EQIM系统检查异常',
     record:'断记统计上传',
+    recordsucc:'断记统计上传成功',
+    recordfail:'断记统计上传失败',
     waveform:'波形归档备份',
+    waveformsucc:'波形归档备份成功',
+    waveformfail:'波形归档备份异常',
     archivefile:'归档文件和事件文件检查',
+    archivefilesucc:'归档文件和事件文件检查成功',
+    archivefilefail:'归档文件和事件文件检查异常',
     cataloging:'编目地震'
 
 }
