@@ -165,6 +165,9 @@ Ext.define('Webdesktop.view.Viewport', {
                                                     activate: function(tab, eOpts) {
                                                         if(tab.getStore){
                                                             var store=tab.getStore();
+                                                            var bgday=Ext.Date.format(new Date(tab.down('#bgday').getValue()),'Y-m-d');
+                                                            store.proxy.extraParams.bgday =bgday;
+                                                            store.proxy.extraParams.edday =tab.down('#edday').getValue();
                                                             store.load();
                                                         }
                                                     }
