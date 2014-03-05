@@ -17,7 +17,7 @@ Ext.define('Webdesktop.view.user.UserManagerWin' ,{
             resizable:false,
             layout: 'fit',
             items: {
-                xtype:'workmanagerpanel'
+                xtype:'usermanagerpanel'
             }
 
         });

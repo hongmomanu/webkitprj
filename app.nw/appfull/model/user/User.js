@@ -17,6 +17,10 @@ Ext.define('Webdesktop.model.user.User', {
             type:'string'
         },
         {
+            name: 'password',
+            type:'string'
+        },
+        {
             name: 'telnum',
             type:'string'
         },

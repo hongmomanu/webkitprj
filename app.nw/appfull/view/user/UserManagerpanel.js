@@ -12,7 +12,7 @@ Ext.define('Webdesktop.view.user.UserManagerpanel', {
         Ext.apply(me, {
 
             border: false,
-            hideHeaders:true,
+            //hideHeaders:true,
             multiSelect: true,
             viewConfig: {
                 trackOver: false,
@@ -28,20 +28,11 @@ Ext.define('Webdesktop.view.user.UserManagerpanel', {
             columns: [
 
 
-                {header: '值班日', dataIndex: 'day',width: 150,
-                    renderer:function(val, obj, record){
-                       if(val==0) return '星期天';
-                       else if(val==1) return '星期一';
-                       else if(val==2) return '星期二';
-                       else if(val==3) return '星期三';
-                       else if(val==4) return '星期四';
-                       else if(val==5) return '星期五';
-                       else if(val==6) return '星期六';
 
-                    }
-
-                },
-                {header: '姓名', dataIndex: 'displayname',width: 250}
+                {header: '姓名', dataIndex: 'displayname'},
+                {header: '登录名', dataIndex: 'username'},
+                {header: '电话号码', dataIndex: 'telnum'},
+                {header: '登陆密码', dataIndex: 'password'}
 
             ],
             flex: 1,
@@ -69,7 +60,7 @@ Ext.define('Webdesktop.view.user.UserManagerpanel', {
                 }
             ],
 
-            store: 'duty.WorkManagers'
+            store: 'user.Users'
 
 
         });
