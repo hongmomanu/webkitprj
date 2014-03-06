@@ -104,6 +104,7 @@ Ext.define('Webdesktop.view.logmsg.LogDutyGrid', {
                 {
                     xtype:'button',
                     text:'统计',
+                    searchtype:'duty',
                     action:'static'
                 }
             ],

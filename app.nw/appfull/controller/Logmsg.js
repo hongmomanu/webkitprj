@@ -33,24 +33,19 @@ Ext.define('Webdesktop.controller.Logmsg', {
 
     init: function() {
         this.control({
-           'logdutygrid button[action=static]':{
-               click: this.showdutystaticWin
-           },
-            'logsystemgrid button[action=static]':{
+           'logdutygrid button[action=static],logsystemgrid button[action=static]':{
                click: this.showsystemstaticWin
            }
-
 
         });
 
     },
-    showdutystaticWin:function(btn){
-        alert(1);
-    },
+
     showsystemstaticWin:function(btn){
-        if(!this.systemstaticwin)this.systemstaticwin= Ext.widget('systemstaticwin');
+        this.systemstaticwin= Ext.widget('systemstaticwin',{
+            searchtype:btn.searchtype
+        });
         this.systemstaticwin.show();
-        //alert(1);
     }
 
 

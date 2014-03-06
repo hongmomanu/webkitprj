@@ -17,6 +17,7 @@ Ext.define('Webdesktop.view.logmsg.SystemstaticWin' ,{
             resizable:false,
             layout: 'fit',
             items: {
+                searchtype:this.searchtype,
                 xtype:'logsystemstaticschart'
             }
 

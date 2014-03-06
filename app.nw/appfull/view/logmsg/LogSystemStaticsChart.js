@@ -10,7 +10,14 @@ Ext.define('Webdesktop.view.logmsg.LogSystemStaticsChart', {
         Ext.apply(me, {
             animate: true,
             shadow: true,
-            store: 'logmsg.LogSystemStatics',
+            //store: 'logmsg.LogSystemStatics',
+            store:(function (me) {
+                var s = Ext.widget('logsystemstatics');
+                s.proxy.extraParams = {
+                    type: me.searchtype
+                }
+                return s;
+            })(this),
             axes: [{
                 type: 'Numeric',
                 position: 'left',
@@ -50,7 +57,8 @@ Ext.define('Webdesktop.view.logmsg.LogSystemStaticsChart', {
                     renderer: function(klass, item) {
                         var storeItem = item.storeItem;
                         var params={
-                            day:storeItem.get('date')
+                            day:storeItem.get('date'),
+                            searchtype:me.searchtype
                         };
 
                         var successFunc = function (response, action) {

@@ -86,6 +86,7 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
                 {
                     xtype:'button',
                     text:'统计',
+                    searchtype:'system',
                     action:'static'
                 }
             ],
