@@ -260,7 +260,7 @@ Ext.define('Webdesktop.controller.Duty', {
     anotherdayproc:function(){
        var now =new Date();
        if(Globle.logintime&&now.getDay()!=Globle.logintime.getDay()){
-           var user_cl=me.application.getController("Users");
+           var user_cl=this.application.getController("Users");
            user_cl.maketodaymission();
        }
     },

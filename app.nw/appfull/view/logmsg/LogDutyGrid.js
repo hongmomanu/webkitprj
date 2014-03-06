@@ -59,7 +59,7 @@ Ext.define('Webdesktop.view.logmsg.LogDutyGrid', {
             ],
             flex: 1,
             tbar:[
-                {
+                /*{
                     xtype:'textfield',
                     listeners: {
                         "specialkey": function (field, e) {
@@ -73,6 +73,38 @@ Ext.define('Webdesktop.view.logmsg.LogDutyGrid', {
                             }
                         }
                     }
+                }*/
+                {
+                    xtype:'datefield',
+                    itemId:'bgday',
+                    value: Ext.Date.add(new Date(), Ext.Date.DAY, -5),
+
+                    name: 'bgday'
+                },{
+                    xtype:'datefield',
+                    itemId:'edday',
+                    value:new Date(),
+
+                    name: 'edday'
+                },{
+                    xtype:'button',
+                    text:'搜索',
+                    handler: function() {
+                        var panel=this.up('panel');
+                        var store=panel.getStore();
+                        var bgday=panel.down('#bgday').getValue();
+                        var edday=panel.down('#edday').getValue();
+
+                        store.proxy.extraParams.bgday = Ext.Date.format(new Date(bgday),'Y-m-d');
+                        store.proxy.extraParams.edday = edday;
+                        store.loadPage(1);
+                    }
+                    //action:'search'
+                },
+                {
+                    xtype:'button',
+                    text:'统计',
+                    action:'static'
                 }
             ],
             bbar: Ext.create('Ext.PagingToolbar', {

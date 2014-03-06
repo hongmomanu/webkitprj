@@ -43,7 +43,7 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
             ],
             flex: 1,
             tbar:[
-                {
+                /*{
                     xtype:'textfield',
                     listeners: {
                         "specialkey": function (field, e) {
@@ -56,7 +56,7 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
                             }
                         }
                     }
-                },{
+                },*/{
                     xtype:'datefield',
                     itemId:'bgday',
                     value: Ext.Date.add(new Date(), Ext.Date.DAY, -5),
@@ -82,6 +82,11 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
                         store.loadPage(1);
                     }
                     //action:'search'
+                },
+                {
+                    xtype:'button',
+                    text:'统计',
+                    action:'static'
                 }
             ],
             bbar: Ext.create('Ext.PagingToolbar', {
