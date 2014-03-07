@@ -14,7 +14,9 @@ Ext.define('Webdesktop.view.logmsg.LogSystemStaticsChart', {
             store:(function (me) {
                 var s = Ext.widget('logsystemstatics');
                 s.proxy.extraParams = {
-                    type: me.searchtype
+                    type: me.searchtype,
+                    bgday:me.bgday,
+                    edday:me.edday
                 }
                 return s;
             })(this),

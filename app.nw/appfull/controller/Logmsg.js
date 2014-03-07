@@ -42,8 +42,13 @@ Ext.define('Webdesktop.controller.Logmsg', {
     },
 
     showsystemstaticWin:function(btn){
+        var panel=btn.up('panel')
+        var edday=panel.down('#edday').getValue();
+        var bgday=Ext.Date.format(new Date(panel.down('#bgday').getValue()),'Y-m-d');
         this.systemstaticwin= Ext.widget('systemstaticwin',{
-            searchtype:btn.searchtype
+            searchtype:btn.searchtype,
+            edday:edday,
+            bgday:bgday
         });
         this.systemstaticwin.show();
     }

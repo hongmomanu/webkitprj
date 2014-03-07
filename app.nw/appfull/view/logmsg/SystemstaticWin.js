@@ -18,6 +18,8 @@ Ext.define('Webdesktop.view.logmsg.SystemstaticWin' ,{
             layout: 'fit',
             items: {
                 searchtype:this.searchtype,
+                bgday:this.bgday,
+                edday:this.edday,
                 xtype:'logsystemstaticschart'
             }
 
