@@ -10,5 +10,7 @@
 if(!Globle.iswebapp){
     var gui = require('nw.gui');
     var win = gui.Window.get();
-    //win.maximize();
+    win.maximize();
+    //var c = require('child_process');
+    //c.exec('xfce4-terminal  -x bash -c "ssh 192.168.2.112; exec bash"')
 }

@@ -25,7 +25,7 @@
     "node": ">= 0.8.0"
   },
     "window": {
-        "title": "速报优化平台",
+        "title": "浙江地震台网值班平台",
         
         "toolbar": true,
 
