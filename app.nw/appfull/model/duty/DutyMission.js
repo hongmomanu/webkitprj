@@ -13,6 +13,10 @@ Ext.define('Webdesktop.model.duty.DutyMission', {
             type:'string'
         },
         {
+            name: 'dutylog',
+            type:'string'
+        },
+        {
             name:'missionstatus',
             type:'int'
         },

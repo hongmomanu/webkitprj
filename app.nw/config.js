@@ -38,10 +38,16 @@ var missiontype={
     waveform:'波形归档备份',
     waveformsucc:'波形归档备份成功',
     waveformfail:'波形归档备份异常',
-    archivefile:'归档文件和事件文件检查',
-    archivefilesucc:'归档文件和事件文件检查成功',
-    archivefilefail:'归档文件和事件文件检查异常',
-    cataloging:'编目地震'
+    archivefile:'连续波形文件检查',
+    earthquickfile:'地震事件文件检查',
+    earthquicksucc:'地震事件文件检查成功',
+    earthquickfail:'地震事件文件检查异常',
+    archivefilesucc:'连续波形文件成功',
+    archivefilefail:'连续波形文件异常',
+    cataloging:'编目地震提醒',
+    catalogingreport:'编目快报',
+    catalogingreportsucc:'编目快报成功',
+    catalogingreportfail:'编目快报失败'
 
 }
 

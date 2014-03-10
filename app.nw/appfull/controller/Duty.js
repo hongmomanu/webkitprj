@@ -60,15 +60,10 @@ Ext.define('Webdesktop.controller.Duty', {
                   var store=panel.getStore();
                   store.load();
               },
-              dutyclick:function(rec,grid){
-                  var missioname=rec.get('missionname');
-                  var eventMap={};
-                  eventMap[missiontype.eqim]=Ext.bind(this.eqimclick,this);
-                  eventMap[missiontype.record]=Ext.bind(this.recordclick,this);
-                  eventMap[missiontype.waveform]=Ext.bind(this.waveformclick,this);
-                  eventMap[missiontype.archivefile]=Ext.bind(this.archivefileclick,this);
-                  eventMap[missiontype.cataloging]=Ext.bind(this.catalogingclick,this);
-                  eventMap[missioname](rec,grid);
+              dutyclick:function(rec,store){
+                  var missionname=rec.get('missionname');
+                  Ext.Msg.wait('处理中，请稍后...', '提示');
+                  this.getEventMap()[missionname](rec,store);
               }
             },
             'workmanagerpanel':{
@@ -107,41 +102,48 @@ Ext.define('Webdesktop.controller.Duty', {
     dutyalertinterval:60000,
     isfirstduty:true,
 
-    completeduty:function(rec,grid){
+    completeduty:function(item,store,dutylog){
        var params={
-           id:rec.raw.id
+           id:item.raw.id,
+           dutylog:dutylog
        };
         var successFunc = function (response, action) {
+            Ext.Msg.hide();
             var res = Ext.JSON.decode(response.responseText);
             if(res.success){
-                grid.getStore().load();
+                //store.load();
+                item.set({missionstatus: 1,time:Ext.util.Format.date(new Date(), 'Y-m-d H:i:s'),dutylog:dutylog})
 
             }else{
-                Ext.Msg.alert("提示信息", "更新失败!");
+                Ext.Msg.alert("提示信息", "检查失败!");
             }
+
 
         };
         var failFunc = function (form, action) {
+            Ext.Msg.hide();
             Ext.Msg.alert("提示信息", "操作失败..!");
+
         };
         CommonFunc.ajaxSend(params,'duty/completeduty',successFunc,failFunc,'POST');
 
     },
 
-    eqimclick:function(rec,grid){
+    eqimclick:function(item,store){
         var me=this;
         //console.log(me);
         var params={
-            id:rec.raw.id,
+            id:item.raw.id,
             username:localStorage.eqimusername,
             password:localStorage.eqimpassword,
-            url:localStorage.eqimurl
+            url:localStorage.eqimurl,
+            securl:"http://192.168.2.141:8080/jz"
         };
         var successFunc = function (response, action) {
             var res = Ext.JSON.decode(response.responseText);
             if(res.success){
                 var html=res.msg;
-                me.completeduty(rec,grid);
+                me.completeduty(item,store,missiontype.eqimsucc);
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.eqimsucc,
@@ -162,42 +164,149 @@ Ext.define('Webdesktop.controller.Duty', {
         CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
     },
     recordclick:function(rec){
-      alert(2);
+      //alert(2);断记上传
     },
-    waveformclick:function(rec,grid){
-        if(!this.waveformcopywin)this.waveformcopywin= Ext.widget('waveformcopywin');
-        this.waveformcopywin.show();
-        this.waveformcopywin.linkdata={
-            grid:grid,
-            rec:rec
+    waveformclick:function(rec,store){
+        var me=this;
+        var params={
+            sourcedir:localStorage.sourcedir,
+            targetdir:localStorage.targetdir
+        };
+        var successFunc = function (forms, action) {
+            me.completeduty(rec,store,missiontype.waveformsucc);
+            var system_cl=me.application.getController("Systemwatch");
+            system_cl.sendsystemlogs([{userid:Globle.userid,
+                statustype:missiontype.waveformsucc,
+                logcontent:missiontype.waveformsucc}],'duty/senddutylogs');
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息", "源目录不存在");
+            var system_cl=me.application.getController("Systemwatch");
+            system_cl.sendsystemlogs([{userid:Globle.userid,
+                statustype:missiontype.waveformfail,
+                logcontent:"源目录不存在"}],'duty/senddutylogs');
         };
 
-        var form=this.waveformcopywin.down('form').getForm();
-        form.setValues(
-            {
-                targetdir:localStorage.targetdir,
-                sourcedir:localStorage.sourcedir
-            });
+        CommonFunc.ajaxSend(params,'duty/copywavefile',successFunc,failFunc,'POST');
 
     },
-    archivefileclick:function(rec,grid){
-        if(!this.archivefilewin)this.archivefilewin= Ext.widget('archivefilewin');
-        this.archivefilewin.show();
-        this.archivefilewin.linkdata={
-            grid:grid,
-            rec:rec
+    earthquickfileclick:function(rec,store){
+        var me=this;
+        var params={
+            earthplatformlist:localStorage.earthplatformlist,
+            archiveminsize:localStorage.archiveminsize
         };
 
-        var form=this.archivefilewin.down('form').getForm();
-        form.setValues(
-            {
-                earthplatformlist:localStorage.earthplatformlist,
-                archiveminsize:localStorage.archiveminsize
-            });
+        var successFunc = function (response, action) {
+
+            var res = Ext.JSON.decode(response.responseText);
+            if(res.success){
+                me.completeduty(rec,store,missiontype.archivefilesucc);
+                var system_cl=me.application.getController("Systemwatch");
+                system_cl.sendsystemlogs([{userid:Globle.userid,
+                    statustype:missiontype.earthquicksucc,
+                    logcontent:missiontype.earthquickfail}],'duty/senddutylogs');
+            }else{
+                me.completeduty(rec,store,missiontype.archivefilefail+res.results.join(","));
+                var system_cl=me.application.getController("Systemwatch");
+                system_cl.sendsystemlogs([
+                    {
+                        userid:Globle.userid,
+                        statustype:missiontype.archivefilefail,
+                        logcontent:res.results.join(",")
+                    }
+                ],'duty/senddutylogs');
+            }
+
+        };
+        var failFunc = function (response, action) {
+            //Ext.Msg.alert("文件异常", action.result.results);
+            //var res = Ext.JSON.decode(response.responseText);
+
+        };
+        CommonFunc.ajaxSend(params,'duty/checkarchive',successFunc,failFunc,'POST');
 
     },
-    catalogingclick:function(rec){
-       alert(5);
+    archivefileclick:function(rec,store){
+
+        var me=this;
+        var params={
+            earthplatformlist:localStorage.earthplatformlist,
+            archiveminsize:localStorage.archiveminsize
+        };
+
+        var successFunc = function (response, action) {
+            var res = Ext.JSON.decode(response.responseText);
+            if(res.success){
+                me.completeduty(rec,store,missiontype.archivefilesucc);
+                var system_cl=me.application.getController("Systemwatch");
+                system_cl.sendsystemlogs([{userid:Globle.userid,
+                    statustype:missiontype.archivefilesucc,
+                    logcontent:missiontype.archivefilesucc}],'duty/senddutylogs');
+            }
+            else{
+                me.completeduty(rec,store,missiontype.archivefilefail+res.results.join(","));
+                var system_cl=me.application.getController("Systemwatch");
+                system_cl.sendsystemlogs([
+                    {
+                        userid:Globle.userid,
+                        statustype:missiontype.archivefilefail,
+                        logcontent:res.results.join(",")
+                    }
+                ],'duty/senddutylogs');
+            }
+
+        };
+        var failFunc = function (response, action) {
+            //Ext.Msg.alert("文件异常", action.result.results);
+
+
+        };
+        CommonFunc.ajaxSend(params,'duty/checkarchive',successFunc,failFunc,'POST');
+
+    },
+    catalogingreportclick:function(item,store){
+        var me=this;
+        //console.log(me);
+        var params={
+            id:item.raw.id,
+            username:localStorage.eqimusername,
+            password:localStorage.eqimpassword,
+            url:localStorage.eqimurl,
+            securl:"http://192.168.2.141:8080/jz"
+        };
+        var successFunc = function (response, action) {
+            var res = Ext.JSON.decode(response.responseText);
+            if(res.success){
+                var html=res.msg;
+                me.completeduty(item,store,missiontype.catalogingreportsucc);
+                var system_cl=me.application.getController("Systemwatch");
+                system_cl.sendsystemlogs([{userid:Globle.userid,
+                    statustype:missiontype.catalogingreportsucc,
+                    logcontent:missiontype.catalogingreportsucc}],'duty/senddutylogs');
+            }else{
+                Ext.Msg.alert("提示信息", "eqim 网络不通!");
+                var system_cl=me.application.getController("Systemwatch");
+                system_cl.sendsystemlogs([{userid:Globle.userid,
+                    statustype:missiontype.catalogingreportfail,
+                    logcontent:"eqim 网络不通!"}],'duty/senddutylogs');
+            }
+
+        };
+        var failFunc = function (form, action) {
+            //Ext.Msg.alert("提示信息", "操作失败..!");
+        };
+        CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
+    },
+    catalogingclick:function(rec,store){
+        var me=this;
+        Ext.MessageBox.confirm('是否有编目', '有无编目?', function showResult(btn){
+            if(btn==='yes'){
+                me.completeduty(rec,store,'编目已发送');
+            }else{
+                me.completeduty(rec,store,'今日无编目');
+            }
+        });
     },
     savemissionconfig:function(btn){
         var url = 'duty/savemission';
@@ -249,10 +358,10 @@ Ext.define('Webdesktop.controller.Duty', {
                 Ext.TaskManager.start(me.checkdutytask);
             }else{
                 me.anotherdayproc();
-                me.dutyshowalert(store);
+                me.dutyautocheck(store);
+                //me.dutyshowalert(store);
 
             }
-            //alert(1);
         });
         Ext.getStore('duty.DutyMissions').load();
     },
@@ -264,6 +373,36 @@ Ext.define('Webdesktop.controller.Duty', {
            user_cl.maketodaymission();
        }
     },
+    getEventMap:function(){
+      if(!this.eventMap){
+          this.eventMap={};
+          this.eventMap[missiontype.eqim]=Ext.bind(this.eqimclick,this);
+          this.eventMap[missiontype.record]=Ext.bind(this.recordclick,this);
+          this.eventMap[missiontype.waveform]=Ext.bind(this.waveformclick,this);
+          this.eventMap[missiontype.archivefile]=Ext.bind(this.archivefileclick,this);
+          this.eventMap[missiontype.earthquickfile]=Ext.bind(this.earthquickfileclick,this);
+          this.eventMap[missiontype.catalogingreport]=Ext.bind(this.catalogingreportclick,this);
+          this.eventMap[missiontype.cataloging]=Ext.bind(this.catalogingclick,this);
+      }
+        return this.eventMap;
+    },
+    dutyautocheck:function(store){
+        var items=store.data.items;
+        var me=this;
+        Ext.each(items,function(item,index){
+            var missionname=item.data.missionname;
+            var missionstatus= item.data.missionstatus;
+            var time=item.data.missiontime;
+            var datetime=Ext.Date.parse(time, "H:i");
+            var now=new Date();
+            if(missionstatus==0&&time!=''&&datetime.getHours()<=now.getHours()){
+                me.getEventMap()[missionname](item,store);
+            }
+
+        });
+
+    },
+
     dutyshowalert:function(store){
         var items=store.data.items;
         var html='';

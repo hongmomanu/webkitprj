@@ -10,6 +10,8 @@
 {color:#416da3;}
 .duty-action-col{background-image:url(images/rss_go.png)}
 
+.duty-action-refresh{background-image:url(images/refresh.png)}
+
 #SysteminfoBox {
     z-index: 3000;
     position: absolute;

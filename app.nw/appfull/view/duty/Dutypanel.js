@@ -38,10 +38,10 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                 {header: '任务名', align:'center',dataIndex: 'missionname'},
                 {header: '任务状态',align:'center', dataIndex: 'missionstatus', renderer: function (val, obj, record) {
                     if (val == 0) {
-                        return "未完成";
+                        return "未检查";
                     }
                     else {
-                        return "已完成";
+                        return "已检查("+record.get('dutylog')+")";
                     }
 
                 }},
@@ -55,33 +55,34 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                     items: [{
 
                         getClass: function(v, meta, rec) {
-                            var time=rec.get('missiontime');
-                            var datetime=Ext.Date.parse(time, "H:i");
-                            var now=new Date();
-                            if (rec.get('missionstatus') == 0&&(datetime.getHours()<=now.getHours())) {
-                                return 'duty-action-col';
+                            return 'duty-action-refresh';
+                            //var time=rec.get('missiontime');
+                            //var datetime=Ext.Date.parse(time, "H:i");
+                            //var now=new Date();
+                            /*if (rec.get('missionstatus') == 0) {
+                                return 'duty-action-refresh';
                             } else {
                                 return 'no';
-                            }
+                            }*/
                         },
 
-                        tooltip: '点击完成值班任务',
+                        tooltip: '刷新任务',
                         handler: function(grid, rowIndex, colIndex) {
                             var rec = grid.getStore().getAt(rowIndex);
 
-                            me.fireEvent('dutyclick',rec,grid);
+                            me.fireEvent('dutyclick',rec,grid.getStore());
 
                         }
                     }
                     ]
                 },
-                {header: '任务完成时间', dataIndex: 'time', align:'center',  renderer: function (val, obj, record) {
+                {header: '检查时间', dataIndex: 'time', align:'center',  renderer: function (val, obj, record) {
                     if(record.get('missionstatus')==0){
                          return ""
                     }else{
                         var time = Ext.Date.parse(val, "Y-m-d H:i:s");
                         val = Ext.util.Format.date(time, 'Y-m-d H:i');
-                        return val +" 完成";
+                        return val +" 检查";
                     }
 
                 }}
