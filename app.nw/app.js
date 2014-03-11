@@ -1,6 +1,8 @@
 Ext.Loader.setPath({
     //'Ext.ux.desktop': 'app/js',
-    'Ext.ux':'extjs4.2.1/ux'
+    'Ext.ux':'extjs4.2.1/ux',
+    "Extensible": "extjs4.2.1/ux/extensible-1.5.2/src",
+    "Extensible.example": "extjs4.2.1/ux/extensible-1.5.2/examples"
     //Webdesktop: 'app'
 });
 

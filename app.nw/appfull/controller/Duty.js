@@ -29,7 +29,8 @@ Ext.define('Webdesktop.controller.Duty', {
     stores: [
         'duty.DutyMissions',
         'duty.MissionManagers',
-        'duty.WorkManagers'
+        'duty.WorkManagers',
+        'duty.WorkManagerEvents'
     ],
 
     init: function() {

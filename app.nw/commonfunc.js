@@ -54,7 +54,22 @@ var CommonFunc = {
         return url;
 
     },
-
+    makeanim:function(targetWin){
+        Ext.create('Ext.fx.Anim', {
+            target: targetWin,
+            duration: 1000,
+            from: {
+                width: 400, //starting width 400
+                opacity: 0,       // Transparent
+                color: '#ffffff', // White
+                left: 0
+            },
+            to: {
+                width: 300, //end width 300
+                height: 300 // end height 300
+            }
+        });
+    },
     maxpanel: function (widgetname, title, target) {
         var a=Ext.widget('animatedwindow',{
 
