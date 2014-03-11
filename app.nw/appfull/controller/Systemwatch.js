@@ -238,7 +238,6 @@ Ext.define('Webdesktop.controller.Systemwatch', {
 
     },
     nodeServerClick:function(e,node){
-      console.log(node.data);
         var os = require("os");
         var c = require('child_process');
         var platform=os.platform();
@@ -406,12 +405,19 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         return "Circle";
     },
     nodeTypeImage: function (type) {
-        if (type.isping) {
+        /*if (type.isping) {
             if (type.key == -1)return "images/network.png";
             else return "images/gnome_network_idle.png";
         } else {
             return "images/gnome_network_error.png";
+        }*/
+        if (type.machinecss==='blade') {
+             return "images/server_eteint_vert.png";
+        }else if (type.key == -1)return "images/network.png";
+        else {
+            return "images/network_server.png";
         }
+
     },
     nodeStatusConverter: function (s) {
         var all_arr = s.apps;

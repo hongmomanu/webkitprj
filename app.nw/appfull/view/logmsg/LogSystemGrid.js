@@ -43,20 +43,25 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
             ],
             flex: 1,
             tbar:[
-                /*{
+                {
                     xtype:'textfield',
+                    itemId:'keyword',
                     listeners: {
                         "specialkey": function (field, e) {
                             if (e.keyCode == 13) {
                                 var keyword = field.getValue().replace(/\s+/g, "");
                                 var panel=this.up('panel');
                                 var store=panel.getStore();
+                                var bgday=panel.down('#bgday').getValue();
+                                var edday=panel.down('#edday').getValue();
+                                store.proxy.extraParams.bgday = Ext.Date.format(new Date(bgday),'Y-m-d');
+                                store.proxy.extraParams.edday = edday;
                                 store.proxy.extraParams.keyword = keyword;
                                 store.loadPage(1);
                             }
                         }
                     }
-                },*/{
+                },{
                     xtype:'datefield',
                     itemId:'bgday',
                     value: Ext.Date.add(new Date(), Ext.Date.DAY, -5),
@@ -68,7 +73,8 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
                     value:new Date(),
 
                     name: 'edday'
-                },{
+                },
+                {
                     xtype:'button',
                     text:'搜索',
                     handler: function() {
@@ -76,7 +82,8 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
                         var store=panel.getStore();
                         var bgday=panel.down('#bgday').getValue();
                         var edday=panel.down('#edday').getValue();
-
+                        var keyword=panel.down('#keyword').getValue();
+                        store.proxy.extraParams.keyword = keyword;
                         store.proxy.extraParams.bgday = Ext.Date.format(new Date(bgday),'Y-m-d');
                         store.proxy.extraParams.edday = edday;
                         store.loadPage(1);
