@@ -103,7 +103,8 @@ Ext.define('Webdesktop.controller.Users', {
     getcurrentduty:function(callback){
         var me=this;
         var params = {
-            day:(new Date()).getDay()
+            day:(new Date()).getDay(),
+            date:Ext.Date.format(new Date(),'Y-m-d')
         };
         var successFunc = function (response, action) {
             var res = Ext.JSON.decode(response.responseText);

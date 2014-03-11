@@ -37,7 +37,7 @@ Ext.define('Webdesktop.view.logmsg.LogMsgGrid', {
 
             forceFit: true,
             columns: [
-                {header: '消息', dataIndex: 'msg',flex:1},
+                {header: '异常信息', dataIndex: 'msg',flex:1},
                 {header: '目标机器', dataIndex: 'ip',flex:1},
                 {header: '时间',dataIndex: 'msgtime',width:60}
             ],

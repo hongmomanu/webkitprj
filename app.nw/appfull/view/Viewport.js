@@ -50,11 +50,11 @@ Ext.define('Webdesktop.view.Viewport', {
                             items: [
                                 {
                                     xtype:'panel',
-                                    title:'值班监视管理窗口',
+                                    title:'地震实时数据流处理',
                                     layout:'fit',
                                     items:[
                                         {
-                                         xtype:'dutypanel'
+                                         xtype:'panel'
                                         }
                                     ],
                                     tools: [
@@ -65,13 +65,13 @@ Ext.define('Webdesktop.view.Viewport', {
                                                 //console.log(c);
                                                 //testobj=c;
                                                 var panel=c.up('panel').down('panel');
-                                                CommonFunc.maxpanel(panel,'值班任务管理',c);
+                                                CommonFunc.maxpanel(panel,'地震实时数据流处理',c);
                                             }
                                         }
                                     ],
 
                                     region:'west',
-                                    flex: 1
+                                    flex: 0.3
                                 },
                                 {
                                     xtype:'panel',
@@ -79,7 +79,7 @@ Ext.define('Webdesktop.view.Viewport', {
                                     collapsible: false,
                                     layout:'fit',
                                     region:'center',
-                                    flex: 1,
+                                    flex: 0.7,
                                     tools: [
                                         {
                                             type: 'maximize',
@@ -119,12 +119,36 @@ Ext.define('Webdesktop.view.Viewport', {
                                 {
                                     xtype:'panel',
                                     flex: 1,
-                                    title:'地震实时数据流处理',
+                                    title:'值班任务管理',
                                     layout:'fit',
                                     collapsible: false,
                                     items:[
                                         {
-                                            xtype:'panel'
+                                            xtype: 'container',
+                                            layout: {
+                                                type: 'border',
+                                                align: 'stretch'
+                                            },
+                                            defaults: {
+                                                split: true,
+                                                //collapsible: true,
+                                                animCollapse: true
+                                            },
+                                            items:[
+                                                {
+                                                    xtype:'dutypanel',
+                                                    region:'center',
+                                                    flex:1
+                                                },
+                                                {
+                                                    xtype:'logmsgrid',
+                                                    id:'logmsgrid',
+                                                    region:'east',
+                                                    flex:1
+
+                                                }
+                                            ]
+
                                         }
                                     ],
                                     tools: [
@@ -132,8 +156,10 @@ Ext.define('Webdesktop.view.Viewport', {
                                             type: 'maximize',
                                             tooltip:'窗口最大化',
                                             handler: function (a, b, c) {
-                                                var panel=c.up('panel').down('panel');
-                                                CommonFunc.maxpanel(panel,'地震实时数据流处理',c);
+                                                //console.log(c.up('panel'));
+                                                //testobj= c.up('panel');
+                                                //var panel=c.up('panel').down('container');
+                                                CommonFunc.maxpanel(c.up('panel').items.items[0],'值班任务管理',c);
                                             }
                                         }
                                     ],

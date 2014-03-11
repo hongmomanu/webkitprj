@@ -67,9 +67,9 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         });
     },
     refreshclick:function(btn){
-        var msgwin = Ext.getCmp('logtmsgwin');
-        if(msgwin){
-            var store = msgwin.down('grid').getStore();
+        var msggrid = Ext.getCmp('logmsgrid');
+        if(msggrid){
+            var store = msggrid.getStore();
             store.removeAll();
         }
 
@@ -89,9 +89,9 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         CommonFunc.ajaxSend(params,url,successFunc,failFunc,'POST');
     },
 
-    pingexception:function(item,store,msgwin){
+    pingexception:function(item,store,msggrid){
         this.isalert=true;
-        msgwin.flyIn();
+        //msggrid.flyIn();
         store.insert(0,
             {
                 msg: exceptiontype.ping,
@@ -106,10 +106,10 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                 logcontent:"无法ping通:"+item.servervalue
             });
     },
-    appexception:function(item,itemchild,store,msgwin){
+    appexception:function(item,itemchild,store,msggrid){
         if (!itemchild.isconnect) {
             this.isalert=true;
-            msgwin.flyIn();
+            //msgwin.flyIn();
             store.insert(0,
                 {
                     msg: exceptiontype.app+":" + itemchild.servername,
@@ -126,12 +126,12 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             //this.sendsystemlog(item.key,exceptiontype.app,itemchild.servername);
         }
     },
-    diskexception:function(item,store,msgwin){
+    diskexception:function(item,store,msggrid){
          if(item.disk.length>0){
             for(var i=0;i<item.disk.length;i++){
                 if((100-parseFloat(item.disk[i].value))<parseFloat(localStorage.alertdiskpercent)){
                     this.isalert=true;
-                    msgwin.flyIn();
+                    //msgwin.flyIn();
                     store.insert(0,
                         {
                             msg: exceptiontype.disk+":"+item.disk[i].value,
@@ -152,10 +152,10 @@ Ext.define('Webdesktop.controller.Systemwatch', {
 
          }
     },
-    memoryexception:function(item,store,msgwin){
+    memoryexception:function(item,store,msggrid){
         if(item.mem!==""&&item.mem*100<localStorage.alertmempercent){
             this.isalert=true;
-            msgwin.flyIn();
+            //msgwin.flyIn();
             store.insert(0,
                 {
                     msg: exceptiontype.mem+":"+(item.mem*100).toFixed(1)+"%",
@@ -179,26 +179,28 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         var successFunc = function (response, action) {
             var res = Ext.JSON.decode(response.responseText);
             var results = res.results;
-            var msgwin = Ext.getCmp('logtmsgwin');
+            /*var msgwin = Ext.getCmp('logtmsgwin');
             if (!msgwin) {
                 msgwin = Ext.widget('alertmsgcornershowwin', {title: '警告窗口'});
             }
-            var store = msgwin.down('grid').getStore();
+            var store = msgwin.down('grid').getStore();*/
+            var msggrid=Ext.getCmp('logmsgrid');
+            var store=msggrid.getStore();
             me.sendlog_arr=[];
             for (var i = 0; i < results.length; i++) {
                 me.isalert=false;
                 if (!results[i].isping) {
 
-                    me.pingexception(results[i],store,msgwin);
+                    me.pingexception(results[i],store,msggrid);
 
                 } else {
 
-                    me.memoryexception(results[i],store,msgwin);
-                    me.diskexception(results[i],store,msgwin);
+                    me.memoryexception(results[i],store,msggrid);
+                    me.diskexception(results[i],store,msggrid);
 
                     Ext.each(results[i].apps, function (item, index) {
 
-                        me.appexception(results[i],item,store,msgwin);
+                        me.appexception(results[i],item,store,msggrid);
 
                     });
                 }
