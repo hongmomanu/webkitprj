@@ -8,9 +8,7 @@ Ext.define('Webdesktop.view.duty.DutyManagerWin' ,{
     requires: [
         'Ext.Window',
         'Extensible.calendar.data.MemoryEventStore',
-        'Extensible.calendar.CalendarPanel',
-
-        'Extensible.example.calendar.data.Events'
+        'Extensible.calendar.CalendarPanel'
     ],
     initComponent: function() {
         Ext.apply(this, {
