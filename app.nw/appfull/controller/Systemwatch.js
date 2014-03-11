@@ -237,6 +237,19 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         CommonFunc.ajaxSend(params, 'serverlist', successFunc, failFunc, 'GET');
 
     },
+    nodeServerClick:function(e,node){
+      console.log(node.data);
+        var os = require("os");
+        var c = require('child_process');
+        var platform=os.platform();
+        if(platform.indexOf('linux')>=0){
+            c.exec('xfce4-terminal  -x bash -c "ssh '+node.data.username+'@'+node.data.servervalue+'; exec bash"')
+        }else if(platform.indexOf('win')>=0){
+            c.exec('cmd.exe /c start ssh '+node.data.username+'@'+node.data.servervalue);
+        }else{
+
+        }
+    },
     initsystemdiagram: function () {
         var me = this;
         var $ = go.GraphObject.make;
@@ -284,6 +297,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                         me.highlightNode(e, obj)
                     }
                 },
+                {click:me.nodeServerClick},
                 { locationObjectName: "ICON" },
                 //new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
                 $(go.Panel, "Spot",
