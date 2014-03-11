@@ -12,7 +12,7 @@ Ext.define('Webdesktop.view.logmsg.LogMsgGrid', {
         Ext.apply(me, {
 
             border: false,
-            //hideHeaders:true,
+            hideHeaders:true,
             multiSelect: true,
             viewConfig: {
                 trackOver: false,
@@ -37,9 +37,10 @@ Ext.define('Webdesktop.view.logmsg.LogMsgGrid', {
 
             forceFit: true,
             columns: [
+
+                {header: '时间',dataIndex: 'msgtime',width:60},
                 {header: '异常信息', dataIndex: 'msg',flex:1},
-                {header: '目标机器', dataIndex: 'ip',flex:1},
-                {header: '时间',dataIndex: 'msgtime',width:60}
+                {header: '目标机器', dataIndex: 'ip',flex:1}
             ],
             flex: 1,
             tbar:[

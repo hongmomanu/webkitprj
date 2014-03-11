@@ -19,8 +19,8 @@ Ext.define('Webdesktop.view.logmsg.LogGridChart', {
                     dataIndex: 'counts'
                 }
             ],
-            height: 150,
-            width: 280,
+            height: 280,
+            width: 300,
             store: 'logmsg.LoggridpieCharts'
         });
         me.callParent(arguments);

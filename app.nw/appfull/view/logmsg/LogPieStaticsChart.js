@@ -8,8 +8,8 @@ Ext.define('Webdesktop.view.logmsg.LogPieStaticsChart', {
         var me = this;
 
         Ext.apply(me, {
-            width: 200,
-            height: 150,
+            width: 300,
+            height: 280,
             animate: false,
             store: 'logmsg.LoggridpieCharts',
             shadow: false,

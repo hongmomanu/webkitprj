@@ -10,8 +10,8 @@ Ext.define('Webdesktop.view.logmsg.SystemstaticWin' ,{
     initComponent: function() {
         Ext.apply(this, {
             title: '统计',
-            height: 260,
-            width: 520,
+            height: 380,
+            width: 620,
             closeAction : 'hide',
             modal:true,
             resizable:false,

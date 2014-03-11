@@ -30,6 +30,29 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
                     }
                     else if(status==exceptiontype.ok){
                         return 'duty-gridrow-green';
+                    }else if ( status== dutylogtype.logfail) {
+                        return 'duty-gridrow-red';
+                    } else if(status == dutylogtype.logoutfail) {
+                        return 'duty-gridrow-pink';
+                    }else if(status == dutylogtype.logsucc){
+                        return 'duty-gridrow-green'
+                    }else if(status == exceptiontype.logoutsucc){
+                        return 'duty-gridrow-green'
+                    }
+                    else if(status==exceptiontype.ok){
+                        return 'duty-gridrow-dark';
+                    }else if(status==missiontype.eqimsucc){
+                        return 'duty-gridrow-disk';
+                    }else if(status==missiontype.eqimfail){
+                        return 'duty-gridrow-red';
+                    }else if(status==missiontype.waveformsucc){
+                        return 'duty-gridrow-disk';
+                    }else if(status==missiontype.waveformfail){
+                        return 'duty-gridrow-red';
+                    }else if(status==missiontype.archivefilesucc){
+                        return 'duty-gridrow-disk';
+                    }else if(status==missiontype.archivefilefail){
+                        return 'duty-gridrow-red';
                     }
                 },
                 stripeRows: true

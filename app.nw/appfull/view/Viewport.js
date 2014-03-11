@@ -8,7 +8,7 @@ Ext.define('Webdesktop.view.Viewport', {
     listeners: {
         show: function(panel) {
             //this.fireEvent('gridshowfresh',this);
-            alert("fired");
+            //alert("fired");
         }
     },
     initComponent: function() {
@@ -172,6 +172,19 @@ Ext.define('Webdesktop.view.Viewport', {
                                     title:'系统日志',
                                     layout:'fit',
                                     collapsed: true,
+                                    listeners: {
+                                        beforeexpand: function(panel) {
+                                            //this.fireEvent('gridshowfresh',this);
+                                            //alert("fired");
+                                            var store=panel.down('grid').getStore();
+                                            var bgday=Ext.Date.format(new Date(panel.down('#bgday').getValue()),'Y-m-d');
+                                            store.proxy.extraParams.bgday =bgday;
+                                            store.proxy.extraParams.edday =panel.down('#edday').getValue();
+                                            store.proxy.extraParams.keyword =panel.down('#keyword').getValue();
+                                            store.load();
+
+                                        }
+                                    },
                                     tools: [
                                         {
                                             type: 'maximize',
@@ -184,6 +197,10 @@ Ext.define('Webdesktop.view.Viewport', {
                                     ],
                                     items:[
                                         {
+                                            xtype:'logsystemgrid'
+
+
+                                            /*
                                             xtype:'tabpanel',
                                             activeTab: 0,
                                             defaults: {
@@ -211,7 +228,7 @@ Ext.define('Webdesktop.view.Viewport', {
                                                     title:'实时数据流日志管理',
                                                     html:''
                                                 }
-                                            ]
+                                            ]*/
                                         }
 
                                     ],

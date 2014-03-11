@@ -40,8 +40,9 @@ Ext.define('Webdesktop.view.logmsg.LogSystemStaticsChart', {
                 yField: ['counts'],
                 tips: {
                     trackMouse: true,
-                    width: 580,
-                    height: 170,
+
+                    width: 600,
+                    height: 300,
                     layout: 'fit',
                     items: {
                         xtype: 'container',

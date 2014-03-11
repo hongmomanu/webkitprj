@@ -98,7 +98,7 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                 {
                     xtype: 'splitbutton',
                     text: '值班管理',
-                    hidden: !Globle.isadmin,
+                    //hidden: !Globle.isadmin,
                     menu: [
                         {
                             text: '排班管理',
