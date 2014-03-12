@@ -77,9 +77,11 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
                                 var store=panel.getStore();
                                 var bgday=panel.down('#bgday').getValue();
                                 var edday=panel.down('#edday').getValue();
+                                var statustype=panel.down('#statustype').getValue();
                                 store.proxy.extraParams.bgday = Ext.Date.format(new Date(bgday),'Y-m-d');
                                 store.proxy.extraParams.edday = edday;
                                 store.proxy.extraParams.keyword = keyword;
+                                store.proxy.extraParams.statustype = statustype;
                                 store.loadPage(1);
                             }
                         }
@@ -98,6 +100,19 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
                     name: 'edday'
                 },
                 {
+                    xtype:'combobox',
+                    store:  Ext.create('Ext.data.Store', {
+                        fields: ['value', 'name'],
+                        data : searchlog_statue
+                    }),
+                    value:'',
+                    itemId:'statustype',
+                    name:'statustype',
+                    queryMode: 'local',
+                    displayField: 'name',
+                    valueField: 'value'
+                },
+                {
                     xtype:'button',
                     text:'搜索',
                     handler: function() {
@@ -106,9 +121,11 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
                         var bgday=panel.down('#bgday').getValue();
                         var edday=panel.down('#edday').getValue();
                         var keyword=panel.down('#keyword').getValue();
+                        var statustype=panel.down('#statustype').getValue();
                         store.proxy.extraParams.keyword = keyword;
                         store.proxy.extraParams.bgday = Ext.Date.format(new Date(bgday),'Y-m-d');
                         store.proxy.extraParams.edday = edday;
+                        store.proxy.extraParams.statustype = statustype;
                         store.loadPage(1);
                     }
                     //action:'search'

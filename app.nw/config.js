@@ -49,5 +49,27 @@ var missiontype={
     catalogingreportsucc:'编目快报成功',
     catalogingreportfail:'编目快报失败'
 
-}
+};
+var searchlog_statue= [
+    {"value":"", "name":"所有"},
+    {"value":exceptiontype.ping, "name":exceptiontype.ping},
+    {"value":exceptiontype.app, "name":exceptiontype.app},
+    {"value":exceptiontype.disk, "name":exceptiontype.disk},
+    {"value":exceptiontype.mem, "name":exceptiontype.mem},
+    {"value":exceptiontype.ok, "name":exceptiontype.ok},
+    {"value":dutylogtype.logfail, "name":dutylogtype.logfail},
+    {"value":dutylogtype.logsucc, "name":dutylogtype.logsucc},
+    {"value":missiontype.earthquickfail, "name":missiontype.earthquickfail},
+    {"value":missiontype.earthquicksucc, "name":missiontype.earthquicksucc},
+    {"value":missiontype.archivefilefail, "name":missiontype.archivefilefail},
+    {"value":missiontype.archivefilesucc, "name":missiontype.archivefilesucc},
+    {"value":missiontype.catalogingreportfail, "name":missiontype.catalogingreportfail},
+    {"value":missiontype.catalogingreportsucc, "name":missiontype.catalogingreportsucc},
+    {"value":missiontype.eqimfail, "name":missiontype.eqimfail},
+    {"value":missiontype.eqimsucc, "name":missiontype.eqimsucc},
+    {"value":missiontype.recordfail, "name":missiontype.recordfail},
+    {"value":missiontype.recordsucc, "name":missiontype.recordsucc},
+    {"value":missiontype.waveformfail, "name":missiontype.waveformfail},
+    {"value":missiontype.waveformsucc, "name":missiontype.waveformsucc}
+];
 

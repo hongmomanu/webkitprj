@@ -181,6 +181,7 @@ Ext.define('Webdesktop.view.Viewport', {
                                             store.proxy.extraParams.bgday =bgday;
                                             store.proxy.extraParams.edday =panel.down('#edday').getValue();
                                             store.proxy.extraParams.keyword =panel.down('#keyword').getValue();
+                                            store.proxy.extraParams.statustype =panel.down('#statustype').getValue();
                                             store.load();
 
                                         }
