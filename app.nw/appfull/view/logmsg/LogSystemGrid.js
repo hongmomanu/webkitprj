@@ -135,6 +135,12 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
                     text:'统计',
                     searchtype:'system',
                     action:'static'
+                },
+                {
+                    xtype:'button',
+                    text:'删除',
+                    hidden:!Globle.isadmin,
+                    action:'del'
                 }
             ],
             bbar: Ext.create('Ext.PagingToolbar', {
