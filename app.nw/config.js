@@ -17,7 +17,7 @@ var exceptiontype={
     mem:"内存危机",
     app:"服务异常",
     disk:"磁盘危机",
-    ok:"正常"
+    ok:"服务正常"
 };
 
 var dutylogtype={
