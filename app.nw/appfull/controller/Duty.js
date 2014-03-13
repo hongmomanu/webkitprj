@@ -11,41 +11,45 @@ Ext.define('Webdesktop.controller.Duty', {
          'duty.Dutypanel',
          'duty.DutyManagerWin',
          'duty.AddNewWorkWin',
+         'duty.AddNewStationWin',
          'duty.AddNewMissionWin',
          'duty.EditMissionItemWin',
          'duty.MissionManagerpanel',
+         'duty.StationManagerpanel',
          'duty.MissionManagerWin',
          'duty.WaveformCopyWin',
          'duty.ArchiveFileWin',
          'duty.WorkManagerpanel',
          'duty.DutyConfigManagerWin',
+         'duty.StationManagerConfigwin',
          'conmmon.AnimateWin'
     ],
     models: [
         'duty.DutyMission',
         'duty.MissionManager',
+        'duty.StationManager',
         'duty.WorkManager'
     ],
     stores: [
         'duty.DutyMissions',
         'duty.MissionManagers',
         'duty.WorkManagers',
+        'duty.StationManagers',
         'duty.WorkManagerEvents'
     ],
-
     init: function() {
-
-
         this.control({
             'dutypanel menuitem[action=workmanager]':{
                 click: this.openworkmanagerwin
             },
-
             'dutypanel menuitem[action=missionmanager]':{
                 click: this.openmissionmanagerwin
             },
             'dutypanel menuitem[action=dutymanager]':{
                 click: this.opendutymanagerconfigwin
+            },
+            'dutypanel menuitem[action=stationmanager]':{
+                click: this.openstationmanagerconfigwin
             },
             'dutypanel menuitem[action=logout]':{
                 click: this.logoutsystem
@@ -79,6 +83,9 @@ Ext.define('Webdesktop.controller.Duty', {
             },
             'archivefilewin button[action=check]':{
                 click: this.checkarchive
+            },
+            'stationmanagerpanel button[action=new]':{
+                click: this.addnewstationwin
             },
             'missionmanagerpanel button[action=new]':{
                 click: this.addnewmissionwin
@@ -441,6 +448,10 @@ Ext.define('Webdesktop.controller.Duty', {
     logoutsystem:function(btn){
         window.location.reload();
     },
+    openstationmanagerconfigwin:function(btn){
+        if(!this.stationmanagerconfigwin)this.stationmanagerconfigwin= Ext.widget('stationmanagerconfigwin');
+        this.stationmanagerconfigwin.show();
+    },
     opendutymanagerconfigwin:function(btn){
         if(!this.dutyconfigmanagerwin)this.dutyconfigmanagerwin= Ext.widget('dutyconfigmanagerwin');
         this.dutyconfigmanagerwin.show();
@@ -454,6 +465,10 @@ Ext.define('Webdesktop.controller.Duty', {
                 eqimpassword:localStorage.eqimpassword
             });
 
+    },
+    addnewstationwin:function(btn){
+        if(!this.newstationwin)this.newstationwin= Ext.widget('addnewstationwin');
+        this.newstationwin.show();
     },
     addnewmissionwin:function(btn){
         if(!this.newmissionwin)this.newmissionwin= Ext.widget('addnewmissionwin');
