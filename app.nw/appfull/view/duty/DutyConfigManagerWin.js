@@ -10,8 +10,8 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
     initComponent: function() {
         Ext.apply(this, {
             title: '值班配置管理',
-            height: 360,
-            width: 520,
+            height: 460,
+            width: 500,
             closeAction : 'hide',
             modal:true,
             resizable:false,
@@ -70,6 +70,21 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
                         xtype:'textfield',
                         name:'eqimpassword',
                         fieldLabel:'eqim密码'
+                    },
+                    {
+                        xtype: 'textfield',
+                        fieldLabel: '源文件夹',
+                        name: 'sourcedir'
+                    },
+                    {
+                        xtype: 'textfield',
+                        fieldLabel: '目标文件夹',
+                        name: 'targetdir'
+                    },
+                    {
+                        xtype: 'textfield',
+                        fieldLabel: '文件异常值',
+                        name: 'archiveminsize'
                     }
 
 

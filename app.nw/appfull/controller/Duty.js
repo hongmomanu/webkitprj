@@ -93,6 +93,9 @@ Ext.define('Webdesktop.controller.Duty', {
             'missionmanagerpanel button[action=edit]':{
                 click: this.editmissionwin
             },
+            'addnewstationwin button[action=add]':{
+                click: this.addnewstation
+            },
             'addnewworkwin button[action=add]':{
                 click: this.addnewduty
             },
@@ -201,6 +204,7 @@ Ext.define('Webdesktop.controller.Duty', {
     earthquickfileclick:function(rec,store){
         var me=this;
         var params={
+            sourcedir:localStorage.sourcedir,
             earthplatformlist:localStorage.earthplatformlist,
             archiveminsize:localStorage.archiveminsize
         };
@@ -213,14 +217,14 @@ Ext.define('Webdesktop.controller.Duty', {
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.earthquicksucc,
-                    logcontent:missiontype.earthquickfail}],'duty/senddutylogs');
+                    logcontent:missiontype.earthquicksucc}],'duty/senddutylogs');
             }else{
-                me.completeduty(rec,store,missiontype.archivefilefail+res.results.join(","));
+                me.completeduty(rec,store,missiontype.archivefilefail+'<br>'+res.results.join("<br>"));
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([
                     {
                         userid:Globle.userid,
-                        statustype:missiontype.archivefilefail,
+                        statustype:missiontype.earthquickfail,
                         logcontent:res.results.join(",")
                     }
                 ],'duty/senddutylogs');
@@ -239,6 +243,7 @@ Ext.define('Webdesktop.controller.Duty', {
 
         var me=this;
         var params={
+            sourcedir:localStorage.sourcedir,
             earthplatformlist:localStorage.earthplatformlist,
             archiveminsize:localStorage.archiveminsize
         };
@@ -253,7 +258,7 @@ Ext.define('Webdesktop.controller.Duty', {
                     logcontent:missiontype.archivefilesucc}],'duty/senddutylogs');
             }
             else{
-                me.completeduty(rec,store,missiontype.archivefilefail+res.results.join(","));
+                me.completeduty(rec,store,missiontype.archivefilefail+'<br>'+res.results.join("<br>"));
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([
                     {
@@ -344,6 +349,9 @@ Ext.define('Webdesktop.controller.Duty', {
         localStorage.eqimurl=form.getValues().eqimurl;
         localStorage.eqimusername=form.getValues().eqimusername;
         localStorage.eqimpassword=form.getValues().eqimpassword;
+        localStorage.sourcedir=form.getValues().sourcedir;
+        localStorage.targetdir=form.getValues().targetdir;
+        localStorage.archiveminsize=form.getValues().archiveminsize;
         this.checkdutytask.interval=parseInt(localStorage.dutyalertinterval);
         btn.up('window').hide();
     },
@@ -462,7 +470,10 @@ Ext.define('Webdesktop.controller.Duty', {
                 dutyalertinterval:parseInt(localStorage.dutyalertinterval),
                 eqimurl:localStorage.eqimurl,
                 eqimusername:localStorage.eqimusername,
-                eqimpassword:localStorage.eqimpassword
+                eqimpassword:localStorage.eqimpassword,
+                sourcedir:localStorage.sourcedir,
+                targetdir:localStorage.targetdir,
+                archiveminsize:localStorage.archiveminsize
             });
 
     },
@@ -573,6 +584,21 @@ Ext.define('Webdesktop.controller.Duty', {
         var me=this;
         var successFunc = function (form, action) {
             var grid=me.missionmanagerwin.down('grid');
+            grid.getStore().load();
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息",action.result.msg);
+        };
+        var form = btn.up('form');
+        CommonFunc.formSubmit(form,{},url,successFunc,failFunc,"正在提交。。。")
+
+    },
+    addnewstation:function(btn){
+        var url='duty/addnewstation';
+        var me=this;
+        var successFunc = function (form, action) {
+            var grid=me.stationmanagerconfigwin.down('grid');
+            btn.up('window').hide();
             grid.getStore().load();
         };
         var failFunc = function (form, action) {
