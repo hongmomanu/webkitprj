@@ -341,7 +341,7 @@ Ext.define('Webdesktop.controller.Duty', {
         };
 
         var form = btn.up('form');
-        CommonFunc.formSubmit(form, params, url, successFunc, failFunc, "正在提交。。。")
+        CommonFunc.formSubmit(form, params, url, successFunc, failFunc, "正在提交。。。")  ;
     },
     savedutyconfig:function(btn){
         var form=btn.up('form');

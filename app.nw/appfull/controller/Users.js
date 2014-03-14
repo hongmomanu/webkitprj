@@ -13,6 +13,7 @@ Ext.define('Webdesktop.controller.Users', {
         'user.Config',
         'user.UserManagerWin',
         'user.UserManagerpanel',
+        'user.AddnewUserWin',
         'Viewport'
     ],
 
@@ -39,6 +40,12 @@ Ext.define('Webdesktop.controller.Users', {
             },'webdesktop_lockwin button[action=unlockwin]':{
                 click: this.unlockwin
 
+            },'usermanagerpanel button[action=new]':{
+                click: this.openaddnewuserwin
+
+            },'addnewuserwin button[action=add]':{
+                click: this.addnewuser
+
             },
             'dutypanel menuitem[action=usermanager]':{
                 click: this.openusermanagerwin
@@ -46,6 +53,30 @@ Ext.define('Webdesktop.controller.Users', {
 
         });
 
+
+    },
+    addnewuser:function(btn){
+        var url = 'user/adduser';
+        var win = this.usermanagerwin;
+        var panel = win.down('panel');
+
+        var params = {
+
+        };
+        var successFunc = function (form, action) {
+            panel.getStore().load();
+            btn.up('window').hide();
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息", "新增用户失败");
+        };
+
+        var form = btn.up('form');
+        CommonFunc.formSubmit(form, params, url, successFunc, failFunc, "正在提交。。。")  ;
+    },
+    openaddnewuserwin:function(btn){
+        if(!this.addnewuserwin)this.addnewuserwin= Ext.widget('addnewuserwin');
+        this.addnewuserwin.show();
 
     },
     openusermanagerwin:function(btn){
