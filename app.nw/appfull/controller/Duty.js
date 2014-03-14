@@ -176,6 +176,10 @@ Ext.define('Webdesktop.controller.Duty', {
     },
     recordclick:function(rec){
       //alert(2);断记上传
+      Ext.MessageBox.confirm('接口未实现', '', function showResult(btn){
+          Ext.Msg.hide();
+      });
+
     },
     waveformclick:function(rec,store){
         var me=this;
