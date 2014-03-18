@@ -160,7 +160,7 @@ Ext.define('Webdesktop.controller.Duty', {
                     statustype:missiontype.eqimsucc,
                     logcontent:missiontype.eqimsucc}],'duty/senddutylogs');
             }else{
-                Ext.Msg.alert("提示信息", "eqim 网络不通!");
+                //Ext.Msg.alert("提示信息", "eqim 网络不通!");
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.eqimfail,
@@ -302,7 +302,7 @@ Ext.define('Webdesktop.controller.Duty', {
                     statustype:missiontype.catalogingreportsucc,
                     logcontent:missiontype.catalogingreportsucc}],'duty/senddutylogs');
             }else{
-                Ext.Msg.alert("提示信息", "eqim 网络不通!");
+                //Ext.Msg.alert("提示信息", "eqim 网络不通!");
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.catalogingreportfail,
@@ -377,6 +377,7 @@ Ext.define('Webdesktop.controller.Duty', {
                 }
                 Ext.TaskManager.start(me.checkdutytask);
             }else{
+                store.proxy.extraParams.day=Ext.util.Format.date(new Date(), "Y-m-d");
                 me.anotherdayproc();
                 me.dutyautocheck(store);
                 //me.dutyshowalert(store);
@@ -388,9 +389,12 @@ Ext.define('Webdesktop.controller.Duty', {
 
     anotherdayproc:function(){
        var now =new Date();
+
        if(Globle.logintime&&now.getDay()!=Globle.logintime.getDay()){
            var user_cl=this.application.getController("Users");
-           user_cl.maketodaymission();
+           //user_cl.maketodaymission();
+           Globle.logintime=now;
+           user_cl.getcurrentduty(function(){});
        }
     },
     getEventMap:function(){

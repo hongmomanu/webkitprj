@@ -229,6 +229,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                 linkDataArray.push(linkitem);
             }
             me.myDiagram.model = new go.GraphLinksModel(nodearr,linkDataArray);
+            me.myDiagram.redraw();
 
         };
         var failFunc = function (form, action) {
