@@ -15,7 +15,7 @@ Ext.application({
     appFolder: 'appfull',
 
     controllers: [
-        'Users','Duty','Systemwatch','Logmsg'
+        'Users','Duty','Systemwatch','Logmsg','Realstream'
     ],
 
     launch: function() {
