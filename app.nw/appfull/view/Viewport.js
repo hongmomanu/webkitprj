@@ -54,7 +54,7 @@ Ext.define('Webdesktop.view.Viewport', {
                                     layout:'fit',
                                     items:[
                                         {
-                                         xtype:'realminiseedchart'
+                                         xtype:'realseedchart'
                                         }
                                     ],
                                     tools: [
@@ -64,7 +64,7 @@ Ext.define('Webdesktop.view.Viewport', {
                                             handler: function (a, b, c) {
                                                 //console.log(c);
                                                 //testobj=c;
-                                                var panel=c.up('panel').down('chart');
+                                                var panel=c.up('panel').down('panel');
                                                 CommonFunc.maxpanel(panel,'地震实时数据流处理',c);
                                             }
                                         }
