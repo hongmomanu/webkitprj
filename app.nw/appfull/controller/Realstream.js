@@ -119,11 +119,20 @@ Ext.define('Webdesktop.controller.Realstream', {
         });
         this.map=map;
 
-        var element=document.getElementById('popup');
+        //var element=document.getElementById('popup');
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        var closer = document.getElementById('popup-closer');
+        closer.onclick = function() {
+            container.style.display = 'none';
+            closer.blur();
+            return false;
+        };
+
         var popup = new ol.Overlay({
-            element: element,
+            element: container/*,
             positioning: 'bottom-center',
-            stopEvent: false
+            stopEvent: false*/
         });
         map.addOverlay(popup);
 
@@ -137,14 +146,18 @@ Ext.define('Webdesktop.controller.Realstream', {
                 var geometry = feature.getGeometry();
                 var coord = geometry.getCoordinates();
                 popup.setPosition(coord);
-                $(element).popover({
+                content.innerHTML = '<p>地震位置:</p><code>' + feature.get('name') +
+                    '</code>';
+                container.style.display = 'block';
+
+               /* $(element).popover({
                     'placement': 'top',
                     'html': true,
                     'content': '<div >地震来源:'+feature.get('name')+'</div>'
                 });
-                $(element).popover('show');
+                $(element).popover('show');*/
             } else {
-                $(element).popover('destroy');
+                /*$(element).popover('destroy');*/
             }
         });
 
@@ -190,7 +203,10 @@ Ext.define('Webdesktop.controller.Realstream', {
                         bhn=bhn.concat(result[i].data);
                     }
                 }
-                me.realstreamchart(bhe,bhn,bhz);
+                if(!me.plot){
+                    me.realstreamchart(bhe,bhn,bhz);
+                }
+
 
             }else{
                 Ext.Msg.alert("提示信息", "检查失败!");

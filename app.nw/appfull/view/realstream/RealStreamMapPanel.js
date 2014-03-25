@@ -10,7 +10,10 @@ Ext.define('Webdesktop.view.realstream.RealStreamMapPanel', {
         var me = this;
         Ext.apply(me, {
             border: true,
-            html:'<div id="realstreammap"  style="width: 100%;height: 100%;"><div id="popup"></div></div>'
+            html:'<div id="realstreammap"  style="width: 100%;height: 100%;"><div id="popup" class="ol-popup">' +
+                '<a href="#" id="popup-closer" class="ol-popup-closer"></a>'+
+                '<div id="popup-content"></div>' +
+                '</div></div>'
 
         });
 

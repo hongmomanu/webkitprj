@@ -69,6 +69,7 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
                 {
                     xtype:'textfield',
                     itemId:'keyword',
+                    width:100,
                     listeners: {
                         "specialkey": function (field, e) {
                             if (e.keyCode == 13) {
@@ -90,17 +91,18 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
                     xtype:'datefield',
                     itemId:'bgday',
                     value: Ext.Date.add(new Date(), Ext.Date.DAY, -5),
-
+                    width:110,
                     name: 'bgday'
                 },{
                     xtype:'datefield',
                     itemId:'edday',
                     value:new Date(),
-
+                    width:110,
                     name: 'edday'
                 },
                 {
                     xtype:'combobox',
+                    width:110,
                     store:  Ext.create('Ext.data.Store', {
                         fields: ['value', 'name'],
                         data : searchlog_statue
