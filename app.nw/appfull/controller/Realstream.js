@@ -59,9 +59,7 @@ Ext.define('Webdesktop.controller.Realstream', {
 
         var iconFeature = new ol.Feature({
             geometry: new ol.geom.Point([558, 825]),
-            name: '杭州震中',
-            population: 4000,
-            rainfall: 500
+            name: '杭州震中'
         });
 
         var iconStyle = new ol.style.Style({
@@ -142,7 +140,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                 $(element).popover({
                     'placement': 'top',
                     'html': true,
-                    'content': feature.get('name')
+                    'content': '<div >地震来源:'+feature.get('name')+'</div>'
                 });
                 $(element).popover('show');
             } else {
