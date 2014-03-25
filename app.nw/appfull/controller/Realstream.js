@@ -9,6 +9,7 @@ Ext.define('Webdesktop.controller.Realstream', {
     extend: 'Ext.app.Controller',
     views: [
           'realstream.RealMiniSeedChart',
+          'realstream.RealStreamMapPanel',
           'realstream.RealSeedChart'
     ],
     models: [
@@ -29,11 +30,140 @@ Ext.define('Webdesktop.controller.Realstream', {
                     //task.delay(100);
 
                 }
+            },
+            'realstreammappanel':{
+                afterrender:function(){
+                    var me=this;
+                    var task = new Ext.util.DelayedTask(function(){
+                        me.realstreammapInit();
+                    });
+                    task.delay(1000);
+
+                },
+                afterlayout:function( panel, layout, eOpts ){
+                    if(this.map){
+                        this.map.updateSize();
+                    }
+                }
+
             }
 
         });
     },
+    realstreammapInit:function(){
+        var pixelProjection = new ol.proj.Projection({
+            code: 'pixel',
+            units: 'pixels',
+            extent: [0, 0, 1129, 1196]
+        });
 
+        var iconFeature = new ol.Feature({
+            geometry: new ol.geom.Point([558, 825]),
+            name: '杭州震中',
+            population: 4000,
+            rainfall: 500
+        });
+
+        var iconStyle = new ol.style.Style({
+            image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                anchor: [0.5, 46],
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'pixels',
+                opacity: 0.75,
+                src: 'images/icon.png'
+            }))
+        });
+
+        iconFeature.setStyle(iconStyle);
+
+        var vectorSource = new ol.source.Vector({
+            features: [iconFeature]
+        });
+
+        var vectorLayer = new ol.layer.Vector({
+            source: vectorSource
+        });
+
+        var mousePositionControl = new ol.control.MousePosition({
+            coordinateFormat: ol.coordinate.createStringXY(4),
+            //projection: 'EPSG:4326',
+            // comment the following two lines to have the mouse position
+            // be placed within the map.
+            //className: 'custom-mouse-position',
+            //target: document.getElementById('mouse-position'),
+            undefinedHTML: '&nbsp;'
+        });
+        var map = new ol.Map({
+            controls: ol.control.defaults().extend([mousePositionControl]),
+            layers: [
+                new ol.layer.Image({
+                    source: new ol.source.ImageStatic({
+                        attributions: [
+                            new ol.Attribution({
+                                //html: '&copy; <a href="http://xkcd.com/license.html">xkcd</a>'
+                            })
+                        ],
+                        url: 'images/zjmap1.gif',
+                        imageSize: [1129, 1196],
+                        projection: pixelProjection,
+                        imageExtent: pixelProjection.getExtent()
+                    })
+                }),
+                vectorLayer
+            ],
+            renderer: 'canvas',
+            target: 'realstreammap',
+            view: new ol.View2D({
+                projection: pixelProjection,
+                center: ol.extent.getCenter(pixelProjection.getExtent()),
+                zoom: 1
+            })
+        });
+        this.map=map;
+
+        var element=document.getElementById('popup');
+        var popup = new ol.Overlay({
+            element: element,
+            positioning: 'bottom-center',
+            stopEvent: false
+        });
+        map.addOverlay(popup);
+
+// display popup on click
+        map.on('singleclick', function(evt) {
+            var feature = map.forEachFeatureAtPixel(evt.pixel,
+                function(feature, layer) {
+                    return feature;
+                });
+            if (feature) {
+                var geometry = feature.getGeometry();
+                var coord = geometry.getCoordinates();
+                popup.setPosition(coord);
+                $(element).popover({
+                    'placement': 'top',
+                    'html': true,
+                    'content': feature.get('name')
+                });
+                $(element).popover('show');
+            } else {
+                $(element).popover('destroy');
+            }
+        });
+
+// change mouse cursor when over marker
+        $(map.getViewport()).on('mousemove', function(e) {
+            var pixel = map.getEventPixel(e.originalEvent);
+            var hit = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+                return true;
+            });
+            if (hit) {
+                //map.getTarget().style.cursor = 'pointer';
+            } else {
+                //map.getTarget().style.cursor = '';
+            }
+        });
+
+    },
     getrealstreamdata:function(){
         var me=this;
         var params={

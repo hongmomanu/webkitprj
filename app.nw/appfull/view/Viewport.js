@@ -52,11 +52,36 @@ Ext.define('Webdesktop.view.Viewport', {
                                     xtype:'panel',
                                     title:'地震实时数据流处理',
                                     layout:'fit',
+                                    collapsible: false,
                                     items:[
                                         {
-                                         xtype:'realseedchart'
+                                            xtype: 'container',
+                                            layout: {
+                                                type: 'border',
+                                                align: 'stretch'
+                                            },
+                                            defaults: {
+                                                split: true,
+                                                //collapsible: true,
+                                                animCollapse: true
+                                            },
+                                            items:[
+                                                {
+                                                    xtype:'realseedchart',
+                                                    region:'west',
+                                                    flex:0.5
+                                                },
+                                                {
+                                                    xtype:'realstreammappanel',
+
+                                                    region:'center',
+                                                    flex:0.5
+                                                }
+                                            ]
+
                                         }
                                     ],
+
                                     tools: [
                                         {
                                             type: 'maximize',
@@ -64,8 +89,9 @@ Ext.define('Webdesktop.view.Viewport', {
                                             handler: function (a, b, c) {
                                                 //console.log(c);
                                                 //testobj=c;
-                                                var panel=c.up('panel').down('panel');
-                                                CommonFunc.maxpanel(panel,'地震实时数据流处理',c);
+                                                CommonFunc.maxpanel(c.up('panel').items.items[0],'地震实时数据流处理',c);
+                                                //var panel=c.up('panel').down('container');
+                                                //CommonFunc.maxpanel(panel,'地震实时数据流处理',c);
                                             }
                                         }
                                     ],
