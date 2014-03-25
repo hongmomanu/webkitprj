@@ -83,7 +83,7 @@ Ext.define('Webdesktop.controller.Realstream', {
     realstreamchart:function(bhe,bhn,bhz){
 
         var data = [],
-            totalPoints = 4000;
+            totalPoints = 6000;
 
 
 
@@ -134,7 +134,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                 show: false
             }
         });
-        var plotbhe = $.plot("#realseedchartbhe", [{ label: "BHE", data: getRandomData(bhe), color: '#AA4643' } ], {
+        var plotbhe = $.plot("#realseedchartbhe", [{ label: "BHE", data: getRandomData(bhe), color: 'green' } ], {
             series: {
                 shadowSize: 0	// Drawing is faster without shadows
             },
