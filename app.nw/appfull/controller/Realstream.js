@@ -10,13 +10,14 @@ Ext.define('Webdesktop.controller.Realstream', {
     views: [
           'realstream.RealMiniSeedChart',
           'realstream.RealStreamMapPanel',
-          'realstream.RealSeedChart'
+          'realstream.RealStreamGrid'/*,
+          'realstream.RealSeedChart'*/
     ],
     models: [
-
+        'realstream.RealStream'
     ],
     stores: [
-
+        'realstream.RealStreams'
     ],
 
     init: function() {
@@ -25,7 +26,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                 afterrender: function () {
                     var me=this;
                     //var task = new Ext.util.DelayedTask(function(){
-                        me.getrealstreamdata();
+                        //me.getrealstreamdata();
                     //});
                     //task.delay(100);
 
@@ -51,6 +52,7 @@ Ext.define('Webdesktop.controller.Realstream', {
         });
     },
     realstreammapInit:function(){
+        var me=this;
         var pixelProjection = new ol.proj.Projection({
             code: 'pixel',
             units: 'pixels',
@@ -119,8 +121,8 @@ Ext.define('Webdesktop.controller.Realstream', {
         });
         this.map=map;
 
-        //var element=document.getElementById('popup');
-        var container = document.getElementById('popup');
+        var element=document.getElementById('popup');
+        /*var container = document.getElementById('popup');
         var content = document.getElementById('popup-content');
         var closer = document.getElementById('popup-closer');
         closer.onclick = function() {
@@ -128,11 +130,11 @@ Ext.define('Webdesktop.controller.Realstream', {
             closer.blur();
             return false;
         };
-
+*/
         var popup = new ol.Overlay({
-            element: container/*,
+            element: element,
             positioning: 'bottom-center',
-            stopEvent: false*/
+            stopEvent: false
         });
         map.addOverlay(popup);
 
@@ -142,22 +144,26 @@ Ext.define('Webdesktop.controller.Realstream', {
                 function(feature, layer) {
                     return feature;
                 });
+            me.plot=null;
             if (feature) {
                 var geometry = feature.getGeometry();
                 var coord = geometry.getCoordinates();
                 popup.setPosition(coord);
-                content.innerHTML = '<p>地震位置:</p><code>' + feature.get('name') +
+                /*content.innerHTML = '<p>地震位置:</p><code>' + feature.get('name') +
                     '</code>';
-                container.style.display = 'block';
-
-               /* $(element).popover({
+                container.style.display = 'block';*/
+               $(element).popover({
                     'placement': 'top',
                     'html': true,
-                    'content': '<div >地震来源:'+feature.get('name')+'</div>'
+                    'content': '<div style="width: 100%;" >地震来源:'+feature.get('name')+'<div id="realseedchart"  style="width: 350px;height: 100px;"></div>' +
+                        '<div id="realseedchartbhe" style="width: 350px;height: 100px;"></div>'+
+                        '<div id="realseedchartbhz" style="width: 350px;height: 100px;"></div>'+'</div>'
                 });
-                $(element).popover('show');*/
+                $(element).popover('show');
+
+                me.getrealstreamdata();
             } else {
-                /*$(element).popover('destroy');*/
+                $(element).popover('destroy');
             }
         });
 
@@ -219,7 +225,7 @@ Ext.define('Webdesktop.controller.Realstream', {
 
 
         };
-        CommonFunc.ajaxSend(params,'readrealstreambyfilename',successFunc,failFunc,'GET');
+        CommonFunc.ajaxSend(params,'readrealstreamfromcache',successFunc,failFunc,'GET');
 
 
 

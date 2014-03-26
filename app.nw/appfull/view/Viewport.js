@@ -67,15 +67,16 @@ Ext.define('Webdesktop.view.Viewport', {
                                             },
                                             items:[
                                                 {
-                                                    xtype:'realseedchart',
+                                                    //xtype:'realseedchart',
+                                                    xtype:'realstreamgrid',
                                                     region:'west',
-                                                    flex:0.5
+                                                    flex:0.3
                                                 },
                                                 {
                                                     xtype:'realstreammappanel',
 
                                                     region:'center',
-                                                    flex:0.5
+                                                    flex:0.7
                                                 }
                                             ]
 
@@ -97,7 +98,7 @@ Ext.define('Webdesktop.view.Viewport', {
                                     ],
 
                                     region:'west',
-                                    flex: 0.3
+                                    flex: 0.5
                                 },
                                 {
                                     xtype:'panel',
@@ -105,7 +106,7 @@ Ext.define('Webdesktop.view.Viewport', {
                                     collapsible: false,
                                     layout:'fit',
                                     region:'center',
-                                    flex: 0.7,
+                                    flex: 0.5,
                                     tools: [
                                         {
                                             type: 'maximize',

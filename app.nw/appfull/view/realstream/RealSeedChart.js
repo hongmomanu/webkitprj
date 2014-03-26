@@ -12,7 +12,6 @@ Ext.define('Webdesktop.view.realstream.RealSeedChart', {
         var me = this;
         Ext.apply(me, {
             border: true,
-            //itemId:'realseedchart',
             html:'<div id="realseedchart"  style="width: 100%;height: 33%;"></div>' +
                 '<div id="realseedchartbhe" style="width: 100%;height: 33%;"></div>'+
                 '<div id="realseedchartbhz" style="width: 100%;height: 33%;"></div>'

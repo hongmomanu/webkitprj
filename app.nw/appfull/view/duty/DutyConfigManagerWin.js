@@ -10,7 +10,7 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
     initComponent: function() {
         Ext.apply(this, {
             title: '值班配置管理',
-            height: 460,
+            height: 480,
             width: 500,
             closeAction : 'hide',
             modal:true,

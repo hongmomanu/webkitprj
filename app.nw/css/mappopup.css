@@ -41,3 +41,5 @@
 .ol-popup-closer:after {
     content: "✖";
 }
+.popover
+{max-width: 800px; width: auto;}
