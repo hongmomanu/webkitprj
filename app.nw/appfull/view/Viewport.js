@@ -70,13 +70,13 @@ Ext.define('Webdesktop.view.Viewport', {
                                                     //xtype:'realseedchart',
                                                     xtype:'realstreamgrid',
                                                     region:'west',
-                                                    flex:0.3
+                                                    flex:0.5
                                                 },
                                                 {
                                                     xtype:'realstreammappanel',
 
                                                     region:'center',
-                                                    flex:0.7
+                                                    flex:0.5
                                                 }
                                             ]
 

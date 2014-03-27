@@ -14,7 +14,15 @@ Ext.define('Webdesktop.model.realstream.RealStream', {
             type:'string'
         },
         {
-            name: 'data',
+            name: 'stationcode',
+            type:'string'
+        },
+        {
+            name: 'crossnowbhz',
+            type:'string'
+        },
+        {
+            name: 'crossavgbhz',
             type:'string'
         }
 

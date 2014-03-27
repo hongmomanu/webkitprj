@@ -47,6 +47,19 @@ Ext.define('Webdesktop.controller.Realstream', {
                     }
                 }
 
+            },
+            'realstreamgrid':{
+                afterrender:function(grid){
+                    var store=grid.getStore();
+
+                    var task={
+                        run: function(){
+                           store.load()
+                        },
+                        interval: 5000
+                    }
+                    Ext.TaskManager.start(task);
+                }
             }
 
         });

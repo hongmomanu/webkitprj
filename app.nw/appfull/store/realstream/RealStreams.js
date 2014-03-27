@@ -4,7 +4,7 @@ Ext.define('Webdesktop.store.realstream.RealStreams', {
     autoLoad:false,
     proxy:{
         type: 'ajax',
-        url: CommonFunc.geturl()+'log/getrealstream',
+        url: CommonFunc.geturl()+'realstream/getrealstream',
         reader: {
             type: 'json',
             root: 'results',

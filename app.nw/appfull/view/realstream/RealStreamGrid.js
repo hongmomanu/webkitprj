@@ -16,7 +16,7 @@ Ext.define('Webdesktop.view.realstream.RealStreamGrid', {
             multiSelect: true,
             viewConfig: {
                 trackOver: false,
-                loadMask: true,
+                loadMask: false,
                 scrollToTop: Ext.emptyFn,
                 enableTextSelection:true,
                 getRowClass: function (record, rowIndex, rowParams, store) {
@@ -38,9 +38,18 @@ Ext.define('Webdesktop.view.realstream.RealStreamGrid', {
             forceFit: true,
             columns: [
 
-                {header: '时间',dataIndex: 'time',width:60},
-                {header: '站台', dataIndex: 'stationname',flex:1},
-                {header: '平均次数', dataIndex: 'times',flex:1}
+                {header: '时间',dataIndex: 'time',width:40,renderer:function(val, obj, record){
+                    return Ext.Date.format(new Date(val),'H:i');
+
+                }},
+                {header: '站台', dataIndex: 'stationcode',width:40},
+                {header: '平均次数', dataIndex: 'crossavgbhz',width:40},
+                {header: '当前次数', dataIndex: 'crossnowbhz',width:40},
+                {header: '偏差百分比',width:60,renderer:function(val, obj, record){
+                           return (((parseInt(record.get('crossnowbhz'))-parseInt(record.get('crossavgbhz')))
+                               /parseInt(record.get('crossavgbhz')))*100).toFixed(1);
+                        }
+                }
             ],
 
             tbar:[
