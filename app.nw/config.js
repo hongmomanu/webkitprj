@@ -73,3 +73,11 @@ var searchlog_statue= [
     {"value":missiontype.waveformsucc, "name":missiontype.waveformsucc}
 ];
 
+
+var earth_quick_places=[
+    {
+        name:'杭州震中',
+        geom:[108,227],
+        img:'images/icon.png'
+    }
+];

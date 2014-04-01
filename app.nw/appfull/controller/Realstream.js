@@ -69,28 +69,35 @@ Ext.define('Webdesktop.controller.Realstream', {
         var pixelProjection = new ol.proj.Projection({
             code: 'pixel',
             units: 'pixels',
-            extent: [0, 0, 1129, 1196]
+            extent: [0, 0, 356,339]//1129, 1196
         });
 
-        var iconFeature = new ol.Feature({
-            geometry: new ol.geom.Point([558, 825]),
-            name: '杭州震中'
-        });
+        var features=[];
+        for(var i=0;i<earth_quick_places.length;i++){
+            var iconFeature = new ol.Feature({
+                geometry: new ol.geom.Point(earth_quick_places[i].geom),//558, 825
+                name: earth_quick_places[i].name
+            });
 
-        var iconStyle = new ol.style.Style({
-            image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-                anchor: [0.5, 46],
-                anchorXUnits: 'fraction',
-                anchorYUnits: 'pixels',
-                opacity: 0.75,
-                src: 'images/icon.png'
-            }))
-        });
+            var iconStyle = new ol.style.Style({
+                image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                    anchor: [0.5, 46],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'pixels',
+                    opacity: 0.75,
+                    src: earth_quick_places[i].img
+                }))
+            });
 
-        iconFeature.setStyle(iconStyle);
+            iconFeature.setStyle(iconStyle);
+            features.push(iconFeature);
+
+
+        }
+
 
         var vectorSource = new ol.source.Vector({
-            features: [iconFeature]
+            features: features
         });
 
         var vectorLayer = new ol.layer.Vector({
@@ -99,11 +106,7 @@ Ext.define('Webdesktop.controller.Realstream', {
 
         var mousePositionControl = new ol.control.MousePosition({
             coordinateFormat: ol.coordinate.createStringXY(4),
-            //projection: 'EPSG:4326',
-            // comment the following two lines to have the mouse position
-            // be placed within the map.
-            //className: 'custom-mouse-position',
-            //target: document.getElementById('mouse-position'),
+
             undefinedHTML: '&nbsp;'
         });
         var map = new ol.Map({
@@ -116,8 +119,8 @@ Ext.define('Webdesktop.controller.Realstream', {
                                 //html: '&copy; <a href="http://xkcd.com/license.html">xkcd</a>'
                             })
                         ],
-                        url: 'images/zjmap1.gif',
-                        imageSize: [1129, 1196],
+                        url: 'images/zjmap.jpg',
+                        imageSize: [356,339],
                         projection: pixelProjection,
                         imageExtent: pixelProjection.getExtent()
                     })
@@ -133,7 +136,6 @@ Ext.define('Webdesktop.controller.Realstream', {
             })
         });
         this.map=map;
-
         var element=document.getElementById('popup');
         /*var container = document.getElementById('popup');
         var content = document.getElementById('popup-content');
@@ -157,10 +159,12 @@ Ext.define('Webdesktop.controller.Realstream', {
                 function(feature, layer) {
                     return feature;
                 });
+            testobjs=feature;
             me.plot=null;
             if (feature) {
                 var geometry = feature.getGeometry();
                 var coord = geometry.getCoordinates();
+                console.log(coord);
                 popup.setPosition(coord);
                 /*content.innerHTML = '<p>地震位置:</p><code>' + feature.get('name') +
                     '</code>';
