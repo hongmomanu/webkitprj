@@ -78,6 +78,10 @@ var earth_quick_places=[
     {
         name:'杭州震中',
         geom:[108,227],
+        relationstations:[
+            {name:'QIU',stime:'2014-03-06 00:02:16.64'},
+            {name:'QIY',stime:'2014-03-06 00:02:16.64'}
+        ],
         img:'images/icon.png'
     }
 ];

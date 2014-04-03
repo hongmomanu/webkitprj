@@ -177,8 +177,8 @@ Ext.define('Webdesktop.controller.Realstream', {
                         '<div id="realseedchartbhz" style="width: 350px;height: 100px;"></div>'+'</div>'
                 });
                 $(element).popover('show');
-
-                me.getrealstreamdata();
+                me.getrelationdata(feature.get('name'));
+                //me.getrealstreamdata();
             } else {
                 $(element).popover('destroy');
             }
@@ -196,6 +196,28 @@ Ext.define('Webdesktop.controller.Realstream', {
                 //map.getTarget().style.cursor = '';
             }
         });
+
+    },
+
+    getrelationdata:function(name){
+
+        var me=this;
+        var find_place=earth_quick_places[0];
+        var params={
+            rtime:find_place.relationstations[1].stime,
+            stime:find_place.relationstations[1].stime,
+            rstation:find_place.relationstations[1].stime,
+            sstation:find_place.relationstations[1].stime
+        };
+        var successFunc = function (response, action) {
+            var res = Ext.JSON.decode(response.responseText);
+            console.log(res);
+        };
+        var failFunc = function (form, action) {
+            //Ext.Msg.hide();
+        };
+        CommonFunc.ajaxSend(params,'realstream/realstreamrelations',successFunc,failFunc,'GET');
+
 
     },
     getrealstreamdata:function(){
