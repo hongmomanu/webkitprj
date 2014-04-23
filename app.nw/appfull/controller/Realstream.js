@@ -37,6 +37,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                     var me=this;
                     var task = new Ext.util.DelayedTask(function(){
                         me.realstreammapInit();
+                        me.websocketInit();
                     });
                     task.delay(1000);
 
@@ -63,6 +64,25 @@ Ext.define('Webdesktop.controller.Realstream', {
             }
 
         });
+    },
+    websocketInit:function(){
+        var url=localStorage.serverurl;
+        url=url?"ws://"+url.split("://")[1].split(":")[0]+":3001/":"ws://localhost:3001/";
+        console.log(url);
+        var socket = new WebSocket(url);
+        var me=this;
+        socket.onmessage = function(event) {
+            var data=event.data;
+            data=JSON.parse(data);
+            if(data.type==="rts"){
+                console.log(data);
+                var resoreceurl=localStorage.serverurl+"audio/rts.mp3";
+                var play=new Audio(resoreceurl);
+                play.play();
+
+            }
+        }
+
     },
     realstreammapInit:function(){
         var me=this;
@@ -136,6 +156,7 @@ Ext.define('Webdesktop.controller.Realstream', {
             })
         });
         this.map=map;
+        testobj=map;
         var element=document.getElementById('popup');
         /*var container = document.getElementById('popup');
         var content = document.getElementById('popup-content');
@@ -164,7 +185,7 @@ Ext.define('Webdesktop.controller.Realstream', {
             if (feature) {
                 var geometry = feature.getGeometry();
                 var coord = geometry.getCoordinates();
-                console.log(coord);
+                //console.log(coord);
                 popup.setPosition(coord);
                 /*content.innerHTML = '<p>地震位置:</p><code>' + feature.get('name') +
                     '</code>';
@@ -172,12 +193,21 @@ Ext.define('Webdesktop.controller.Realstream', {
                $(element).popover({
                     'placement': 'top',
                     'html': true,
-                    'content': '<div style="width: 100%;" >地震来源:'+feature.get('name')+'<div id="realseedchart"  style="width: 350px;height: 100px;"></div>' +
-                        '<div id="realseedchartbhe" style="width: 350px;height: 100px;"></div>'+
-                        '<div id="realseedchartbhz" style="width: 350px;height: 100px;"></div>'+'</div>'
+
+                    'content': '<div style="width: 100%;">地震来源:'+feature.get('name')+'<div id="realseedchart"  style="width: 200px;height: 100px;"></div>' +
+                        '<div id="realseedchartbhe" style="width: 200px;height: 0px;"></div>'+
+                        '<div id="realseedchartbhz" style="width: 200px;height: 0px;"></div>'+'</div>'
                 });
                 $(element).popover('show');
-                me.getrelationdata(feature.get('name'));
+                $('#realseedchart').append('<a id="waitinfo">相关性计算中</a>') ;
+                var task={
+                    run: function(){
+                        $('#waitinfo').append('.') ;
+                    },
+                    interval: 500
+                }
+                Ext.TaskManager.start(task);
+                me.getrelationdata(feature.get('name'),task);
                 //me.getrealstreamdata();
             } else {
                 $(element).popover('destroy');
@@ -199,24 +229,33 @@ Ext.define('Webdesktop.controller.Realstream', {
 
     },
 
-    getrelationdata:function(name){
+    getrelationdata:function(name,task){
 
         var me=this;
-        var find_place=earth_quick_places[0];
-        var params={
-            rtime:find_place.relationstations[1].stime,
-            stime:find_place.relationstations[1].stime,
-            rstation:find_place.relationstations[1].stime,
-            sstation:find_place.relationstations[1].stime
-        };
-        var successFunc = function (response, action) {
-            var res = Ext.JSON.decode(response.responseText);
-            console.log(res);
-        };
-        var failFunc = function (form, action) {
-            //Ext.Msg.hide();
-        };
-        CommonFunc.ajaxSend(params,'realstream/realstreamrelations',successFunc,failFunc,'GET');
+        var find_place=CommonFunc.finditembyprop(earth_quick_places,"name",name);
+        Ext.each(find_place.relationstations,function(a){
+            var params={
+                rtime:a.rtime,
+                stime:a.stime,
+                rstation:a.name,
+                sstation:a.name ,
+                second: a.second
+            };
+            var successFunc = function (response, action) {
+                Ext.TaskManager.stop(task);
+                $('#waitinfo').html('');
+                var res = Ext.JSON.decode(response.responseText);
+                //console.log(res);
+                $('#realseedchart').append('<p>'+res.sstation+':'+Ext.max(res.relations)+'</p>');
+
+            };
+            var failFunc = function (form, action) {
+                Ext.TaskManager.stop(task);
+                //Ext.Msg.hide();
+            };
+            CommonFunc.ajaxSend(params,'realstream/realstreamrelations',successFunc,failFunc,'GET');
+
+        })
 
 
     },

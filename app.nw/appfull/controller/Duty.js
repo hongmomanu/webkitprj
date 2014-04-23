@@ -145,16 +145,26 @@ Ext.define('Webdesktop.controller.Duty', {
         //console.log(me);
         var params={
             id:item.raw.id,
-            username:localStorage.eqimusername,
-            password:localStorage.eqimpassword,
-            url:localStorage.eqimurl,
-            securl:"http://192.168.2.141:8080/jz"
+            url:'http://10.5.160.37:8180/gonggao/news.jsp'
+            //username:localStorage.eqimusername,
+            //password:localStorage.eqimpassword,
+            //url:localStorage.eqimurl,
+            //securl:"http://192.168.2.141:8080/jz"
         };
         var successFunc = function (response, action) {
             var res = Ext.JSON.decode(response.responseText);
             if(res.success){
                 var html=res.msg;
-                me.completeduty(item,store,missiontype.eqimsucc);
+                var td_arr=$(html).find("td[bgcolor$='white']");
+                var time=new Date($(td_arr[2]).text());
+                var now= new Date();
+                var public_content='今日無公告信息';
+                //console.log($(td_arr[1]).text());
+                if(now.getFullYear()==time.getFullYear()&&now.getMonth()==time.getMonth()&&now.getDate()==time.getDate()){
+                    public_content=$(td_arr[1]).text();
+                }
+
+                me.completeduty(item,store,public_content);//missiontype.eqimsucc+
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.eqimsucc,
@@ -172,7 +182,8 @@ Ext.define('Webdesktop.controller.Duty', {
         var failFunc = function (form, action) {
             Ext.Msg.alert("提示信息", "操作失败..!");
         };
-        CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
+        //CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
+        CommonFunc.ajaxSend(params,'duty/eqimpublic',successFunc,failFunc,'POST');
     },
     recordclick:function(rec){
       //alert(2);断记上传
@@ -288,15 +299,18 @@ Ext.define('Webdesktop.controller.Duty', {
         //console.log(me);
         var params={
             id:item.raw.id,
-            username:localStorage.eqimusername,
-            password:localStorage.eqimpassword,
-            url:localStorage.eqimurl,
-            securl:"http://192.168.2.141:8080/jz"
+            url:'http://10.5.160.37:8180/gonggao/news.jsp'
+            //username:localStorage.eqimusername,
+            //password:localStorage.eqimpassword,
+            //url:localStorage.eqimurl,
+            //securl:"http://192.168.2.141:8080/jz"
         };
         var successFunc = function (response, action) {
             var res = Ext.JSON.decode(response.responseText);
             if(res.success){
                 var html=res.msg;
+                //console.log(html);
+                //testobj=html;
                 me.completeduty(item,store,missiontype.catalogingreportsucc);
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([{userid:Globle.userid,
@@ -314,7 +328,8 @@ Ext.define('Webdesktop.controller.Duty', {
         var failFunc = function (form, action) {
             //Ext.Msg.alert("提示信息", "操作失败..!");
         };
-        CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
+        //CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
+        CommonFunc.ajaxSend(params,'duty/eqimpublic',successFunc,failFunc,'POST');
     },
     catalogingclick:function(rec,store){
         var me=this;

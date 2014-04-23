@@ -8,7 +8,6 @@ Ext.define('Webdesktop.view.realstream.RealStreamGrid', {
 
     initComponent: function() {
         var me = this;
-        //alert(1);
         Ext.apply(me, {
 
             border: false,
@@ -52,9 +51,7 @@ Ext.define('Webdesktop.view.realstream.RealStreamGrid', {
                 }
             ],
 
-            tbar:[
 
-            ],
             store: 'realstream.RealStreams'
         });
         me.callParent(arguments);

@@ -42,6 +42,7 @@ var CommonFunc = {
         Ext.Ajax.request({
             url: me.geturl() + url,
             method: method,
+
             params: params,
             success: sucFun,
             failure: failFunc
@@ -53,6 +54,14 @@ var CommonFunc = {
         var url = Globle.iswebapp ? "" : localStorage.serverurl;
         return url;
 
+    },
+    finditembyprop:function(items,pname,pvalue){
+         for(var i=0;i<items.length;i++){
+             if(items[i][pname]==pvalue){
+                 return items[i];
+                 break;
+             }
+         }
     },
     makeanim:function(targetWin){
         Ext.create('Ext.fx.Anim', {
