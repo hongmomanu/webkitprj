@@ -110,7 +110,7 @@ Ext.define('Webdesktop.controller.Realstream', {
             var data=event.data;
             data=JSON.parse(data);
             if(data.type==="rts"){
-                console.log(data);
+                //console.log(data);
                 var results=data.results;
                 var name=data.name;
                 me.showRelationMaplocation(data.lonlat);
@@ -119,7 +119,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                     for(var i=0;i<name.length;i++){
                         var item=null;
                          for(var m=0;m<name[i].stations.length;m++){
-                              console.log(results[j].sta_code+"----"+name[i].stations[m].name);
+                              //console.log(results[j].sta_code+"----"+name[i].stations[m].name);
                               if(results[j].sta_code===name[i].stations[m].name){
                                   item={
                                       rtime:results[j].time,
@@ -131,6 +131,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                                   };
                               }
                          }
+
                         if(item){
                             me.relations_begin(name[i].name,item)
                         }
@@ -155,8 +156,8 @@ Ext.define('Webdesktop.controller.Realstream', {
         var successFunc = function (response, action) {
 
             var res=Ext.JSON.decode(response.responseText);
-            console.log(res)
-            /*var relactions=[];
+            //console.log(res)
+            var relactions=[];
             var rtime=res.rtime;
             var stime=res.stime;
 
@@ -184,7 +185,6 @@ Ext.define('Webdesktop.controller.Realstream', {
             params.stime=stime;
             me.make_chart(params.rtime,params.second,
                 params.station,max_index,title,null,params.stime,relactions,res.rate);
-*/
 
 
         };
@@ -206,15 +206,16 @@ Ext.define('Webdesktop.controller.Realstream', {
     make_chart:function(time,second,station,max_index,chartname,callback,timesample,relactions,rate){
         var me=this;
         var params={};
+        var ratereal=1000/Math.abs(rate);
         //time=time.replace("T"," ");
 
         var a= Ext.Date.add(new Date(time),Ext.Date.MILLI,max_index*Math.abs(rate));
         params.time=Ext.util.Format.date(a,'Y-m-d H:i:s.u');
-        arams.timesample=Ext.util.Format.date(timesample,'Y-m-d H:i:s.u');
-
+        params.timesample=Ext.util.Format.date(timesample,'Y-m-d H:i:s.u');
+        params.name=chartname;
         params.second=second;
-        params.type=type;
         params.station=station;
+        params.rate=ratereal;
 
         var successFunc = function (response, action) {
             var data=Ext.JSON.decode(response.responseText).result;
@@ -242,8 +243,8 @@ Ext.define('Webdesktop.controller.Realstream', {
 
             var id=chartname+"chart"+station.replace("/","-");
             var idrelactions=id+"relactions";
-            $('#chart_div').append('<div id="'+id+'" style="height: 120px;"></div>');
-            $('#chart_div').append('<div id="'+idrelactions+'" style="height: 120px;"></div>');
+            $('#rts_chart').append('<div id="'+id+'" style="height: 120px;"></div>');
+            $('#rts_chart').append('<div id="'+idrelactions+'" style="height: 120px;"></div>');
             var plot = $.plot("#"+id, [
                 { label:chartname+station, data: res, color: 'green' },
                 { label:'样本数据：'+station, data: ressample, color: 'red' }
@@ -276,7 +277,7 @@ Ext.define('Webdesktop.controller.Realstream', {
         var failFunc = function (form, action) {
 
         };
-        CommonFunc.ajaxSend(params,'realstream/samplescachedetail',successFunc,failFunc,'GET');
+        CommonFunc.ajaxSend(params,'realstream/samplescachedetaillocal',successFunc,failFunc,'GET');
 
 
     },
@@ -284,11 +285,16 @@ Ext.define('Webdesktop.controller.Realstream', {
 
 
     showRelationMaplocation:function(data){
+        var me=this;
         this.relationmap.panTo(new L.LatLng(data[1],data[0]));
         if(this.popupmarker)this.relationmap.removeLayer(this.popupmarker);
         var marker=L.marker([data[1],data[0]]).addTo(this.relationmap)
-            .bindPopup("<div id='rts_chart' style='width: 450px;height: 300px;'>定位成功</div>").openPopup();
+            .bindPopup("<div id='rts_chart' style='width: 320px;height: 300px;'></div>",{closeButton:true}).openPopup();
         this.popupmarker=marker;
+        marker.on('popupclose', function(e) {
+            //alert(1);
+            me.relationmap.removeLayer(me.popupmarker);
+        });
 
     },
     realmapfeatures:function(){
@@ -299,28 +305,32 @@ Ext.define('Webdesktop.controller.Realstream', {
                 me.vectorLayer.getSource().clear();
                 var features=[];
                 for(var i=0;i< s.length;i++){
-                    var item=earth_quick_places[s[i].raw.stationcode];
-                    var compare=s[i].raw.crossnowbhe==0?0:((s[i].raw.crossavgbhe-s[i].raw.crossnowbhe)/s[i].raw.crossnowbhe)*100;
-                    //console.log(compare);
-                    var iconFeature = new ol.Feature({
-                        geometry: new ol.geom.Point(item.geom),//558, 825
-                        name: s[i].raw.stationname,
-                        time:s[i].raw.time,
-                        cross:compare
-                    });
+                    (function(i){
+                        var item=earth_quick_places[s[i].raw.stationcode];
+                        var compare=s[i].raw.crossnowbhe==0?0:((s[i].raw.crossavgbhe-s[i].raw.crossnowbhe)/s[i].raw.crossnowbhe)*100;
+                        //console.log(compare);
+                        var iconFeature = new ol.Feature({
+                            geometry: new ol.geom.Point(item.geom),//558, 825
+                            name: s[i].raw.stationname,
+                            time:s[i].raw.time,
+                            cross:compare
+                        });
 
-                    var iconStyle = new ol.style.Style({
-                        image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-                            anchor: [0.5, 46],
-                            anchorXUnits: 'fraction',
-                            anchorYUnits: 'pixels',
-                            opacity: 0.75,
-                            src:Math.abs(compare)>15?item.alertimg:item.img
-                        }))
-                    });
+                        var iconStyle = new ol.style.Style({
+                            image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                                anchor: [0.5, 46],
+                                anchorXUnits: 'fraction',
+                                anchorYUnits: 'pixels',
+                                opacity: 0.75,
+                                src:Math.abs(compare)>15?item.alertimg:item.img
+                            }))
+                        });
 
-                    iconFeature.setStyle(iconStyle);
-                    features.push(iconFeature);
+                        iconFeature.setStyle(iconStyle);
+                        features.push(iconFeature);
+
+                    })(i);
+
 
                 }
                 me.vectorLayer.getSource().addFeatures(features);
@@ -414,8 +424,10 @@ Ext.define('Webdesktop.controller.Realstream', {
                     return feature;
                 });
             testobjs=feature;
+
             me.plot=null;
             if (feature) {
+                console.log(feature);
                 var geometry = feature.getGeometry();
                 var coord = geometry.getCoordinates();
                 //console.log(coord);
@@ -426,23 +438,11 @@ Ext.define('Webdesktop.controller.Realstream', {
                $(element).popover({
                     'placement': 'top',
                     'html': true,
-
-                    'content': '<div style="width: 100%;">测站名:'+feature.get('name')+'<div id="realseedchart"  style="width: 200px;height: 100px;"></div>' +
-                        /*'<div id="realseedchartbhe" style="width: 200px;height: 0px;"></div>'+
-                        '<div id="realseedchartbhz" style="width: 200px;height: 0px;"></div>'+*/
-                        '</div>'
+                    'content': '<div style="width: 100%;"><div id="realseedchart" style="width: 200px;height: 100px;"></div></div>'
                 });
                 $(element).popover('show');
-                $('#realseedchart').append('<a>波形偏差:</a>'+feature.get('cross').toFixed(2)+" %") ;
-                /*var task={
-                    run: function(){
-                        $('#waitinfo').append('.') ;
-                    },
-                    interval: 500
-                }
-                Ext.TaskManager.start(task);
-                me.getrelationdata(feature.get('name'),task);*/
-                //me.getrealstreamdata();
+                $('#realseedchart').append('<ul><li><a>测站名:</a>'+feature.get('name')+'</li><li><a>波形偏差:</a>'+feature.get('cross').toFixed(2)+" %"+'</li></ul>') ;
+
             } else {
                 $(element).popover('destroy');
             }

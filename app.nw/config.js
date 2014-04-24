@@ -76,5 +76,6 @@ var searchlog_statue= [
 
 var earth_quick_places={
     'HAZ':{geom:[108,227],img:'images/icon.png',alertimg:'images/marker-gold.png'},
-    'XAJ':{geom:[63,168],img:'images/icon.png',alertimg:'images/marker-gold.png'}
+    'XAJ':{geom:[63,168],img:'images/icon.png',alertimg:'images/marker-gold.png'},
+    'QIY':{geom:[166,190],img:'images/icon.png',alertimg:'images/marker-gold.png'}
 };
