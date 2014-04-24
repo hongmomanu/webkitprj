@@ -9,6 +9,10 @@ Ext.define('Webdesktop.model.logmsg.LogSystem', {
             type:'string'
         },
         {
+            name: 'imgurl',
+            type:'string'
+        },
+        {
             name:'id',
             type:'int'
         },

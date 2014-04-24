@@ -28,6 +28,9 @@ var dutylogtype={
     ok:'完成'
 
 };
+var realstreamtype={
+    relation:'相关分析'
+};
 var missiontype={
     eqim:'国家局EQIM系统检查',
     eqimsucc:'国家局EQIM系统检查完成',

@@ -38,10 +38,32 @@ Ext.define('Webdesktop.controller.Logmsg', {
            },
             'logsystemgrid button[action=del]':{
                 click: this.dellog
+            },
+            'logsystemgrid':{
+
+                afterrender:this.logsystemgridrendered
+
             }
 
         });
 
+    },
+    logsystemgridrendered:function(grid,e){
+        var view = grid.getView();
+
+        var tip = Ext.create('Ext.tip.ToolTip', {
+            target: view.el,
+            delegate: view.itemSelector,
+            trackMouse: true,
+            //renderTo: Ext.getBody(),
+            listeners: {
+                beforeshow: function updateTipBody(tip) {
+                    var imgurl=view.getRecord(tip.triggerElement).get('imgurl');
+                    if(imgurl!="")tip.update('<div><img width="220" height="170" src="' + view.getRecord(tip.triggerElement).get('imgurl') + '"/></div>');
+                    else tip.update(view.getRecord(tip.triggerElement).get('logcontent'))
+                }
+            }
+        });
     },
     dellog:function(btn){
 

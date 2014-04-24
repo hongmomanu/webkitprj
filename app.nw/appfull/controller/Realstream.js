@@ -114,32 +114,39 @@ Ext.define('Webdesktop.controller.Realstream', {
                 var results=data.results;
                 var name=data.name;
                 me.showRelationMaplocation(data.lonlat);
-                for(var j=0;j<results.length;j++){
+                $('#rts_chart').append('<a>发震时刻:</a>'+data.time);
+                $('#rts_chart').append('<br><a>计算相关性...</a>');
+                me.chart_caculate=0;
+                me.log_info="";
 
-                    for(var i=0;i<name.length;i++){
+                for(var i=0;i<name.length;i++){
+
+                    for(var m=0;m<name[i].stations.length;m++){
+                        //console.log(results[j].sta_code+"----"+name[i].stations[m].name);
                         var item=null;
-                         for(var m=0;m<name[i].stations.length;m++){
-                              //console.log(results[j].sta_code+"----"+name[i].stations[m].name);
-                              if(results[j].sta_code===name[i].stations[m].name){
-                                  item={
-                                      rtime:results[j].time,
-                                      stime:name[i].stations[m].stime,
-                                      station:results[j].sta_code+"/"+results[j].chn_code,
-                                      move:name[i].stations[m].move,
-                                      name:name[i].name,
-                                      second:name[i].stations[m].second
-                                  };
-                              }
-                         }
+                        for(var j=0;j<results.length;j++){
 
+                            if(results[j].sta_code===name[i].stations[m].name){
+                                item={
+                                    rtime:results[j].time,
+                                    stime:name[i].stations[m].stime,
+                                    station:results[j].sta_code+"/"+results[j].chn_code,
+                                    move:name[i].stations[m].move,
+                                    name:name[i].name,
+                                    second:name[i].stations[m].second
+                                };
+                            }
+
+                        }
                         if(item){
+                            me.chart_caculate++;
+
                             me.relations_begin(name[i].name,item)
                         }
 
                     }
 
                 }
-
 
                 var resoreceurl=localStorage.serverurl+"audio/rts.mp3";
                 var play=new Audio(resoreceurl);
@@ -183,13 +190,17 @@ Ext.define('Webdesktop.controller.Realstream', {
             //stime= Ext.Date.add(new Date(stime),Ext.Date.HOUR,8);
             params.rtime=rtime;
             params.stime=stime;
+            me.log_info+="最大值:"+max_data+"<br>测站:"+params.station+
+                "  （样本事件:"+title+")"+
+                "<br>时间:"+params.rtime;
+
             me.make_chart(params.rtime,params.second,
                 params.station,max_index,title,null,params.stime,relactions,res.rate);
 
 
         };
         var failFunc = function (form, action) {
-
+            me.chart_caculate--;
         };
 
         var param={};
@@ -246,8 +257,8 @@ Ext.define('Webdesktop.controller.Realstream', {
             $('#rts_chart').append('<div id="'+id+'" style="height: 120px;"></div>');
             $('#rts_chart').append('<div id="'+idrelactions+'" style="height: 120px;"></div>');
             var plot = $.plot("#"+id, [
-                { label:chartname+station, data: res, color: 'green' },
-                { label:'样本数据：'+station, data: ressample, color: 'red' }
+                { label:station, data: res, color: 'green' },
+                { label:'样本数据：'+chartname+"-"+station, data: ressample, color: 'red' }
             ], {
                 series: {
                     shadowSize: 0
@@ -271,11 +282,26 @@ Ext.define('Webdesktop.controller.Realstream', {
                 }
             });
             if(callback)callback();
+            me.chart_caculate--;
+            if(me.chart_caculate==0){
+                html2canvas($('#rts_chart'), {
+                    onrendered: function (canvas) {
+                        var img = canvas.toDataURL("image/png")
+                        var system_cl=me.application.getController("Systemwatch");
+
+                        system_cl.sendsystemlogs([{
+                            statustype:realstreamtype.relation,
+                            imgurl:img,
+                            logcontent:me.log_info}],'duty/senddutylogs');
+                    }
+                });
+
+            }
 
 
         };
         var failFunc = function (form, action) {
-
+            me.chart_caculate--;
         };
         CommonFunc.ajaxSend(params,'realstream/samplescachedetaillocal',successFunc,failFunc,'GET');
 
@@ -293,7 +319,12 @@ Ext.define('Webdesktop.controller.Realstream', {
         this.popupmarker=marker;
         marker.on('popupclose', function(e) {
             //alert(1);
-            me.relationmap.removeLayer(me.popupmarker);
+            try{
+                me.relationmap.removeLayer(me.popupmarker);
+            }catch(err) {
+
+            }
+
         });
 
     },
@@ -340,7 +371,7 @@ Ext.define('Webdesktop.controller.Realstream', {
         //taskfun();
         var task={
             run:taskfun ,
-            interval: 5000
+            interval: 30000
         }
         Ext.TaskManager.start(task);
 
@@ -441,7 +472,10 @@ Ext.define('Webdesktop.controller.Realstream', {
                     'content': '<div style="width: 100%;"><div id="realseedchart" style="width: 200px;height: 100px;"></div></div>'
                 });
                 $(element).popover('show');
-                $('#realseedchart').append('<ul><li><a>测站名:</a>'+feature.get('name')+'</li><li><a>波形偏差:</a>'+feature.get('cross').toFixed(2)+" %"+'</li></ul>') ;
+                $('#realseedchart').append('<ul><li><a>测站名:</a>'+feature.get('name')
+                    +'</li><li><a>波形偏差:</a>'+feature.get('cross').toFixed(2)+" %"+'</li>' +
+                    '<li><a>时间:</a>'+feature.get('time')+'</li>'+
+                    '</ul>') ;
 
             } else {
                 $(element).popover('destroy');
