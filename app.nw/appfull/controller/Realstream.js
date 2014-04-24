@@ -113,7 +113,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                 console.log(data);
                 var results=data.results;
                 var name=data.name;
-
+                me.showRelationMaplocation(data.lonlat);
                 for(var j=0;j<results.length;j++){
 
                     for(var i=0;i<name.length;i++){
@@ -139,7 +139,7 @@ Ext.define('Webdesktop.controller.Realstream', {
 
                 }
 
-                me.showRelationMaplocation(data.lonlat);
+
                 var resoreceurl=localStorage.serverurl+"audio/rts.mp3";
                 var play=new Audio(resoreceurl);
                 play.play();
@@ -287,7 +287,7 @@ Ext.define('Webdesktop.controller.Realstream', {
         this.relationmap.panTo(new L.LatLng(data[1],data[0]));
         if(this.popupmarker)this.relationmap.removeLayer(this.popupmarker);
         var marker=L.marker([data[1],data[0]]).addTo(this.relationmap)
-            .bindPopup("<div>定位成功</div>").openPopup();
+            .bindPopup("<div id='rts_chart' style='width: 450px;height: 300px;'>定位成功</div>").openPopup();
         this.popupmarker=marker;
 
     },
@@ -327,7 +327,7 @@ Ext.define('Webdesktop.controller.Realstream', {
 
             }})
         };
-        taskfun();
+        //taskfun();
         var task={
             run:taskfun ,
             interval: 5000
