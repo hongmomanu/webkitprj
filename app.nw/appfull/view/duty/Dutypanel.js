@@ -2,7 +2,6 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.dutypanel',
     layout: 'fit',
-
     requires: [
     ],
 
@@ -13,7 +12,6 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
 
             border: false,
             hideHeaders: true,
-            flex:1,
             viewConfig: {
                 trackOver: false,
                 loadMask: true,
@@ -89,7 +87,6 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
 
 
             ],
-            flex: 1,
             tbar: [
                 {
                     xtype: 'label',

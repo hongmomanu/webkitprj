@@ -42,7 +42,6 @@ Ext.define('Webdesktop.view.logmsg.LogMsgGrid', {
                 {header: '异常信息', dataIndex: 'msg',flex:1},
                 {header: '目标机器', dataIndex: 'ip',flex:1}
             ],
-            flex: 1,
             tbar:[
 
             ],

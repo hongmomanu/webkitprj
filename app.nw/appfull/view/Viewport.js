@@ -66,17 +66,17 @@ Ext.define('Webdesktop.view.Viewport', {
                                                 animCollapse: true
                                             },
                                             items:[
-                                                {
+                                                /*{
                                                     //xtype:'realseedchart',
                                                     xtype:'realstreamgrid',
                                                     region:'west',
                                                     flex:0.5
-                                                },
+                                                },*/
                                                 {
                                                     xtype:'realstreammappanel',
 
                                                     region:'center',
-                                                    flex:0.5
+                                                    flex:1
                                                 }
                                             ]
 
@@ -163,15 +163,20 @@ Ext.define('Webdesktop.view.Viewport', {
                                             },
                                             items:[
                                                 {
+                                                    xtype:'realstreamrelationmappanel',
+                                                    region:'west',
+                                                    flex:0.33
+                                                },
+                                                {
                                                     xtype:'dutypanel',
                                                     region:'center',
-                                                    flex:1
+                                                    flex:0.33
                                                 },
                                                 {
                                                     xtype:'logmsgrid',
                                                     id:'logmsgrid',
                                                     region:'east',
-                                                    flex:1
+                                                    flex:0.33
 
                                                 }
                                             ]

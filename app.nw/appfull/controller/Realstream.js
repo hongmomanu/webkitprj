@@ -10,6 +10,7 @@ Ext.define('Webdesktop.controller.Realstream', {
     views: [
           'realstream.RealMiniSeedChart',
           'realstream.RealStreamMapPanel',
+          'realstream.RealStreamRelationMapPanel',
           'realstream.RealStreamGrid'/*,
           'realstream.RealSeedChart'*/
     ],
@@ -32,6 +33,15 @@ Ext.define('Webdesktop.controller.Realstream', {
 
                 }
             },
+            'realstreamrelationmappanel':{
+              afterrender:this.initrelationmap ,
+              afterlayout:function( panel, layout, eOpts ){
+                    if(this.relationmap){
+                        this.relationmap.invalidateSize(true);
+                    }
+               }
+
+            },
             'realstreammappanel':{
                 afterrender:function(){
                     var me=this;
@@ -48,7 +58,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                     }
                 }
 
-            },
+            }/*,
             'realstreamgrid':{
                 afterrender:function(grid){
                     var store=grid.getStore();
@@ -61,14 +71,39 @@ Ext.define('Webdesktop.controller.Realstream', {
                     }
                     Ext.TaskManager.start(task);
                 }
-            }
+            }*/
 
         });
+    },
+    initrelationmap:function(){
+        var me=this;
+        var d = new Ext.util.DelayedTask(function(){
+            //console.log($('#map').height());
+            //console.log($('#map').width());
+            me.relationmap = L.map('relationmap').setView([30.274089,120.15506900000003], 11);
+            var map=me.relationmap;
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var popup = L.popup();
+
+            function onMapClick(e) {
+                popup
+                    .setLatLng(e.latlng)
+                    .setContent("当前的位置 " + e.latlng.toString())
+                    .openOn(map);
+            }
+
+            map.on('click', onMapClick);
+
+        });
+        d.delay(500);
+
     },
     websocketInit:function(){
         var url=localStorage.serverurl;
         url=url?"ws://"+url.split("://")[1].split(":")[0]+":3001/":"ws://localhost:3001/";
-        console.log(url);
         var socket = new WebSocket(url);
         var me=this;
         socket.onmessage = function(event) {
@@ -76,12 +111,228 @@ Ext.define('Webdesktop.controller.Realstream', {
             data=JSON.parse(data);
             if(data.type==="rts"){
                 console.log(data);
+                var results=data.results;
+                var name=data.name;
+
+                for(var j=0;j<results.length;j++){
+
+                    for(var i=0;i<name.length;i++){
+                        var item=null;
+                         for(var m=0;m<name[i].stations.length;m++){
+                              console.log(results[j].sta_code+"----"+name[i].stations[m].name);
+                              if(results[j].sta_code===name[i].stations[m].name){
+                                  item={
+                                      rtime:results[j].time,
+                                      stime:name[i].stations[m].stime,
+                                      station:results[j].sta_code+"/"+results[j].chn_code,
+                                      move:name[i].stations[m].move,
+                                      name:name[i].name,
+                                      second:name[i].stations[m].second
+                                  };
+                              }
+                         }
+                        if(item){
+                            me.relations_begin(name[i].name,item)
+                        }
+
+                    }
+
+                }
+
+                me.showRelationMaplocation(data.lonlat);
                 var resoreceurl=localStorage.serverurl+"audio/rts.mp3";
                 var play=new Audio(resoreceurl);
                 play.play();
 
             }
         }
+
+    },
+
+    relations_begin:function(title,params){
+
+        var me=this;
+        var successFunc = function (response, action) {
+
+            var res=Ext.JSON.decode(response.responseText);
+            console.log(res)
+            /*var relactions=[];
+            var rtime=res.rtime;
+            var stime=res.stime;
+
+            Ext.each(res.relations,function(item){
+                relactions.push(item.toFixed(2));
+            });
+            var max_index=0;
+            var max_data=0;
+
+
+            for(var i=0;i<relactions.length;i++){
+                var item_data=Math.abs(relactions[i]);
+                if(item_data>max_data){
+                    max_data=item_data;
+                    max_index=i;
+                }
+            }
+
+            //me.appedtext("最大值:"+max_data,resultpanel,true);
+            //me.appedtext("\n",resultpanel,true);
+
+            //rtime= Ext.Date.add(new Date(rtime),Ext.Date.HOUR,8);
+            //stime= Ext.Date.add(new Date(stime),Ext.Date.HOUR,8);
+            params.rtime=rtime;
+            params.stime=stime;
+            me.make_chart(params.rtime,params.second,
+                params.station,max_index,title,null,params.stime,relactions,res.rate);
+*/
+
+
+        };
+        var failFunc = function (form, action) {
+
+        };
+
+        var param={};
+        for (var item in params){
+            param[item]=params[item];
+        }
+        param.rstation=param.station;
+        param.sstation=param.station;
+
+        CommonFunc.ajaxSend(param,'realstream/rtsstreamrelations',successFunc,failFunc,'GET');
+
+
+    },
+    make_chart:function(time,second,station,max_index,chartname,callback,timesample,relactions,rate){
+        var me=this;
+        var params={};
+        //time=time.replace("T"," ");
+
+        var a= Ext.Date.add(new Date(time),Ext.Date.MILLI,max_index*Math.abs(rate));
+        params.time=Ext.util.Format.date(a,'Y-m-d H:i:s.u');
+        arams.timesample=Ext.util.Format.date(timesample,'Y-m-d H:i:s.u');
+
+        params.second=second;
+        params.type=type;
+        params.station=station;
+
+        var successFunc = function (response, action) {
+            var data=Ext.JSON.decode(response.responseText).result;
+            var datasample=Ext.JSON.decode(response.responseText).result1;
+            var maxdata=Ext.max(Ext.Array.map(data,function(item){
+                return Math.abs(item);
+            }));
+            var maxsampledata=Ext.max(Ext.Array.map(datasample,function(item){
+                return Math.abs(item);
+            }));
+
+            var res = [];
+            var ressample=[];
+            var resrelactions=[];
+
+
+            for (var i = 0; i < data.length; i++) {
+                res.push([i, data[i]/maxdata]);
+                ressample.push([i,datasample[i]/maxsampledata]);
+            }
+            for(var i=0;i<relactions.length;i++){
+                resrelactions.push([i,relactions[i]]);
+
+            }
+
+            var id=chartname+"chart"+station.replace("/","-");
+            var idrelactions=id+"relactions";
+            $('#chart_div').append('<div id="'+id+'" style="height: 120px;"></div>');
+            $('#chart_div').append('<div id="'+idrelactions+'" style="height: 120px;"></div>');
+            var plot = $.plot("#"+id, [
+                { label:chartname+station, data: res, color: 'green' },
+                { label:'样本数据：'+station, data: ressample, color: 'red' }
+            ], {
+                series: {
+                    shadowSize: 0
+                },
+                yaxis: {
+                },
+                xaxis: {
+                    show: false
+                }
+            });
+            var plot_relation = $.plot("#"+idrelactions, [
+                { label:'滑动相关性：'+station, data: resrelactions, color: 'blue' }
+            ], {
+                series: {
+                    shadowSize: 0
+                },
+                yaxis: {
+                },
+                xaxis: {
+                    show: true
+                }
+            });
+            if(callback)callback();
+
+
+        };
+        var failFunc = function (form, action) {
+
+        };
+        CommonFunc.ajaxSend(params,'realstream/samplescachedetail',successFunc,failFunc,'GET');
+
+
+    },
+
+
+
+    showRelationMaplocation:function(data){
+        this.relationmap.panTo(new L.LatLng(data[1],data[0]));
+        if(this.popupmarker)this.relationmap.removeLayer(this.popupmarker);
+        var marker=L.marker([data[1],data[0]]).addTo(this.relationmap)
+            .bindPopup("<div>定位成功</div>").openPopup();
+        this.popupmarker=marker;
+
+    },
+    realmapfeatures:function(){
+        var me=this;
+        var store=Ext.StoreMgr.get('realstream.RealStreams');
+        var taskfun=function(){
+            store.load({callback:function(s){
+                me.vectorLayer.getSource().clear();
+                var features=[];
+                for(var i=0;i< s.length;i++){
+                    var item=earth_quick_places[s[i].raw.stationcode];
+                    var compare=s[i].raw.crossnowbhe==0?0:((s[i].raw.crossavgbhe-s[i].raw.crossnowbhe)/s[i].raw.crossnowbhe)*100;
+                    //console.log(compare);
+                    var iconFeature = new ol.Feature({
+                        geometry: new ol.geom.Point(item.geom),//558, 825
+                        name: s[i].raw.stationname,
+                        time:s[i].raw.time,
+                        cross:compare
+                    });
+
+                    var iconStyle = new ol.style.Style({
+                        image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                            anchor: [0.5, 46],
+                            anchorXUnits: 'fraction',
+                            anchorYUnits: 'pixels',
+                            opacity: 0.75,
+                            src:Math.abs(compare)>15?item.alertimg:item.img
+                        }))
+                    });
+
+                    iconFeature.setStyle(iconStyle);
+                    features.push(iconFeature);
+
+                }
+                me.vectorLayer.getSource().addFeatures(features);
+
+            }})
+        };
+        taskfun();
+        var task={
+            run:taskfun ,
+            interval: 5000
+        }
+        Ext.TaskManager.start(task);
 
     },
     realstreammapInit:function(){
@@ -92,37 +343,19 @@ Ext.define('Webdesktop.controller.Realstream', {
             extent: [0, 0, 356,339]//1129, 1196
         });
 
-        var features=[];
-        for(var i=0;i<earth_quick_places.length;i++){
-            var iconFeature = new ol.Feature({
-                geometry: new ol.geom.Point(earth_quick_places[i].geom),//558, 825
-                name: earth_quick_places[i].name
-            });
-
-            var iconStyle = new ol.style.Style({
-                image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-                    anchor: [0.5, 46],
-                    anchorXUnits: 'fraction',
-                    anchorYUnits: 'pixels',
-                    opacity: 0.75,
-                    src: earth_quick_places[i].img
-                }))
-            });
-
-            iconFeature.setStyle(iconStyle);
-            features.push(iconFeature);
 
 
-        }
-
-
-        var vectorSource = new ol.source.Vector({
+       /* var vectorSource = new ol.source.Vector({
             features: features
-        });
+        });*/
 
         var vectorLayer = new ol.layer.Vector({
-            source: vectorSource
+            source: new ol.source.Vector({
+                projection: pixelProjection
+            })
         });
+        this.vectorLayer=vectorLayer;
+        this.realmapfeatures();
 
         var mousePositionControl = new ol.control.MousePosition({
             coordinateFormat: ol.coordinate.createStringXY(4),
@@ -194,20 +427,21 @@ Ext.define('Webdesktop.controller.Realstream', {
                     'placement': 'top',
                     'html': true,
 
-                    'content': '<div style="width: 100%;">地震来源:'+feature.get('name')+'<div id="realseedchart"  style="width: 200px;height: 100px;"></div>' +
-                        '<div id="realseedchartbhe" style="width: 200px;height: 0px;"></div>'+
-                        '<div id="realseedchartbhz" style="width: 200px;height: 0px;"></div>'+'</div>'
+                    'content': '<div style="width: 100%;">测站名:'+feature.get('name')+'<div id="realseedchart"  style="width: 200px;height: 100px;"></div>' +
+                        /*'<div id="realseedchartbhe" style="width: 200px;height: 0px;"></div>'+
+                        '<div id="realseedchartbhz" style="width: 200px;height: 0px;"></div>'+*/
+                        '</div>'
                 });
                 $(element).popover('show');
-                $('#realseedchart').append('<a id="waitinfo">相关性计算中</a>') ;
-                var task={
+                $('#realseedchart').append('<a>波形偏差:</a>'+feature.get('cross').toFixed(2)+" %") ;
+                /*var task={
                     run: function(){
                         $('#waitinfo').append('.') ;
                     },
                     interval: 500
                 }
                 Ext.TaskManager.start(task);
-                me.getrelationdata(feature.get('name'),task);
+                me.getrelationdata(feature.get('name'),task);*/
                 //me.getrealstreamdata();
             } else {
                 $(element).popover('destroy');
