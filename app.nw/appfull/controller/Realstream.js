@@ -337,23 +337,26 @@ Ext.define('Webdesktop.controller.Realstream', {
                 var features=[];
                 for(var i=0;i< s.length;i++){
                     (function(i){
-                        var item=earth_quick_places[s[i].raw.stationcode];
+                        //var item=earth_quick_places[s[i].raw.stationcode];
                         var compare=s[i].raw.crossnowbhe==0?0:((s[i].raw.crossavgbhe-s[i].raw.crossnowbhe)/s[i].raw.crossnowbhe)*100;
                         //console.log(compare);
+                        var geom=eval(s[i].raw.geom);
+                        console.log(geom);
                         var iconFeature = new ol.Feature({
-                            geometry: new ol.geom.Point(item.geom),//558, 825
+                            geometry: new ol.geom.Point(geom),//558, 825
                             name: s[i].raw.stationname,
                             time:s[i].raw.time,
                             cross:compare
                         });
 
+                        var url=CommonFunc.geturl();
                         var iconStyle = new ol.style.Style({
                             image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
                                 anchor: [0.5, 46],
                                 anchorXUnits: 'fraction',
                                 anchorYUnits: 'pixels',
                                 opacity: 0.75,
-                                src:Math.abs(compare)>15?item.alertimg:item.img
+                                src:Math.abs(compare)>15?(url+Globle.mapalertimg):(url+Globle.mapimg)
                             }))
                         });
 

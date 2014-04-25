@@ -12,6 +12,7 @@ Ext.define('Webdesktop.controller.Duty', {
          'duty.DutyManagerWin',
          'duty.AddNewWorkWin',
          'duty.AddNewStationWin',
+         'duty.EditStationWin',
          'duty.AddNewMissionWin',
          'duty.EditMissionItemWin',
          'duty.MissionManagerpanel',
@@ -87,6 +88,9 @@ Ext.define('Webdesktop.controller.Duty', {
             'stationmanagerpanel button[action=new]':{
                 click: this.addnewstationwin
             },
+            'stationmanagerpanel button[action=edit]':{
+                click: this.editstationwin
+            },
             'missionmanagerpanel button[action=new]':{
                 click: this.addnewmissionwin
             },
@@ -95,6 +99,9 @@ Ext.define('Webdesktop.controller.Duty', {
             },
             'addnewstationwin button[action=add]':{
                 click: this.addnewstation
+            },
+            'editstationwin button[action=save]':{
+                click: this.editstation
             },
             'addnewworkwin button[action=add]':{
                 click: this.addnewduty
@@ -505,6 +512,22 @@ Ext.define('Webdesktop.controller.Duty', {
         if(!this.newstationwin)this.newstationwin= Ext.widget('addnewstationwin');
         this.newstationwin.show();
     },
+    editstationwin:function(btn){
+
+        var sm = btn.up('panel').getSelectionModel();
+        var selectitem=sm.getSelection();
+        if(selectitem.length==0){
+            Ext.Msg.alert("提示信息", "请选中编辑项");
+            return;
+        }
+        if(!this.myeditstationwin)this.myeditstationwin= Ext.widget('editstationwin');
+        this.myeditstationwin.show();
+        var item=selectitem[0].data;
+        var form=this.myeditstationwin.down('form').getForm();
+        form.setValues(item);
+
+
+    },
     addnewmissionwin:function(btn){
         if(!this.newmissionwin)this.newmissionwin= Ext.widget('addnewmissionwin');
         this.newmissionwin.show();
@@ -568,13 +591,21 @@ Ext.define('Webdesktop.controller.Duty', {
     },
 
     editmissionwin:function(btn){
-        if(!this.editmissionitemwin)this.editmissionitemwin= Ext.widget('editmissionitemwin');
-        this.editmissionitemwin.show();
         var sm = btn.up('panel').getSelectionModel();
         var selectitem=sm.getSelection();
+        if(selectitem.length==0){
+            Ext.Msg.alert("提示信息", "请选择要编辑的内容");
+            return;
+        }
+
+        if(!this.editmissionitemwin)this.editmissionitemwin= Ext.widget('editmissionitemwin');
+        this.editmissionitemwin.show();
+
         var item=selectitem[0].data;
         var form=this.editmissionitemwin.down('form').getForm();
         form.setValues(item);
+
+
 
     },
 
@@ -608,6 +639,21 @@ Ext.define('Webdesktop.controller.Duty', {
         var me=this;
         var successFunc = function (form, action) {
             var grid=me.missionmanagerwin.down('grid');
+            grid.getStore().load();
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息",action.result.msg);
+        };
+        var form = btn.up('form');
+        CommonFunc.formSubmit(form,{},url,successFunc,failFunc,"正在提交。。。")
+
+    },
+    editstation:function(btn){
+        var url='duty/savestation';
+        var me=this;
+        var successFunc = function (form, action) {
+            var grid=me.stationmanagerconfigwin.down('grid');
+            btn.up('window').hide();
             grid.getStore().load();
         };
         var failFunc = function (form, action) {

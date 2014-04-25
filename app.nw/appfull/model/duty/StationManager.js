@@ -16,6 +16,10 @@ Ext.define('Webdesktop.model.duty.StationManager', {
             type:'string'
         },
         {
+            name:'geom',
+            type:'string'
+        },
+        {
             name:'dataaddr',
             type:'string'
         },

@@ -14,6 +14,7 @@ Ext.define('Webdesktop.controller.Users', {
         'user.UserManagerWin',
         'user.UserManagerpanel',
         'user.AddnewUserWin',
+        'user.EditUserWin',
         'Viewport'
     ],
 
@@ -43,8 +44,14 @@ Ext.define('Webdesktop.controller.Users', {
             },'usermanagerpanel button[action=new]':{
                 click: this.openaddnewuserwin
 
+            },'usermanagerpanel button[action=edit]':{
+                click: this.openedituserwin
+
             },'addnewuserwin button[action=add]':{
                 click: this.addnewuser
+
+            },'edituserwin button[action=save]':{
+                click: this.saveuser
 
             },
             'dutypanel menuitem[action=usermanager]':{
@@ -74,9 +81,45 @@ Ext.define('Webdesktop.controller.Users', {
         var form = btn.up('form');
         CommonFunc.formSubmit(form, params, url, successFunc, failFunc, "正在提交。。。")  ;
     },
+    saveuser:function(btn){
+        var url = 'user/saveuser';
+        var win = this.usermanagerwin;
+        var panel = win.down('panel');
+
+        var params = {
+
+        };
+        var successFunc = function (form, action) {
+            panel.getStore().load();
+            btn.up('window').hide();
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息", "编辑用户失败");
+        };
+
+        var form = btn.up('form');
+        CommonFunc.formSubmit(form, params, url, successFunc, failFunc, "正在提交。。。")  ;
+    },
     openaddnewuserwin:function(btn){
         if(!this.addnewuserwin)this.addnewuserwin= Ext.widget('addnewuserwin');
         this.addnewuserwin.show();
+
+    },
+    openedituserwin:function(btn){
+        var sm = btn.up('panel').getSelectionModel();
+        var selectitem=sm.getSelection();
+        if(selectitem.length==0){
+            Ext.Msg.alert("提示信息", "请选中编辑项");
+            return;
+        }
+        if(!this.edituserwin)this.edituserwin= Ext.widget('edituserwin');
+        this.edituserwin.show();
+
+        var item=selectitem[0].data;
+        var form=this.edituserwin.down('form').getForm();
+        form.setValues(item);
+
+
 
     },
     openusermanagerwin:function(btn){
@@ -139,10 +182,22 @@ Ext.define('Webdesktop.controller.Users', {
         };
         var successFunc = function (response, action) {
             var res = Ext.JSON.decode(response.responseText);
-            Globle.dutydisplayname=res[0].displayname;
-            Globle.dutyusername=res[0].username;
-            Globle.dutyuserid=res[0].userid;
-            Globle.dutyenumid=res[0].enumid;
+
+            if(res.length>0){
+                console.log(res);
+                Globle.dutydisplayname=res[0].displayname;
+                Globle.dutyusername=res[0].username;
+                Globle.dutyuserid=res[0].userid;
+                Globle.dutyenumid=res[0].enumid;
+            }else{
+                Globle.dutydisplayname=Globle.displayname;
+                Globle.dutyusername=Globle.username;
+                Globle.dutyuserid=Globle.userid;
+                //Globle.dutyenumid=res[0].enumid;
+
+            }
+
+
             callback();
             me.maketodaymission();
 

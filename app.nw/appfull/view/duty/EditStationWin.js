@@ -2,15 +2,15 @@
  * Created by jack on 14-2-18.
  */
 
-Ext.define('Webdesktop.view.duty.AddNewStationWin' ,{
+Ext.define('Webdesktop.view.duty.EditStationWin' ,{
     extend: 'Ext.window.Window',
-    alias : 'widget.addnewstationwin',
+    alias : 'widget.editstationwin',
     requires: [
     ],
     initComponent: function() {
         var required = '<span style="color:red;font-weight:bold" data-qtip="必填字段">*</span>';
         Ext.apply(this, {
-            title: '新增台站',
+            title: '编辑台站',
             height: 580,
             width: 520,
             closeAction : 'hide',
@@ -43,6 +43,12 @@ Ext.define('Webdesktop.view.duty.AddNewStationWin' ,{
                         allowBlank:false,
                         afterLabelTextTpl: required,
                         name: 'stationname'
+                    },
+                    {
+                        xtype: 'textfield',
+                        fieldLabel: 'id',
+                        hidden:true,
+                        name: 'id'
                     },
                     {
                         xtype: 'textfield',
@@ -114,8 +120,8 @@ Ext.define('Webdesktop.view.duty.AddNewStationWin' ,{
                         }
                     } ,
                     {
-                        text: '新增',
-                        action: 'add'
+                        text: '保存',
+                        action: 'save'
 
                     }
                 ],
