@@ -10,6 +10,9 @@ Ext.define('Webdesktop.model.duty.StationManager', {
         },{
             name: 'networkname',
             type:'string'
+        },{
+            name: 'networkcode',
+            type:'string'
         },
         {
             name:'stationcode',

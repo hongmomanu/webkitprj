@@ -11,7 +11,7 @@ Ext.define('Webdesktop.view.duty.EditStationWin' ,{
         var required = '<span style="color:red;font-weight:bold" data-qtip="必填字段">*</span>';
         Ext.apply(this, {
             title: '编辑台站',
-            height: 580,
+            height: 610,
             width: 520,
             closeAction : 'hide',
             modal:true,
@@ -60,12 +60,21 @@ Ext.define('Webdesktop.view.duty.EditStationWin' ,{
                     },
                     {
                         xtype: 'textfield',
+                        fieldLabel: '台网代码',
+                        required:true,
+                        allowBlank:false,
+                        afterLabelTextTpl: required,
+                        name: 'networkcode'
+                    },
+                    {
+                        xtype: 'textfield',
                         fieldLabel: '台站代码',
                         required:true,
                         allowBlank:false,
                         afterLabelTextTpl: required,
                         name: 'stationcode'
                     },
+
                     {
                         xtype: 'textfield',
                         fieldLabel: '显示位置',

@@ -152,7 +152,7 @@ Ext.define('Webdesktop.controller.Duty', {
         //console.log(me);
         var params={
             id:item.raw.id,
-            url:'http://10.5.160.37:8180/gonggao/news.jsp'
+            url:localStorage.eqimurl
             //username:localStorage.eqimusername,
             //password:localStorage.eqimpassword,
             //url:localStorage.eqimurl,
@@ -192,6 +192,63 @@ Ext.define('Webdesktop.controller.Duty', {
         //CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
         CommonFunc.ajaxSend(params,'duty/eqimpublic',successFunc,failFunc,'POST');
     },
+    getstationinfo:function(stationcode,callback){
+      var params={
+          stationcode:stationcode
+      };
+      var me=this;
+        var successFunc = function (response, action) {
+            var res = Ext.JSON.decode(response.responseText);
+            if(res.length>0){
+               var stationinfo=res[0];
+               if(callback)callback(stationinfo)
+
+            }else{
+                Ext.Msg.alert("提示信息", "无测站"+stationcode+"信息..!");
+            }
+            //btn.up('panel').getStore().load();
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息", "操作失败..!");
+        };
+        //CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
+        CommonFunc.ajaxSend(params,'duty/getstationinfo',successFunc,failFunc,'GET');
+    },
+    sendnewrecordyes:function(stationcode,begin_time,end_time){
+
+        var me=this;
+        //console.log(me);
+
+        var callback=function (data){
+            var params={};
+            params["netStation.netCode"]=data.networkcode;
+            params["netStation.staCode"]=data.stationcode;
+            params.netCname=data.networkname;
+            params.staCname=data.stationname;
+            params.startTime=begin_time;
+            params.endTime=end_time;
+            params.url="http://10.33.5.103:8080/JOPENSWeb/mon/logStationFormController?key=3";
+            params.id=0;
+            params.operator=Globle.displayname;
+            params.eventType=1301;
+            params.treatType=2000;
+            params.logContent="自行恢复";
+            params.createTime=Ext.util.Format.date(new Date(), 'Y-m-d H:i:s');
+            var successFunc = function (response, action) {
+                var res = Ext.JSON.decode(response.responseText);
+                //btn.up('panel').getStore().load();
+            };
+            var failFunc = function (form, action) {
+                Ext.Msg.alert("提示信息", "操作失败..!");
+            };
+            //CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
+            CommonFunc.ajaxSend(params,'duty/newrecord',successFunc,failFunc,'POST');
+
+
+        };
+        me.getstationinfo(stationcode,callback)
+
+    },
     recordclick:function(rec,store){
       //alert(2);断记上传
         //Ext.Msg.hide();
@@ -215,6 +272,7 @@ Ext.define('Webdesktop.controller.Duty', {
                 var logcontent="";
                 for(var i=0;i<res.result.length;i++){
                     logcontent+=res.result[i].station+","+res.result[i].begin_time+"<br>";
+                    me.sendnewrecordyes(res.result[i].station,res.result[i].begin_time,res.result[i].end_time)
                 }
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.recordyes,
@@ -350,7 +408,7 @@ Ext.define('Webdesktop.controller.Duty', {
         //console.log(me);
         var params={
             id:item.raw.id,
-            url:'http://10.5.160.37:8180/gonggao/news.jsp'
+            url:localStorage.eqimurl
             //username:localStorage.eqimusername,
             //password:localStorage.eqimpassword,
             //url:localStorage.eqimurl,
@@ -418,6 +476,7 @@ Ext.define('Webdesktop.controller.Duty', {
         var form=btn.up('form');
         localStorage.dutyalertinterval=form.getValues().dutyalertinterval;
         localStorage.eqimurl=form.getValues().eqimurl;
+        localStorage.recordurl=form.getValues().recordurl;
         localStorage.eqimusername=form.getValues().eqimusername;
         localStorage.eqimpassword=form.getValues().eqimpassword;
         localStorage.sourcedir=form.getValues().sourcedir;
@@ -544,6 +603,7 @@ Ext.define('Webdesktop.controller.Duty', {
             {
                 dutyalertinterval:parseInt(localStorage.dutyalertinterval),
                 eqimurl:localStorage.eqimurl,
+                recordurl:localStorage.recordurl,
                 eqimusername:localStorage.eqimusername,
                 eqimpassword:localStorage.eqimpassword,
                 sourcedir:localStorage.sourcedir,
@@ -701,7 +761,7 @@ Ext.define('Webdesktop.controller.Duty', {
             grid.getStore().load();
         };
         var failFunc = function (form, action) {
-            Ext.Msg.alert("提示信息",action.result.msg);
+            Ext.Msg.alert("提示信息","保存失败!");
         };
         var form = btn.up('form');
         CommonFunc.formSubmit(form,{},url,successFunc,failFunc,"正在提交。。。")

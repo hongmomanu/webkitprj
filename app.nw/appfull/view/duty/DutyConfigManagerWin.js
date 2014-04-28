@@ -10,7 +10,7 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
     initComponent: function() {
         Ext.apply(this, {
             title: '值班配置管理',
-            height: 480,
+            height: 550,
             width: 500,
             closeAction : 'hide',
             modal:true,
@@ -60,6 +60,11 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
                         xtype:'textfield',
                         name:'eqimurl',
                         fieldLabel:'eqim地址'
+                    },
+                    {
+                        xtype:'textfield',
+                        name:'recordurl',
+                        fieldLabel:'断记地址'
                     },
                     {
                         xtype:'textfield',

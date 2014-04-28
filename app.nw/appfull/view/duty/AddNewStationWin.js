@@ -11,7 +11,7 @@ Ext.define('Webdesktop.view.duty.AddNewStationWin' ,{
         var required = '<span style="color:red;font-weight:bold" data-qtip="必填字段">*</span>';
         Ext.apply(this, {
             title: '新增台站',
-            height: 580,
+            height: 610,
             width: 520,
             closeAction : 'hide',
             modal:true,
@@ -51,6 +51,14 @@ Ext.define('Webdesktop.view.duty.AddNewStationWin' ,{
                         allowBlank:false,
                         afterLabelTextTpl: required,
                         name: 'networkname'
+                    },
+                    {
+                        xtype: 'textfield',
+                        fieldLabel: '台网代码',
+                        required:true,
+                        allowBlank:false,
+                        afterLabelTextTpl: required,
+                        name: 'networkcode'
                     },
                     {
                         xtype: 'textfield',

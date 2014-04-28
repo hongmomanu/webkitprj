@@ -25,6 +25,7 @@ Ext.define('Webdesktop.view.duty.StationManagerpanel', {
             forceFit: true,
             columns: [
                 {header: '台网名称', dataIndex: 'networkname'},
+                {header: '台网代码', dataIndex: 'networkcode'},
                 {header: '台站名称',dataIndex: 'stationname'},
                 {header: '台站代码',dataIndex: 'stationcode'},
                 {header: '显示位置',dataIndex: 'geom'},
