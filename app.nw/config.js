@@ -7,6 +7,8 @@ var Globle={
     serverurl:"",
     username:"",
     password:"",
+    mapalertimg:"images/marker-gold.png",
+    mapimg:"images/icon.png",
     displayname:"",
     isadmin:false
 
@@ -36,6 +38,8 @@ var missiontype={
     eqimsucc:'国家局EQIM系统检查完成',
     eqimfail:'国家局EQIM系统检查异常',
     record:'断记统计上传',
+    recordno:'无断记',
+    recordyes:'有断记',
     recordsucc:'断记统计上传成功',
     recordfail:'断记统计上传失败',
     waveform:'波形归档备份',
@@ -77,8 +81,3 @@ var searchlog_statue= [
 ];
 
 
-var earth_quick_places={
-    'HAZ':{geom:[108,227],img:'images/icon.png',alertimg:'images/marker-gold.png'},
-    'XAJ':{geom:[63,168],img:'images/icon.png',alertimg:'images/marker-gold.png'},
-    'QIY':{geom:[166,190],img:'images/icon.png',alertimg:'images/marker-gold.png'}
-};

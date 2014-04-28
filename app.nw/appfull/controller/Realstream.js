@@ -140,7 +140,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                         }
                         if(item){
                             me.chart_caculate++;
-
+                            console.log(me.chart_caculate);
                             me.relations_begin(name[i].name,item)
                         }
 
@@ -194,12 +194,14 @@ Ext.define('Webdesktop.controller.Realstream', {
                 "  （样本事件:"+title+")"+
                 "<br>时间:"+params.rtime;
 
+            console.log(me.log_info);
             me.make_chart(params.rtime,params.second,
                 params.station,max_index,title,null,params.stime,relactions,res.rate);
 
 
         };
         var failFunc = function (form, action) {
+            alert("fail");
             me.chart_caculate--;
         };
 
@@ -286,7 +288,7 @@ Ext.define('Webdesktop.controller.Realstream', {
             if(me.chart_caculate==0){
                 html2canvas($('#rts_chart'), {
                     onrendered: function (canvas) {
-                        var img = canvas.toDataURL("image/png")
+                        var img = canvas.toDataURL();
                         var system_cl=me.application.getController("Systemwatch");
 
                         system_cl.sendsystemlogs([{
@@ -315,7 +317,7 @@ Ext.define('Webdesktop.controller.Realstream', {
         this.relationmap.panTo(new L.LatLng(data[1],data[0]));
         if(this.popupmarker)this.relationmap.removeLayer(this.popupmarker);
         var marker=L.marker([data[1],data[0]]).addTo(this.relationmap)
-            .bindPopup("<div id='rts_chart' style='width: 320px;height: 300px;'></div>",{closeButton:true}).openPopup();
+            .bindPopup("<div id='rts_chart' style='width: 320px;height: 100%;'></div>",{closeButton:true}).openPopup();
         this.popupmarker=marker;
         marker.on('popupclose', function(e) {
             //alert(1);

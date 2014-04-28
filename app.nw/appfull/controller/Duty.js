@@ -192,12 +192,56 @@ Ext.define('Webdesktop.controller.Duty', {
         //CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
         CommonFunc.ajaxSend(params,'duty/eqimpublic',successFunc,failFunc,'POST');
     },
-    recordclick:function(rec){
+    recordclick:function(rec,store){
       //alert(2);断记上传
-        Ext.Msg.hide();
+        //Ext.Msg.hide();
       /*Ext.MessageBox.confirm('接口未实现', '', function showResult(btn){
           Ext.Msg.hide();
       });*/
+        var today=Ext.util.Format.date(new Date(), "Y-m-d");
+        var yestoday=Ext.util.Format.date(Ext.Date.add(new Date(),Ext.Date.DAY,-1),"Y-m-d");
+
+        var me=this;
+        var params={
+            today:today,
+            yestoday:yestoday
+        };
+        var successFunc = function (response, action) {
+            var res = Ext.JSON.decode(response.responseText);
+
+            if(res.success){
+                me.completeduty(rec,store,missiontype.recordyes);
+                var system_cl=me.application.getController("Systemwatch");
+                var logcontent="";
+                for(var i=0;i<res.result.length;i++){
+                    logcontent+=res.result[i].station+","+res.result[i].begin_time+"<br>";
+                }
+                system_cl.sendsystemlogs([{userid:Globle.userid,
+                    statustype:missiontype.recordyes,
+                    logcontent:logcontent}],'duty/senddutylogs');
+            }else{
+                me.completeduty(rec,store,missiontype.recordno);
+                var system_cl=me.application.getController("Systemwatch");
+                system_cl.sendsystemlogs([
+                    {
+                        userid:Globle.userid,
+                        statustype:missiontype.recordno,
+                        logcontent:missiontype.recordno
+                    }
+                ],'duty/senddutylogs');
+            }
+
+
+        };
+        var failFunc = function (form, action) {
+            Ext.Msg.alert("提示信息", "服务失败");
+            Ext.Msg.hide();
+        };
+
+        CommonFunc.ajaxSend(params,'duty/recordcheck',successFunc,failFunc,'POST');
+
+
+
 
     },
     waveformclick:function(rec,store){
