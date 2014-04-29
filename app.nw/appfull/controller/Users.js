@@ -139,8 +139,10 @@ Ext.define('Webdesktop.controller.Users', {
              Globle.password=action.result.result.password;
              Globle.username=action.result.result.username;
              Globle.userid=action.result.result.id;
+             Globle.tel=action.result.result.telnum;
              Globle.displayname=action.result.result.displayname;
-             Globle.isadmin=action.result.result.admin==1;
+             Globle.isadmin=(action.result.result.admin==1);
+            console.log(action.result.result.admin)
              Globle.logintime=new Date();
              var callback=function(){
                  Ext.widget('viewport');
@@ -158,14 +160,15 @@ Ext.define('Webdesktop.controller.Users', {
             //console.log(action);
             if(action.response.status==200){
                 Ext.Msg.alert("登陆失败", action.result.msg);
+                var system_cl=me.application.getController("Systemwatch");
+                system_cl.sendsystemlogs([{
+                    statustype:dutylogtype.logfail,
+                    logcontent:action.result.username}],'duty/senddutylogs');
             }else{
                 Ext.Msg.alert("登陆失败", "找不到服务");
             }
 
-            var system_cl=me.application.getController("Systemwatch");
-            system_cl.sendsystemlogs([{
-                statustype:dutylogtype.logfail,
-                logcontent:action.result.username}],'duty/senddutylogs');
+
 
         };
 
@@ -189,10 +192,14 @@ Ext.define('Webdesktop.controller.Users', {
                 Globle.dutyusername=res[0].username;
                 Globle.dutyuserid=res[0].userid;
                 Globle.dutyenumid=res[0].enumid;
+                Globle.dutytel=res[0].telnum;
             }else{
                 Globle.dutydisplayname=Globle.displayname;
                 Globle.dutyusername=Globle.username;
                 Globle.dutyuserid=Globle.userid;
+                Globle.dutytel=Globle.tel;
+
+
                 //Globle.dutyenumid=res[0].enumid;
 
             }

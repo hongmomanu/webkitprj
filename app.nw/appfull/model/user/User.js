@@ -14,6 +14,9 @@ Ext.define('Webdesktop.model.user.User', {
         },{
             name:'id',
             type:'int'
+        },{
+            name:'admin',
+            type:'int'
         },
         {
             name: 'displayname',

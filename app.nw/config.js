@@ -7,6 +7,8 @@ var Globle={
     serverurl:"",
     username:"",
     password:"",
+    tel:"",
+    dutytel:"",
     mapalertimg:"images/marker-gold.png",
     mapimg:"images/icon.png",
     displayname:"",
@@ -52,6 +54,7 @@ var missiontype={
     archivefilesucc:'连续波形文件无异常',
     archivefilefail:'连续波形文件异常',
     cataloging:'编目地震提醒',
+    catalogingfail:'编目地震提醒失败',
     catalogingreport:'编目快报',
     catalogingreportsucc:'编目快报成功',
     catalogingreportfail:'编目快报失败'

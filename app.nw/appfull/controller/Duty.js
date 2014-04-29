@@ -455,7 +455,43 @@ Ext.define('Webdesktop.controller.Duty', {
         var me=this;
         Ext.MessageBox.confirm('是否有编目', '有无编目?', function showResult(btn){
             if(btn==='yes'){
-                me.completeduty(rec,store,'编目已发送');
+
+                //console.log(me);
+                var mapkey={"134": 1,"135": 1,"136": 1 ,"137": 1 ,"138": 1 ,"139": 1 ,"150": 1 ,"151": 1,
+                    "152": 1,"157": 1,"158": 1 ,"159": 1 ,"182": 1 ,"183": 1 ,
+                    "187": 1,"188": 1 ,"130": 2 ,"131":2 ,"132": 2 ,"155": 2 ,"156": 2 ,"185": 2 ,
+                    "186": 2 ,"133": 3 ,"153": 3 ,"180": 3 ,"189": 3};
+                var telpart=mapkey[(Globle.tel+"").substring(0,3)];
+                var params={
+                    tel:Globle.dutytel,
+                    msg:"有编目" ,
+                    telpart:telpart
+                };
+                var successFunc = function (response, action) {
+                    var res = Ext.JSON.decode(response.responseText);
+                    if(res.success){
+                        me.completeduty(rec,store,'编目已发送');
+                        var system_cl=me.application.getController("Systemwatch");
+                        system_cl.sendsystemlogs([{userid:Globle.userid,
+                            statustype:missiontype.cataloging,
+                            logcontent:'编目已发送'}],'duty/senddutylogs');
+                    }else{
+                        //Ext.Msg.alert("提示信息", "eqim 网络不通!");
+                        var system_cl=me.application.getController("Systemwatch");
+                        system_cl.sendsystemlogs([{userid:Globle.userid,
+                            statustype:missiontype.catalogingfail,
+                            logcontent:"发送失败!"}],'duty/senddutylogs');
+                    }
+
+                };
+                var failFunc = function (form, action) {
+                    Ext.Msg.alert("提示信息", "操作失败..!");
+                };
+                //CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
+                CommonFunc.ajaxSend(params,'duty/sendsms',successFunc,failFunc,'POST');
+
+
+
             }else{
                 me.completeduty(rec,store,'今日无编目');
             }
