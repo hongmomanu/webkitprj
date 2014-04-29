@@ -78,19 +78,30 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
                     },
                     {
                         xtype: 'textfield',
-                        fieldLabel: '源文件夹',
-                        name: 'sourcedir'
+                        fieldLabel: '波形文件夹',
+                        name: 'wavedir'
                     },
                     {
                         xtype: 'textfield',
-                        fieldLabel: '目标文件夹',
-                        name: 'targetdir'
+                        fieldLabel: '事件文件夹',
+                        name: 'eventdir'
                     },
                     {
                         xtype: 'textfield',
                         fieldLabel: '文件异常值',
                         name: 'archiveminsize'
-                    }
+                    },{
+                        xtype: 'textfield',
+                        fieldLabel: '源文件夹',
+                        hidden:true,
+                        name: 'sourcedir'
+                    },
+                    {
+                        xtype: 'textfield',
+                        fieldLabel: '目标文件夹',
+                        hidden:true,
+                        name: 'targetdir'
+                    },
 
 
                 ],

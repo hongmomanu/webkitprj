@@ -11,7 +11,7 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
         Ext.apply(me, {
 
             border: false,
-            hideHeaders: true,
+            //hideHeaders: true,
             viewConfig: {
                 trackOver: false,
                 loadMask: true,
