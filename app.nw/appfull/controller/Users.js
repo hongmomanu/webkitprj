@@ -142,7 +142,6 @@ Ext.define('Webdesktop.controller.Users', {
              Globle.tel=action.result.result.telnum;
              Globle.displayname=action.result.result.displayname;
              Globle.isadmin=(action.result.result.admin==1);
-            console.log(action.result.result.admin)
              Globle.logintime=new Date();
              var callback=function(){
                  Ext.widget('viewport');

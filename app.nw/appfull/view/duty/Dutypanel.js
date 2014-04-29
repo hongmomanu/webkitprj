@@ -42,10 +42,11 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                         return "已检查("+record.get('dutylog')+")";
                     }
 
-                }},
+                },width: 200},
                 {
                     menuDisabled: true,
                     sortable: false,
+                    header:'操作',
                     align:'center',
                     hidden:Globle.dutyuserid!=Globle.userid&&!Globle.isadmin,
                     xtype: 'actioncolumn',
