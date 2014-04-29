@@ -329,9 +329,10 @@ Ext.define('Webdesktop.controller.Duty', {
     earthquickfileclick:function(rec,store){
         var me=this;
         var params={
-            sourcedir:localStorage.sourcedir,
+            sourcedir:localStorage.eventdir,
             earthplatformlist:localStorage.earthplatformlist,
-            archiveminsize:localStorage.archiveminsize
+            archiveminsize:localStorage.archiveminsize,
+            type:'event'
         };
 
         var successFunc = function (response, action) {
@@ -368,9 +369,10 @@ Ext.define('Webdesktop.controller.Duty', {
 
         var me=this;
         var params={
-            sourcedir:localStorage.sourcedir,
+            sourcedir:localStorage.wavedir,
             earthplatformlist:localStorage.earthplatformlist,
-            archiveminsize:localStorage.archiveminsize
+            archiveminsize:localStorage.archiveminsize,
+            type:'wave'
         };
 
         var successFunc = function (response, action) {
@@ -397,6 +399,8 @@ Ext.define('Webdesktop.controller.Duty', {
         };
         var failFunc = function (response, action) {
             //Ext.Msg.alert("文件异常", action.result.results);
+            Ext.Msg.hide();
+            Ext.Msg.alert("提示信息", "操作失败..!");
 
 
         };
@@ -479,8 +483,10 @@ Ext.define('Webdesktop.controller.Duty', {
         localStorage.recordurl=form.getValues().recordurl;
         localStorage.eqimusername=form.getValues().eqimusername;
         localStorage.eqimpassword=form.getValues().eqimpassword;
-        localStorage.sourcedir=form.getValues().sourcedir;
-        localStorage.targetdir=form.getValues().targetdir;
+        //localStorage.sourcedir=form.getValues().sourcedir;
+        //localStorage.targetdir=form.getValues().targetdir;
+        localStorage.wavedir=form.getValues().wavedir;
+        localStorage.eventdir=form.getValues().eventdir;
         localStorage.archiveminsize=form.getValues().archiveminsize;
         this.checkdutytask.interval=parseInt(localStorage.dutyalertinterval);
         btn.up('window').hide();
@@ -606,8 +612,10 @@ Ext.define('Webdesktop.controller.Duty', {
                 recordurl:localStorage.recordurl,
                 eqimusername:localStorage.eqimusername,
                 eqimpassword:localStorage.eqimpassword,
-                sourcedir:localStorage.sourcedir,
-                targetdir:localStorage.targetdir,
+                //sourcedir:localStorage.sourcedir,
+                //targetdir:localStorage.targetdir,
+                wavedir:localStorage.wavedir,
+                eventdir:localStorage.eventdir,
                 archiveminsize:localStorage.archiveminsize
             });
 
