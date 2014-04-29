@@ -345,13 +345,13 @@ Ext.define('Webdesktop.controller.Duty', {
                     statustype:missiontype.earthquicksucc,
                     logcontent:missiontype.earthquicksucc}],'duty/senddutylogs');
             }else{
-                me.completeduty(rec,store,missiontype.earthquickfail+'<br>'+res.results.join("<br>"));
+                me.completeduty(rec,store,missiontype.earthquickfail+'('+res.results+")");
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([
                     {
                         userid:Globle.userid,
                         statustype:missiontype.earthquickfail,
-                        logcontent:res.results.join(",")
+                        logcontent:'('+res.results+")个地震事件"
                     }
                 ],'duty/senddutylogs');
             }
@@ -412,29 +412,36 @@ Ext.define('Webdesktop.controller.Duty', {
         //console.log(me);
         var params={
             id:item.raw.id,
-            url:localStorage.eqimurl
-            //username:localStorage.eqimusername,
-            //password:localStorage.eqimpassword,
-            //url:localStorage.eqimurl,
-            //securl:"http://192.168.2.141:8080/jz"
+            url:localStorage.reportloginurl,
+            username:localStorage.reportusername,
+            password:localStorage.reportpassword,
+            securl:localStorage.reporturl
         };
         var successFunc = function (response, action) {
             var res = Ext.JSON.decode(response.responseText);
             if(res.success){
                 var html=res.msg;
-                //console.log(html);
+                var td_arr=$(html).find("td");
+                var time=new Date($(td_arr[7]).text());
+                var now= new Date();
+                var public_content='今日無公编目';
+                //console.log($(td_arr[1]).text());
+                if(now.getFullYear()==time.getFullYear()&&now.getMonth()==time.getMonth()&&now.getDate()==time.getDate()){
+                    public_content='今日有编目<br>'+$(td_arr[7]).text();
+                }
+
                 //testobj=html;
-                me.completeduty(item,store,missiontype.catalogingreportsucc);
+                me.completeduty(item,store,public_content);
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.catalogingreportsucc,
-                    logcontent:missiontype.catalogingreportsucc}],'duty/senddutylogs');
+                    logcontent:public_content}],'duty/senddutylogs');
             }else{
                 //Ext.Msg.alert("提示信息", "eqim 网络不通!");
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.catalogingreportfail,
-                    logcontent:"eqim 网络不通!"}],'duty/senddutylogs');
+                    logcontent:"网络不通!"}],'duty/senddutylogs');
             }
 
         };
@@ -442,7 +449,7 @@ Ext.define('Webdesktop.controller.Duty', {
             //Ext.Msg.alert("提示信息", "操作失败..!");
         };
         //CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
-        CommonFunc.ajaxSend(params,'duty/eqimpublic',successFunc,failFunc,'POST');
+        CommonFunc.ajaxSend(params,'duty/eqimpubliclogin',successFunc,failFunc,'POST');
     },
     catalogingclick:function(rec,store){
         var me=this;
@@ -480,9 +487,11 @@ Ext.define('Webdesktop.controller.Duty', {
         var form=btn.up('form');
         localStorage.dutyalertinterval=form.getValues().dutyalertinterval;
         localStorage.eqimurl=form.getValues().eqimurl;
+        localStorage.reporturl=form.getValues().reporturl;
         localStorage.recordurl=form.getValues().recordurl;
-        localStorage.eqimusername=form.getValues().eqimusername;
-        localStorage.eqimpassword=form.getValues().eqimpassword;
+        localStorage.reportloginurl=form.getValues().reportloginurl;
+        localStorage.reportusername=form.getValues().reportusername;
+        localStorage.reportpassword=form.getValues().reportpassword;
         //localStorage.sourcedir=form.getValues().sourcedir;
         //localStorage.targetdir=form.getValues().targetdir;
         localStorage.wavedir=form.getValues().wavedir;
@@ -610,10 +619,10 @@ Ext.define('Webdesktop.controller.Duty', {
                 dutyalertinterval:parseInt(localStorage.dutyalertinterval),
                 eqimurl:localStorage.eqimurl,
                 recordurl:localStorage.recordurl,
-                eqimusername:localStorage.eqimusername,
-                eqimpassword:localStorage.eqimpassword,
-                //sourcedir:localStorage.sourcedir,
-                //targetdir:localStorage.targetdir,
+                reporturl:localStorage.reporturl,
+                reportloginurl:localStorage.reportloginurl,
+                reportusername:localStorage.reportusername,
+                reportpassword:localStorage.reportpassword,
                 wavedir:localStorage.wavedir,
                 eventdir:localStorage.eventdir,
                 archiveminsize:localStorage.archiveminsize

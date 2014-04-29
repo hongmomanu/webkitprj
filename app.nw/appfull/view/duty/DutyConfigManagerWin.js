@@ -65,16 +65,24 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
                         xtype:'textfield',
                         name:'recordurl',
                         fieldLabel:'断记地址'
+                    },{
+                        xtype:'textfield',
+                        name:'reporturl',
+                        fieldLabel:'快报地址'
+                    },{
+                        xtype:'textfield',
+                        name:'reportloginurl',
+                        fieldLabel:'快报登陆地址'
                     },
                     {
                         xtype:'textfield',
-                        name:'eqimusername',
-                        fieldLabel:'eqim用户名'
+                        name:'reportusername',
+                        fieldLabel:'快报用户名'
                     },
                     {
                         xtype:'textfield',
-                        name:'eqimpassword',
-                        fieldLabel:'eqim密码'
+                        name:'reportpassword',
+                        fieldLabel:'快报密码'
                     },
                     {
                         xtype: 'textfield',
