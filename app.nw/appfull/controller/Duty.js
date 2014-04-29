@@ -339,13 +339,13 @@ Ext.define('Webdesktop.controller.Duty', {
 
             var res = Ext.JSON.decode(response.responseText);
             if(res.success){
-                me.completeduty(rec,store,missiontype.archivefilesucc);
+                me.completeduty(rec,store,missiontype.earthquicksucc);
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.earthquicksucc,
                     logcontent:missiontype.earthquicksucc}],'duty/senddutylogs');
             }else{
-                me.completeduty(rec,store,missiontype.archivefilefail+'<br>'+res.results.join("<br>"));
+                me.completeduty(rec,store,missiontype.earthquickfail+'<br>'+res.results.join("<br>"));
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([
                     {
