@@ -47,6 +47,9 @@ Ext.define('Webdesktop.controller.Users', {
             },'usermanagerpanel button[action=edit]':{
                 click: this.openedituserwin
 
+            },'usermanagerpanel button[action=del]':{
+                click: this.deluser
+
             },'addnewuserwin button[action=add]':{
                 click: this.addnewuser
 
@@ -104,6 +107,33 @@ Ext.define('Webdesktop.controller.Users', {
         if(!this.addnewuserwin)this.addnewuserwin= Ext.widget('addnewuserwin');
         this.addnewuserwin.show();
 
+    },
+    deluser:function(btn){
+        var panel=btn.up('panel');
+        var sm = panel.getSelectionModel();
+        var selectitem=sm.getSelection();
+        if(selectitem.length==0){
+            Ext.Msg.alert("提示信息", "请选中编辑项");
+            return;
+        }
+        Ext.MessageBox.confirm('提示', '确定删除选中用户', function showResult(btn){
+            if(btn=='yes'){
+                var params = {
+                    userid:selectitem[0].data.userid
+                };
+                var successFunc = function (response, action) {
+                    var res = Ext.JSON.decode(response.responseText);
+                    if(res.success){
+                        panel.getStore().load();
+                    }
+
+                };
+                var failFunc = function (form, action) {
+                    Ext.Msg.alert("提示信息", "删除用户失败!");
+                };
+                CommonFunc.ajaxSend(params, 'user/deluser', successFunc, failFunc,'POST');
+            }
+        });
     },
     openedituserwin:function(btn){
         var sm = btn.up('panel').getSelectionModel();
