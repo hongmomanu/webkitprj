@@ -96,6 +96,8 @@ Ext.define('Webdesktop.controller.Duty', {
             },
             'missionmanagerpanel button[action=edit]':{
                 click: this.editmissionwin
+            },'missionmanagerpanel button[action=del]':{
+                click: this.delmission
             },
             'addnewstationwin button[action=add]':{
                 click: this.addnewstation
@@ -746,7 +748,33 @@ Ext.define('Webdesktop.controller.Duty', {
 
         CommonFunc.formSubmit(form, {}, 'duty/copywavefile', successFunc, failFunc, "正在提交。。。");
     },
+    delmission:function(btn){
+        var panel=btn.up('panel');
+        var sm = panel.getSelectionModel();
+        var selectitem=sm.getSelection();
+        if(selectitem.length==0){
+            Ext.Msg.alert("提示信息", "请选中编辑项");
+            return;
+        }
+        Ext.MessageBox.confirm('提示', '确定删除选中任务?', function showResult(btn){
+            if(btn=='yes'){
+                var params = {
+                    missionid:selectitem[0].data.missionid
+                };
+                var successFunc = function (response, action) {
+                    var res = Ext.JSON.decode(response.responseText);
+                    if(res.success){
+                        panel.getStore().load();
+                    }
 
+                };
+                var failFunc = function (form, action) {
+                    Ext.Msg.alert("提示信息", "删除任务失败!");
+                };
+                CommonFunc.ajaxSend(params, 'duty/delmission', successFunc, failFunc,'POST');
+            }
+        });
+    },
     editmissionwin:function(btn){
         var sm = btn.up('panel').getSelectionModel();
         var selectitem=sm.getSelection();
