@@ -111,6 +111,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             });
     },
     appexception:function(item,itemchild,store,msggrid){
+
         if (!itemchild.isconnect) {
             this.isalert=true;
             //msgwin.flyIn();

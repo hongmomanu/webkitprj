@@ -64,7 +64,16 @@ Ext.define('Webdesktop.controller.Duty', {
             'dutypanel':{
               afterrender:function(panel){
                   var store=panel.getStore();
-                  store.load();
+                  store.load({callback:function(){
+                      var task = new Ext.util.DelayedTask(function(){
+                          $('.logdutyex').click(function(){
+                              if($('.logdutyex').next().is(":visible"))$('.logdutyex').next().hide();
+                              else $('.logdutyex').next().show();
+                          });
+                      });
+                      task.delay(500);
+
+                  }});
               },
               dutyclick:function(rec,store){
                   var missionname=rec.get('missionname');

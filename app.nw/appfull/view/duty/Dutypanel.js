@@ -30,6 +30,7 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
             //view: new Ext.grid.GridView({ scrollToTop: Ext.emptyFn }),
 
             forceFit: true,
+
             columns: [
 
 
@@ -39,7 +40,11 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                         return "未检查";
                     }
                     else {
-                        return "已检查("+record.get('dutylog')+")";
+                        var content=record.get('dutylog');
+                        var html=content.indexOf("异常")>0?('<a class="logdutyex" style="color:red">异常</a>'+
+                            '<a style="display:none">'
+                            +content+'</a>'): content;
+                        return "已检查("+html+")";
                     }
 
                 },width: 200},
