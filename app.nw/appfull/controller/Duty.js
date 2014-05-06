@@ -448,7 +448,9 @@ Ext.define('Webdesktop.controller.Duty', {
 
         };
         var failFunc = function (form, action) {
-            //Ext.Msg.alert("提示信息", "操作失败..!");
+
+            Ext.Msg.alert("提示信息", "操作失败..!");
+            Ext.Msg.hide();
         };
         //CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
         CommonFunc.ajaxSend(params,'duty/eqimpubliclogin',successFunc,failFunc,'POST');
@@ -488,6 +490,7 @@ Ext.define('Webdesktop.controller.Duty', {
                 };
                 var failFunc = function (form, action) {
                     Ext.Msg.alert("提示信息", "操作失败..!");
+                    Ext.Msg.hide();
                 };
                 //CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
                 CommonFunc.ajaxSend(params,'duty/sendsms',successFunc,failFunc,'POST');
@@ -516,6 +519,7 @@ Ext.define('Webdesktop.controller.Duty', {
         };
         var failFunc = function (form, action) {
             Ext.Msg.alert("提示信息", "更新失败");
+            Ext.Msg.hide();
         };
 
         var form = btn.up('form');
@@ -759,7 +763,7 @@ Ext.define('Webdesktop.controller.Duty', {
         Ext.MessageBox.confirm('提示', '确定删除选中任务?', function showResult(btn){
             if(btn=='yes'){
                 var params = {
-                    missionid:selectitem[0].data.missionid
+                    missionid:selectitem[0].data.id
                 };
                 var successFunc = function (response, action) {
                     var res = Ext.JSON.decode(response.responseText);
@@ -770,6 +774,7 @@ Ext.define('Webdesktop.controller.Duty', {
                 };
                 var failFunc = function (form, action) {
                     Ext.Msg.alert("提示信息", "删除任务失败!");
+                    Ext.Msg.hide();
                 };
                 CommonFunc.ajaxSend(params, 'duty/delmission', successFunc, failFunc,'POST');
             }
@@ -816,6 +821,7 @@ Ext.define('Webdesktop.controller.Duty', {
         };
         var failFunc = function (form, action) {
             Ext.Msg.alert("提示信息", "删除失败!");
+            Ext.Msg.hide();
         };
         CommonFunc.ajaxSend(params,'delenumbyid',successFunc,failFunc,'POST');
     },

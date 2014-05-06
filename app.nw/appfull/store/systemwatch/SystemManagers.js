@@ -11,7 +11,7 @@ Ext.define('Webdesktop.store.systemwatch.SystemManagers', {
         url: CommonFunc.geturl()+'server/getsystems'
     },
     root: {
-        servername: '杭州市地震局',
+        servername: '浙江省地震局',
         //divisionpath:'杭州市地震局',
         id:-1,
         expanded: true

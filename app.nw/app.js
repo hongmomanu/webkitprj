@@ -22,6 +22,7 @@ Ext.application({
 
         /**初始化登陆窗口***/
         Ext.widget('webdesktop_login');
+        Ext.Ajax.timeout=3600000;
 
 
     }

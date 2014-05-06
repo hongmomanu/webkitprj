@@ -26,7 +26,9 @@ Ext.define('Webdesktop.controller.Systemwatch', {
     alertdiskpercent:10,
     init: function () {
 
-
+        var resoreceurl=localStorage.serverurl+"audio/server.ogg";
+        //alert(resoreceurl);
+        this.alertsnd=new Audio(resoreceurl);
         this.control({
             'systempanel menuitem[action=systemmanager]': {
                 click: this.opensystemmanagerwin
@@ -42,6 +44,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             },
             'systemmanagerpanel button[action=edit]': {
                 click: this.editsystemwin
+            },'systemmanagerpanel button[action=del]': {
+                click: this.delsystem
             },
             'systemalertmanagerwin button[action=save]': {
                 click: this.savesystemalertconfig
@@ -158,7 +162,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             //msgwin.flyIn();
             store.insert(0,
                 {
-                    msg: exceptiontype.mem+":"+(item.mem*100).toFixed(1)+"%",
+                    msg: exceptiontype.mem+":"+((1-item.mem)*100).toFixed(1)+"%",
                     msgtime: Ext.util.Format.date(new Date(), "H:i"),
                     ip:item.servername + "(" + item.servervalue + ")",
                     status:'mem'
@@ -212,7 +216,6 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                             logcontent:"所有服务:"+exceptiontype.ok+"("+results[i].servervalue+")"
                         });
                 }else{
-                    if(!me.alertsnd)me.alertsnd=new Audio("audio/song.ogg");
                     me.alertsnd.play();
                 }
             }
@@ -369,7 +372,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             "<div class='infoTitle'>连接状态</div>" +
             "<div class='infoValues'>" + (data.isping ? '正常' : '断开') + "</div>" +
             (data.cpu === "" ? "" : ("<div class='infoTitle'>cpu占用率</div>" +
-                "<div class='infoValues'>" + data.cpu + "%</div>")) +
+                "<div class='infoValues'>" + (eval(data.cpu)).toFixed(2) + "%</div>")) +
             (data.mem === "" ? "" : ("<div class='infoTitle'>内存占用率</div>" +
                 "<div class='infoValues'>" + ((1-data.mem)*100).toFixed(1) + "%</div>")) +
             "<div class='infoTitle'>服务状态</div>" +
@@ -461,6 +464,34 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         localStorage.alertdiskpercent=form.getValues().alertdiskpercent;
         this.alertTask.interval=parseInt(localStorage.alertinterval);
         btn.up('window').hide();
+    },
+    delsystem:function(btn){
+        var panel=btn.up('panel');
+        var sm = panel.getSelectionModel();
+        var selectitem=sm.getSelection();
+        if(selectitem.length==0){
+            Ext.Msg.alert("提示信息", "请选中编辑项");
+            return;
+        }
+        Ext.MessageBox.confirm('提示', '确定删除选中服务?', function showResult(btn){
+            if(btn=='yes'){
+               // console.log(selectitem[0].data);
+                var params = {
+                    serverid:selectitem[0].data.id
+                };
+                var successFunc = function (response, action) {
+                    var res = Ext.JSON.decode(response.responseText);
+                    if(res.success){
+                        panel.getStore().load();
+                    }
+
+                };
+                var failFunc = function (form, action) {
+                    Ext.Msg.alert("提示信息", "删除任务失败!");
+                };
+                CommonFunc.ajaxSend(params, 'server/delserver', successFunc, failFunc,'POST');
+            }
+        });
     },
     editsystemwin:function(btn){
         if (!this.editsystem_win)this.editsystem_win = Ext.widget('editsystemwin');
