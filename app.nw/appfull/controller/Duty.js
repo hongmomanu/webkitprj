@@ -64,16 +64,22 @@ Ext.define('Webdesktop.controller.Duty', {
             'dutypanel':{
               afterrender:function(panel){
                   var store=panel.getStore();
-                  store.load({callback:function(){
+                  var func=function(){
                       var task = new Ext.util.DelayedTask(function(){
+                          var content=$('.logdutyex');
+                          content.unbind( "click" );
+                          //alert(1);
                           $('.logdutyex').click(function(){
-                              if($('.logdutyex').next().is(":visible"))$('.logdutyex').next().hide();
-                              else $('.logdutyex').next().show();
+                              if($(this).next().is(":visible"))$(this).next().hide();
+                              else $(this).next().show();
                           });
                       });
                       task.delay(500);
 
-                  }});
+                  };
+                  store.on('load',func);
+                  store.on('update',func);
+                  store.load();
               },
               dutyclick:function(rec,store){
                   var missionname=rec.get('missionname');
@@ -587,6 +593,7 @@ Ext.define('Webdesktop.controller.Duty', {
            //user_cl.maketodaymission();
            Globle.logintime=now;
            user_cl.getcurrentduty(function(){});
+           AlertContent={};
        }
     },
     getEventMap:function(){

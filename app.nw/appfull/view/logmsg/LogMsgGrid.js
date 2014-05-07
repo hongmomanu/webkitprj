@@ -40,7 +40,12 @@ Ext.define('Webdesktop.view.logmsg.LogMsgGrid', {
 
                 {header: '时间',dataIndex: 'msgtime',width:60},
                 {header: '异常信息', dataIndex: 'msg',flex:1},
-                {header: '目标机器', dataIndex: 'ip',flex:1}
+                {header: '目标机器', dataIndex: 'ip',flex:1},
+                {header: '是否报警',renderer: function (val, obj, record) {
+                    var typevalue=record.get('ip')+record.get('msg').replace(/\d+%/,"")+record.get('status');
+                    return (AlertContent[typevalue]?'<a typevalue="'+typevalue+'" style="color: red;cursor: hand;"  class="alert-isnot">不报警</a>'
+                    :'<a typevalue="'+typevalue+'" class="alert-isnot" style="color: green;cursor: hand;">报警</a>');
+                }}
             ],
             tbar:[
 

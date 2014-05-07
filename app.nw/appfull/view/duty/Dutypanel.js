@@ -41,7 +41,7 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                     }
                     else {
                         var content=record.get('dutylog');
-                        var html=content.indexOf("异常")>0?('<a class="logdutyex" style="color:red">异常</a>'+
+                        var html=content.indexOf("异常")>0?('<a class="logdutyex" style="color:red;cursor: hand;">异常</a>'+
                             '<a style="display:none">'
                             +content+'</a>'): content;
                         return "已检查("+html+")";

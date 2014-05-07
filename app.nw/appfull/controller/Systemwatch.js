@@ -60,6 +60,49 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             'systemmanagerpanel': {
                 itemclick: this.systemclick
             },
+            'logmsgrid':{
+                afterrender:function(panel){
+                    var store=panel.getStore();
+                    store.on('datachanged',function(item){
+                        var content=$('.alert-isnot');
+                        content.unbind( "click" );
+                        content.click(function(){
+                                //alert(1);
+                                if($(this).css("color")=='rgb(0, 128, 0)'){
+                                    AlertContent[$(this).attr("typevalue")]=true;
+                                    $(this).css("color","red");
+                                    $(this).text('不报警');
+                                }
+                                else{
+                                    AlertContent[$(this).attr("typevalue")]=false;
+                                    $(this).css("color","green");
+                                    $(this).text('报警');
+                                }
+
+                            }
+                        );
+                    })
+                    /*store.load({callback:function(){
+                        var task = new Ext.util.DelayedTask(function(){
+                            $('.alert-isnot').click(function(){
+                                if($(this).css("color")=='green'){
+                                    AlertContent[$(this).attr("typevalue")]=true;
+                                    $(this).css("color","red");
+                                    $(this).val('不报警');
+                                 }
+                                else{
+                                    AlertContent[$(this).attr("typevalue")]=false;
+                                    $(this).css("color","green");
+                                    $(this).val('报警');
+                                }
+
+                            }
+                            );
+                        });
+                        task.delay(500);
+
+                    }});*/
+            }},
             'systempanel': {
                 afterrender: function () {
                     this.initsystemdiagram();
@@ -94,12 +137,15 @@ Ext.define('Webdesktop.controller.Systemwatch', {
     },
 
     pingexception:function(item,store,msggrid){
-        this.isalert=true;
+        var content=item.servername + "(" + item.servervalue + ")";
+        var msg=exceptiontype.ping;
+
+        if(!AlertContent[content+msg.replace(/\d+%/,"")+'ping'])this.isalert=true;
         //msggrid.flyIn();
         store.insert(0,
             {
-                msg: exceptiontype.ping,
-                ip:item.servername + "(" + item.servervalue + ")",
+                msg: msg,
+                ip:content,
                 msgtime: Ext.util.Format.date(new Date(), "H:i"),
                 status:'ping'
             });
@@ -113,13 +159,15 @@ Ext.define('Webdesktop.controller.Systemwatch', {
     appexception:function(item,itemchild,store,msggrid){
 
         if (!itemchild.isconnect) {
-            this.isalert=true;
+            var content=item.servername + "(" + item.servervalue + ")";
+            var msg=exceptiontype.app+":" + itemchild.servername;
+            if(!AlertContent[content+msg.replace(/\d+%/,"")+'app'])this.isalert=true;
             //msgwin.flyIn();
             store.insert(0,
                 {
-                    msg: exceptiontype.app+":" + itemchild.servername,
+                    msg: msg,
                     msgtime: Ext.util.Format.date(new Date(), "H:i"),
-                    ip:item.servername + "(" + item.servervalue + ")",
+                    ip:content,
                     status:'app'
                 });
             this.sendlog_arr.push(
@@ -135,13 +183,15 @@ Ext.define('Webdesktop.controller.Systemwatch', {
          if(item.disk.length>0){
             for(var i=0;i<item.disk.length;i++){
                 if((100-parseFloat(item.disk[i].value))<parseFloat(localStorage.alertdiskpercent)){
-                    this.isalert=true;
+                    var content=item.disk[i].name + "(" + item.servervalue + ")";
+                    var msg=exceptiontype.disk+":"+item.disk[i].value;
+                    if(!AlertContent[content+msg.replace(/\d+%/,"")+'disk'])this.isalert=true;
                     //msgwin.flyIn();
                     store.insert(0,
                         {
-                            msg: exceptiontype.disk+":"+item.disk[i].value,
+                            msg:msg ,
                             msgtime: Ext.util.Format.date(new Date(), "H:i"),
-                            ip:item.disk[i].name + "(" + item.servervalue + ")",
+                            ip:content,
                             status:'disk'
                         });
                     this.sendlog_arr.push(
@@ -159,13 +209,15 @@ Ext.define('Webdesktop.controller.Systemwatch', {
     },
     memoryexception:function(item,store,msggrid){
         if(item.mem!==""&&item.mem*100<localStorage.alertmempercent){
-            this.isalert=true;
+            var content=item.servername + "(" + item.servervalue + ")";
+            var msg= exceptiontype.mem+":"+((1-item.mem)*100).toFixed(1)+"%";
+            if(!AlertContent[content+msg.replace(/\d+%/,"")+'mem'])this.isalert=true;
             //msgwin.flyIn();
             store.insert(0,
                 {
-                    msg: exceptiontype.mem+":"+((1-item.mem)*100).toFixed(1)+"%",
+                    msg: msg,
                     msgtime: Ext.util.Format.date(new Date(), "H:i"),
-                    ip:item.servername + "(" + item.servervalue + ")",
+                    ip:content,
                     status:'mem'
                 });
             this.sendlog_arr.push(
@@ -217,6 +269,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                             logcontent:"所有服务:"+exceptiontype.ok+"("+results[i].servervalue+")"
                         });
                 }else{
+                    if(me.alertsnd)me.alertsnd.pause();
                     me.alertsnd.play();
                 }
             }
@@ -252,6 +305,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             c.exec('cmd.exe /c start ssh '+node.data.username+'@'+node.data.servervalue);
         }else{
 
+            c.exec('osascript -e \'tell app "Terminal" do script  "ssh '
+                +node.data.username+'@'+node.data.servervalue+'" end tell\'');
         }
     },
     initsystemdiagram: function () {
