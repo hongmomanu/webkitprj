@@ -26,9 +26,9 @@ Ext.define('Webdesktop.controller.Systemwatch', {
     alertdiskpercent:10,
     init: function () {
 
-        var resoreceurl=localStorage.serverurl+"audio/server.ogg";
+
         //alert(resoreceurl);
-        this.alertsnd=new Audio(resoreceurl);
+        //this.alertsnd=new Audio(resoreceurl);
         this.control({
             'systempanel menuitem[action=systemmanager]': {
                 click: this.opensystemmanagerwin
@@ -269,8 +269,11 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                             logcontent:"所有服务:"+exceptiontype.ok+"("+results[i].servervalue+")"
                         });
                 }else{
-                    if(me.alertsnd)me.alertsnd.pause();
-                    me.alertsnd.play();
+                    //if(me.alertsnd)me.alertsnd.pause();
+                    //me.alertsnd.play();
+                    var resoreceurl=localStorage.serverurl+"audio/server.ogg";
+                    var play=new Audio(resoreceurl);
+                    play.play();
                 }
             }
 
@@ -299,14 +302,14 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         var os = require("os");
         var c = require('child_process');
         var platform=os.platform();
+
         if(platform.indexOf('linux')>=0){
             c.exec('xfce4-terminal  -x bash -c "ssh '+node.data.username+'@'+node.data.servervalue+'; exec bash"')
-        }else if(platform.indexOf('win')>=0){
+        }else if(platform.indexOf('windows')>=0){
             c.exec('cmd.exe /c start ssh '+node.data.username+'@'+node.data.servervalue);
         }else{
-
-            c.exec('osascript -e \'tell app "Terminal" do script  "ssh '
-                +node.data.username+'@'+node.data.servervalue+'" end tell\'');
+            var cmd ='osascript -e \'tell app \"Terminal\" \n do script \"ssh ' +node.data.username+'@'+node.data.servervalue+'\" \n end tell\' ';
+            c.exec(cmd);
         }
     },
     initsystemdiagram: function () {

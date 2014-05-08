@@ -16,6 +16,11 @@ var Globle={
 
 };
 
+var AlertContent={
+
+
+};
+
 var exceptiontype={
     ping:"网络异常",
     mem:"内存危机",

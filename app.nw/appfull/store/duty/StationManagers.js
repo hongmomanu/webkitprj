@@ -4,6 +4,7 @@ Ext.define('Webdesktop.store.duty.StationManagers', {
     alias : 'widget.stationmanagers',
 
     autoLoad:true,
+    pageSize: 9000,
 
     proxy:{
         type: 'ajax',
