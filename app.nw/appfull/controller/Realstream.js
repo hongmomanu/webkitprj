@@ -97,13 +97,55 @@ Ext.define('Webdesktop.controller.Realstream', {
 
             map.on('click', onMapClick);
 
+            var NewControl = L.Control.extend({
+                options: {
+                    position: 'bottomleft'
+                },
+
+                onAdd: function (map) {
+                    this._map = map;
+
+                    var className = 'leaflet-hax',
+                        container = L.DomUtil.create('div', className);
+                    container.innerHTML = '<input id="quickpanto" value="30.274,120.155" />';
+
+
+                    //if (!L.Browser.touch) {
+                    //    alert('1');
+                    L.DomEvent.disableClickPropagation(container);
+                    //} else {
+                    //    alert('2');
+                    //    L.DomEvent.addListener(container, 'click', L.DomEvent.stopPropagation);
+                    //}
+
+                    return container;
+                }
+            });
+
+            map.addControl(new NewControl());
+            map.on('moveend', function(){
+                var center = (map.getCenter());
+                $('#quickpanto').val(center.lat.toFixed(3)+","+center.lng.toFixed(3));
+
+            });
+
+            $('#quickpanto').keyup(function(e){
+                if(e.keyCode == 13)
+                {
+                    var lonlat=$('#quickpanto').val();
+                    map.panTo([lonlat.split(",")[0],lonlat.split(",")[1]]);
+                }
+            });
+
         });
         d.delay(500);
 
     },
     websocketInit:function(){
         var url=localStorage.serverurl;
-        url=url?"ws://"+url.split("://")[1].split(":")[0]+":3001/":"ws://localhost:3001/";
+        //url=url?"ws://"+url.split("://")[1].split(":")[0]+":3001/":"ws://localhost:3001/";
+        url=url.replace(/(:\d+)/g,":3001");
+        url=url.replace("http","ws");
         var socket = new WebSocket(url);
         var me=this;
         socket.onmessage = function(event) {

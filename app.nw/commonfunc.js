@@ -42,7 +42,7 @@ var CommonFunc = {
         Ext.Ajax.request({
             url: me.geturl() + url,
             method: method,
-
+            timeout: 30000,//default 30000 milliseconds
             params: params,
             success: sucFun,
             failure: failFunc

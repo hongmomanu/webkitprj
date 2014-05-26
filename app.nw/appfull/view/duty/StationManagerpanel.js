@@ -53,7 +53,7 @@ Ext.define('Webdesktop.view.duty.StationManagerpanel', {
                 {
                     text:'删除',
                     itemId:'del',
-                    disabled:true,
+                    //disabled:true,
                     action:'del',
                     hidden: !Globle.isadmin
 

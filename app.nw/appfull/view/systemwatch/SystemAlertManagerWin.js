@@ -61,7 +61,7 @@ Ext.define('Webdesktop.view.systemwatch.SystemAlertManagerWin' ,{
                         xtype: 'numberfield',
                         anchor: '100%',
                         name: 'alertmempercent',
-                        fieldLabel: '磁盘报警百分比（低于)',
+                        fieldLabel: '内存报警百分比（低于)',
                         maxValue: 30,
                         minValue: 1
                     },

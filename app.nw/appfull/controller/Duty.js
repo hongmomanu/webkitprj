@@ -103,6 +103,9 @@ Ext.define('Webdesktop.controller.Duty', {
             'stationmanagerpanel button[action=new]':{
                 click: this.addnewstationwin
             },
+            'stationmanagerpanel button[action=del]':{
+                click: this.delstation
+            },
             'stationmanagerpanel button[action=edit]':{
                 click: this.editstationwin
             },
@@ -685,6 +688,35 @@ Ext.define('Webdesktop.controller.Duty', {
                 eventdir:localStorage.eventdir,
                 archiveminsize:localStorage.archiveminsize
             });
+
+    },
+    delstation:function(btn){
+        var panel=btn.up('panel');
+        var sm = panel.getSelectionModel();
+        var selectitem=sm.getSelection();
+        if(selectitem.length==0){
+            Ext.Msg.alert("提示信息", "请选中编辑项");
+            return;
+        }
+        Ext.MessageBox.confirm('提示', '确定删除选中站台?', function showResult(btn){
+            if(btn=='yes'){
+                var params = {
+                    sid:selectitem[0].data.id
+                };
+                var successFunc = function (response, action) {
+                    var res = Ext.JSON.decode(response.responseText);
+                    if(res.success){
+                        panel.getStore().load();
+                    }
+
+                };
+                var failFunc = function (form, action) {
+                    Ext.Msg.alert("提示信息", "删除站台失败!");
+                    Ext.Msg.hide();
+                };
+                CommonFunc.ajaxSend(params, 'duty/delstation', successFunc, failFunc,'POST');
+            }
+        });
 
     },
     addnewstationwin:function(btn){
