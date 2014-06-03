@@ -151,6 +151,7 @@ Ext.define('Webdesktop.controller.Realstream', {
         socket.onmessage = function(event) {
             var data=event.data;
             data=JSON.parse(data);
+            console.log(data);
             if(data.type==="rts"){
                 //console.log(data);
                 var results=data.results;
@@ -182,7 +183,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                         }
                         if(item){
                             me.chart_caculate++;
-                            console.log(me.chart_caculate);
+                            //console.log(me.chart_caculate);
                             me.relations_begin(name[i].name,item)
                         }
 
@@ -194,6 +195,14 @@ Ext.define('Webdesktop.controller.Realstream', {
                 var play=new Audio(resoreceurl);
                 play.play();
 
+            }
+            else if(data.type==="eqim"){
+                var grid=Ext.getCmp('earthlistgrid');
+                var store=grid.getStore();
+                store.add(data);
+                var resoreceurl=localStorage.serverurl+"audio/eqim.mp3";
+                var play=new Audio(resoreceurl);
+                play.play();
             }
         }
 
@@ -385,7 +394,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                         var compare=s[i].raw.crossnowbhe==0?0:((s[i].raw.crossavgbhe-s[i].raw.crossnowbhe)/s[i].raw.crossnowbhe)*100;
                         //console.log(compare);
                         var geom=eval(s[i].raw.geom);
-                        console.log(geom);
+                        //console.log(geom);
                         var iconFeature = new ol.Feature({
                             geometry: new ol.geom.Point(geom),//558, 825
                             name: s[i].raw.stationname,
@@ -505,7 +514,7 @@ Ext.define('Webdesktop.controller.Realstream', {
 
             me.plot=null;
             if (feature) {
-                console.log(feature);
+                //console.log(feature);
                 var geometry = feature.getGeometry();
                 var coord = geometry.getCoordinates();
                 //console.log(coord);

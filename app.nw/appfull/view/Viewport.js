@@ -168,10 +168,28 @@ Ext.define('Webdesktop.view.Viewport', {
                                                     flex:0.33
                                                 },
                                                 {
-                                                    xtype:'dutypanel',
+                                                    xtype:'container',
                                                     region:'center',
+                                                    layout: {
+                                                        type:'vbox',
+                                                        align: 'stretch'
+                                                    },
+                                                    items:[
+                                                        {
+                                                            xtype:'dutypanel',
+                                                            flex:0.7
+
+                                                        } ,
+                                                        {
+                                                            xtype:'earthlistgrid',
+                                                            flex:0.3,
+                                                            id:'earthlistgrid'
+
+                                                        }
+                                                    ],
                                                     flex:0.33
                                                 },
+
                                                 {
                                                     xtype:'logmsgrid',
                                                     id:'logmsgrid',

@@ -23,6 +23,7 @@ Ext.define('Webdesktop.controller.Duty', {
          'duty.WorkManagerpanel',
          'duty.DutyConfigManagerWin',
          'duty.StationManagerConfigwin',
+         'duty.EarthListGrid',
          'conmmon.AnimateWin'
     ],
     models: [
@@ -61,6 +62,7 @@ Ext.define('Webdesktop.controller.Duty', {
             'editmissionitemwin button[action=save]': {
                 click: this.savemissionconfig
             },
+
             'dutypanel':{
               afterrender:function(panel){
                   var store=panel.getStore();
@@ -139,6 +141,7 @@ Ext.define('Webdesktop.controller.Duty', {
     checkdutytask:null,
     dutyalertinterval:60000,
     isfirstduty:true,
+
 
     completeduty:function(item,store,dutylog){
        var params={
