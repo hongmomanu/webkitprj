@@ -15,7 +15,7 @@ Ext.define('Webdesktop.view.user.UserManagerpanel', {
             //hideHeaders:true,
             multiSelect: true,
             viewConfig: {
-                trackOver: false,
+                trackOver: true,
                 loadMask: true,
                 scrollToTop: Ext.emptyFn,
                 enableTextSelection:true,

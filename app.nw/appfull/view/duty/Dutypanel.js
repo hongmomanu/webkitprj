@@ -12,9 +12,11 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
 
             border: true,
 
+
+
             //hideHeaders: true,
             viewConfig: {
-                trackOver: false,
+                trackOver: true,
                 loadMask: true,
                 scrollToTop: Ext.emptyFn,
                 enableTextSelection: true,

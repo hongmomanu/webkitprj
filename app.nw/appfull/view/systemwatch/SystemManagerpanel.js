@@ -15,7 +15,7 @@ Ext.define('Webdesktop.view.systemwatch.SystemManagerpanel', {
             //hideHeaders:true,
             multiSelect: true,
             viewConfig: {
-                trackOver: false,
+                trackOver: true,
                 loadMask: true,
                 scrollToTop: Ext.emptyFn,
                 enableTextSelection:true,

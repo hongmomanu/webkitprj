@@ -15,7 +15,7 @@ Ext.define('Webdesktop.view.logmsg.LogMsgGrid', {
             hideHeaders:true,
             multiSelect: true,
             viewConfig: {
-                trackOver: false,
+                trackOver: true,
                 loadMask: true,
                 scrollToTop: Ext.emptyFn,
                 enableTextSelection:true,

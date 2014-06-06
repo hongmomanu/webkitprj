@@ -14,7 +14,7 @@ Ext.define('Webdesktop.view.realstream.RealStreamGrid', {
             hideHeaders:false,
             multiSelect: true,
             viewConfig: {
-                trackOver: false,
+                trackOver: true,
                 loadMask: false,
                 scrollToTop: Ext.emptyFn,
                 enableTextSelection:true,

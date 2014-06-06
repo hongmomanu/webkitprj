@@ -14,7 +14,7 @@ Ext.define('Webdesktop.view.duty.EarthListGrid', {
             hideHeaders:false,
             multiSelect: true,
             viewConfig: {
-                trackOver: false,
+                trackOver: true,
                 loadMask: true,
                 scrollToTop: Ext.emptyFn,
                 enableTextSelection:true

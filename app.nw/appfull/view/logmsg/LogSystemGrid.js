@@ -13,7 +13,7 @@ Ext.define('Webdesktop.view.logmsg.LogSystemGrid', {
             //hideHeaders:true,
             multiSelect: true,
             viewConfig: {
-                trackOver: false,
+                trackOver: true,
                 loadMask: true,
                 scrollToTop: Ext.emptyFn,
                 enableTextSelection:true,

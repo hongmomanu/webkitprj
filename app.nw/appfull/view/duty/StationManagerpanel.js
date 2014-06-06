@@ -15,7 +15,7 @@ Ext.define('Webdesktop.view.duty.StationManagerpanel', {
             //hideHeaders:true,
             multiSelect: true,
             viewConfig: {
-                trackOver: false,
+                trackOver: true,
                 loadMask: true,
                 scrollToTop: Ext.emptyFn,
                 enableTextSelection:true,
