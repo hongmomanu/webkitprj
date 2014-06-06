@@ -10,7 +10,8 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
         //alert(1);
         Ext.apply(me, {
 
-            border: false,
+            border: true,
+
             //hideHeaders: true,
             viewConfig: {
                 trackOver: false,
@@ -24,7 +25,8 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
                         return 'duty-gridrow-green';
                     }
                 },
-                stripeRows: true
+                stripeRows: true,
+                frame: true
             },
 
             //view: new Ext.grid.GridView({ scrollToTop: Ext.emptyFn }),
@@ -96,11 +98,11 @@ Ext.define('Webdesktop.view.duty.Dutypanel', {
             tbar: [
                 {
                     xtype: 'label',
-                    text: '今日值班人员:' + Globle.dutydisplayname //+',当前登陆人员:'+Globle.displayname
+                    html: '<a style="font-size: 12">今日值班人员:' +'<font color="red">' +Globle.dutydisplayname+'</font></a> ' //+',当前登陆人员:'+Globle.displayname
                 },
                 {
                     xtype: 'splitbutton',
-                    text: '值班管理',
+                    text: '<font color="green" >值班管理</font>',
                     //hidden: !Globle.isadmin,
                     menu: [
                         {

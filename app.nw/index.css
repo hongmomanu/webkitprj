@@ -54,4 +54,27 @@ div.infoValues {
     cursor:hand;
 }
 
+.x-grid-row-alt .x-grid-td {
+    background-color: #EEF4FB;
+}
+.x-grid-row-selected .x-grid-td{
+    background-color: #80A4C4;
+}
+
+.x-grid-row-over .x-grid-td{
+
+    background-color: #C3CDD4;
+}
+.x-grid-row-over .x-grid-td {
+    border-bottom-style: solid;
+    border-bottom-color: #e2eff8;
+}
+.x-grid-row-over .x-grid-td {
+    background-color: #e2eff8;
+}
+.x-grid-row-focused .x-grid-td {
+    background-color: #e2eff8;
+}
+
+
 

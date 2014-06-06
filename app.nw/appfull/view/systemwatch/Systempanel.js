@@ -10,6 +10,7 @@ Ext.define('Webdesktop.view.systemwatch.Systempanel', {
 
     initComponent: function () {
         var me = this;
+        var url=CommonFunc.geturl();
         Ext.apply(me, {
             border: true,
             itemId:'systempanel',

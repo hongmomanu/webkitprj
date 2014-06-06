@@ -476,7 +476,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                             })
                         ],
                         url: url+'images/zjmap.gif',
-                        imageSize: [356,339],
+                        imageSize: [483,416],
                         projection: pixelProjection,
                         imageExtent: pixelProjection.getExtent()
                     })

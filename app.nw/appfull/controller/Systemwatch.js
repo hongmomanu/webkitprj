@@ -285,7 +285,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             nodearr = nodearr.concat(results);
             var linkDataArray = [];
             for (var i = 0; i < results.length; i++) {
-                var linkitem = {"from": results[i].key, "to": firstitem.key,"color":results[i].isping?"green":"red"};
+                var linkitem = {"from": results[i].key, "to": firstitem.key,"color":results[i].isping?"#6AA3B9":"red"};
                 linkDataArray.push(linkitem);
             }
             me.myDiagram.model = new go.GraphLinksModel(nodearr,linkDataArray);

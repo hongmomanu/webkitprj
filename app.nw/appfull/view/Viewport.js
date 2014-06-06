@@ -31,7 +31,16 @@ Ext.define('Webdesktop.view.Viewport', {
                     },
 
                     items:[
-
+                        {
+                            region:'north',
+                            xtype:'panel',
+                            height:40,
+                            bodyStyle: {
+                                //background: '#ffc',
+                                background: 'url(images/bghead.png)'
+                            },
+                            html:'<div style="font-size: 20;padding-left: 10px;padding-top:5px;color: #ffffff">浙江地震台网值班平台</div>'
+                        },
                         {
                             flex: 1,
                             region: 'center',
@@ -199,7 +208,7 @@ Ext.define('Webdesktop.view.Viewport', {
                         {
                             flex: 1,
                             xtype: 'container',
-                            region: 'north',
+                            region: 'south',
                             padding: '5 5 0 5',
                             //xtype: 'container',
                             layout: {
