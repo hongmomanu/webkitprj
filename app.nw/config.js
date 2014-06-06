@@ -44,7 +44,7 @@ var missiontype={
     eqim:'国家局EQIM系统检查',
     eqimsucc:'国家局EQIM系统检查完成',
     eqimfail:'国家局EQIM系统检查异常',
-    record:'断记统计上传',
+    record:'断记统计上传检查',
     recordno:'无断记',
     recordyes:'有断记',
     recordsucc:'断记统计上传成功',

@@ -468,6 +468,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         return "Circle";
     },
     nodeTypeImage: function (type) {
+        var url=CommonFunc.geturl();
         /*if (type.isping) {
             if (type.key == -1)return "images/network.png";
             else return "images/gnome_network_idle.png";
@@ -475,10 +476,10 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             return "images/gnome_network_error.png";
         }*/
         if (type.machinecss==='blade') {
-             return "images/server_eteint_vert.png";
+             return url+"images/server_eteint_vert.png";
         }else if (type.key == -1)return "images/network.png";
         else {
-            return "images/network_server.png";
+            return url+"images/network_server.png";
         }
 
     },

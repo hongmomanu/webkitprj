@@ -625,7 +625,9 @@ Ext.define('Webdesktop.controller.Duty', {
             var datetime=Ext.Date.parse(time, "H:i");
             var now=new Date();
             if(missionstatus==0&&time!=''&&datetime.getHours()<=now.getHours()){
-                me.getEventMap()[missionname](item,store);
+                var maps= me.getEventMap();
+                console.log(maps);
+                maps[missionname](item,store);
             }
 
         });

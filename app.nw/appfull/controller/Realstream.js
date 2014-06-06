@@ -154,6 +154,10 @@ Ext.define('Webdesktop.controller.Realstream', {
             console.log(data);
             if(data.type==="rts"){
                 //console.log(data);
+                if(me.popupmarker){
+                    me.relationmap.removeLayer(me.popupmarker);
+                }
+
                 var results=data.results;
                 var name=data.name;
                 me.showRelationMaplocation(data.lonlat);
@@ -365,11 +369,11 @@ Ext.define('Webdesktop.controller.Realstream', {
 
     showRelationMaplocation:function(data){
         var me=this;
-        this.relationmap.panTo(new L.LatLng(data[1],data[0]));
-        if(this.popupmarker)this.relationmap.removeLayer(this.popupmarker);
-        var marker=L.marker([data[1],data[0]]).addTo(this.relationmap)
+        me.relationmap.panTo(new L.LatLng(data[1],data[0]));
+        if(me.popupmarker)me.relationmap.removeLayer(me.popupmarker);
+        var marker=L.marker([data[1],data[0]]).addTo(me.relationmap)
             .bindPopup("<div id='rts_chart' style='width: 320px;height: 100%;'></div>",{closeButton:true}).openPopup();
-        this.popupmarker=marker;
+        me.popupmarker=marker;
         marker.on('popupclose', function(e) {
             //alert(1);
             try{
@@ -434,6 +438,7 @@ Ext.define('Webdesktop.controller.Realstream', {
     },
     realstreammapInit:function(){
         var me=this;
+        var url=CommonFunc.geturl();
         var pixelProjection = new ol.proj.Projection({
             code: 'pixel',
             units: 'pixels',
@@ -454,6 +459,7 @@ Ext.define('Webdesktop.controller.Realstream', {
         this.vectorLayer=vectorLayer;
         this.realmapfeatures();
 
+
         var mousePositionControl = new ol.control.MousePosition({
             coordinateFormat: ol.coordinate.createStringXY(4),
 
@@ -469,7 +475,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                                 //html: '&copy; <a href="http://xkcd.com/license.html">xkcd</a>'
                             })
                         ],
-                        url: 'images/zjmap.jpg',
+                        url: url+'images/zjmap.gif',
                         imageSize: [356,339],
                         projection: pixelProjection,
                         imageExtent: pixelProjection.getExtent()

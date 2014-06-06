@@ -31,107 +31,14 @@ Ext.define('Webdesktop.view.Viewport', {
                     },
 
                     items:[
-                        {
-                            flex: 1,
-                            xtype: 'container',
-                            region: 'north',
 
-                            //xtype: 'container',
-                            layout: {
-                                type: 'border',
-                                align: 'stretch'
-                            },
-                            defaults: {
-                                split: true,
-                                collapsible: true,
-                                animCollapse: true,
-                                bodyPadding: 5
-                            },
-                            items: [
-                                {
-                                    xtype:'panel',
-                                    title:'地震实时数据流处理',
-                                    layout:'fit',
-                                    collapsible: false,
-                                    items:[
-                                        {
-                                            xtype: 'container',
-                                            layout: {
-                                                type: 'border',
-                                                align: 'stretch'
-                                            },
-                                            defaults: {
-                                                split: true,
-                                                //collapsible: true,
-                                                animCollapse: true
-                                            },
-                                            items:[
-                                                /*{
-                                                    //xtype:'realseedchart',
-                                                    xtype:'realstreamgrid',
-                                                    region:'west',
-                                                    flex:0.5
-                                                },*/
-                                                {
-                                                    xtype:'realstreammappanel',
-
-                                                    region:'center',
-                                                    flex:1
-                                                }
-                                            ]
-
-                                        }
-                                    ],
-
-                                    tools: [
-                                        {
-                                            type: 'maximize',
-                                            tooltip:'窗口最大化',
-                                            handler: function (a, b, c) {
-                                                //console.log(c);
-                                                //testobj=c;
-                                                CommonFunc.maxpanel(c.up('panel').items.items[0],'地震实时数据流处理',c);
-                                                //var panel=c.up('panel').down('container');
-                                                //CommonFunc.maxpanel(panel,'地震实时数据流处理',c);
-                                            }
-                                        }
-                                    ],
-
-                                    region:'west',
-                                    flex: 0.5
-                                },
-                                {
-                                    xtype:'panel',
-                                    title:'服务器状态监测',
-                                    collapsible: false,
-                                    layout:'fit',
-                                    region:'center',
-                                    flex: 0.5,
-                                    tools: [
-                                        {
-                                            type: 'maximize',
-                                            tooltip:'窗口最大化',
-                                            handler: function (a, b, c) {
-                                                var panel=c.up('panel').down('panel');
-                                                CommonFunc.maxpanel(panel,'系统监视窗口',c);
-                                            }
-                                        }
-                                    ],
-                                    items:[
-                                        {
-                                            xtype:'systempanel'
-                                        }
-                                    ]
-
-                                }
-                            ]
-                        },
                         {
                             flex: 1,
                             region: 'center',
                             collapsible: true,
                             animCollapse: true,
                             xtype: 'container',
+                            padding: '0 5 0 5',
                             layout: {
                                 type: 'border',
                                 align: 'stretch'
@@ -177,12 +84,12 @@ Ext.define('Webdesktop.view.Viewport', {
                                                     items:[
                                                         {
                                                             xtype:'dutypanel',
-                                                            flex:0.7
+                                                            flex:0.6
 
                                                         } ,
                                                         {
                                                             xtype:'earthlistgrid',
-                                                            flex:0.3,
+                                                            flex:0.4,
                                                             id:'earthlistgrid'
 
                                                         }
@@ -287,6 +194,102 @@ Ext.define('Webdesktop.view.Viewport', {
 
                                 }
 
+                            ]
+                        },
+                        {
+                            flex: 1,
+                            xtype: 'container',
+                            region: 'north',
+                            padding: '5 5 0 5',
+                            //xtype: 'container',
+                            layout: {
+                                type: 'border',
+                                align: 'stretch'
+                            },
+                            defaults: {
+                                split: true,
+                                collapsible: true,
+                                animCollapse: true,
+                                bodyPadding: 5
+                            },
+                            items: [
+                                {
+                                    xtype:'panel',
+                                    title:'地震实时数据流处理',
+                                    layout:'fit',
+
+                                    collapsible: false,
+                                    items:[
+                                        {
+                                            xtype: 'container',
+                                            layout: {
+                                                type: 'border',
+                                                align: 'stretch'
+                                            },
+                                            defaults: {
+                                                split: true,
+                                                //collapsible: true,
+                                                animCollapse: true
+                                            },
+                                            items:[
+                                                /*{
+                                                 //xtype:'realseedchart',
+                                                 xtype:'realstreamgrid',
+                                                 region:'west',
+                                                 flex:0.5
+                                                 },*/
+                                                {
+                                                    xtype:'realstreammappanel',
+
+                                                    region:'center',
+                                                    flex:1
+                                                }
+                                            ]
+
+                                        }
+                                    ],
+
+                                    tools: [
+                                        {
+                                            type: 'maximize',
+                                            tooltip:'窗口最大化',
+                                            handler: function (a, b, c) {
+                                                //console.log(c);
+                                                //testobj=c;
+                                                CommonFunc.maxpanel(c.up('panel').items.items[0],'地震实时数据流处理',c);
+                                                //var panel=c.up('panel').down('container');
+                                                //CommonFunc.maxpanel(panel,'地震实时数据流处理',c);
+                                            }
+                                        }
+                                    ],
+
+                                    region:'west',
+                                    flex: 0.5
+                                },
+                                {
+                                    xtype:'panel',
+                                    title:'服务器状态监测',
+                                    collapsible: false,
+                                    layout:'fit',
+                                    region:'center',
+                                    flex: 0.5,
+                                    tools: [
+                                        {
+                                            type: 'maximize',
+                                            tooltip:'窗口最大化',
+                                            handler: function (a, b, c) {
+                                                var panel=c.up('panel').down('panel');
+                                                CommonFunc.maxpanel(panel,'系统监视窗口',c);
+                                            }
+                                        }
+                                    ],
+                                    items:[
+                                        {
+                                            xtype:'systempanel'
+                                        }
+                                    ]
+
+                                }
                             ]
                         }
                     ]
