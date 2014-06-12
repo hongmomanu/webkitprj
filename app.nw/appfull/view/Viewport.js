@@ -39,7 +39,7 @@ Ext.define('Webdesktop.view.Viewport', {
                                 //background: '#ffc',
                                 background: 'url(images/bghead.png)'
                             },
-                            html:'<div style="font-size: 20;padding-left: 10px;padding-top:5px;color: #ffffff">浙江地震台网值班平台</div>'
+                            html:'<div style="font-size: 20;padding-left: 10px;padding-top:5px;color: #ffffff">浙江测震台网值班平台</div>'
                         },
                         {
                             flex: 1,
@@ -62,7 +62,7 @@ Ext.define('Webdesktop.view.Viewport', {
                                 {
                                     xtype:'panel',
                                     flex: 1,
-                                    title:'值班任务管理',
+                                    //title:'值班任务管理',
                                     layout:'fit',
                                     collapsible: false,
                                     items:[

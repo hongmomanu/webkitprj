@@ -8,7 +8,10 @@ Ext.define('Webdesktop.model.realstream.RealStream', {
             name: 'stationname',
             type:'string'
         },
-
+        {
+            name: 'stationid',
+            type:'int'
+        },
         {
             name: 'time',
             type:'string'

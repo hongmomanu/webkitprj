@@ -10,7 +10,7 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
     initComponent: function() {
         Ext.apply(this, {
             title: '值班配置管理',
-            height: 550,
+            height: 480,
             width: 500,
             closeAction : 'hide',
             modal:true,
@@ -29,7 +29,7 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
                 //xtype: 'fieldset',
 
                 fieldDefaults: {
-                    labelAlign: 'top',
+                    labelAlign: 'left',
                     labelWidth: 100,
                     labelStyle: 'font-weight:bold'
                 },
@@ -100,16 +100,15 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
                         name: 'archiveminsize'
                     },{
                         xtype: 'textfield',
-                        fieldLabel: '源文件夹',
-                        hidden:true,
-                        name: 'sourcedir'
+                        fieldLabel: '编目人员电话号码',
+                        name: 'catalogtel'
                     },
                     {
                         xtype: 'textfield',
                         fieldLabel: '目标文件夹',
                         hidden:true,
                         name: 'targetdir'
-                    },
+                    }
 
 
                 ],

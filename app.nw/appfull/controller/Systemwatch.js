@@ -279,7 +279,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
 
 
             me.sendsystemlogs(me.sendlog_arr,'server/sendsystemlogs');
-            var firstitem = {"key": "-1", "servername": "浙江省地震台网中心", "isping": true, "machinecss": ""};
+            var firstitem = {"key": "-1", "servername": "浙江省测震台网中心", "isping": true, "machinecss": ""};
             var nodearr = [];
             nodearr.push(firstitem);
             nodearr = nodearr.concat(results);

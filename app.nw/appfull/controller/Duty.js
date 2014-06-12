@@ -85,8 +85,9 @@ Ext.define('Webdesktop.controller.Duty', {
               },
               dutyclick:function(rec,store){
                   var missionname=rec.get('missionname');
+                  var missionlabel=rec.get('missionlabel');
                   Ext.Msg.wait('处理中，请稍后...', '提示');
-                  this.getEventMap()[missionname](rec,store);
+                  this.getEventMap()[missionlabel](rec,store);
               }
             },
             'workmanagerpanel':{
@@ -478,6 +479,11 @@ Ext.define('Webdesktop.controller.Duty', {
     },
     catalogingclick:function(rec,store){
         var me=this;
+        if(!localStorage.catalogtel||localStorage.catalogtel==""){
+            Ext.Msg.alert("提示信息", "编目人员号码未确定!");
+            Ext.Msg.hide();
+            return;
+        }
         Ext.MessageBox.confirm('是否有编目', '有无编目?', function showResult(btn){
             if(btn==='yes'){
 
@@ -488,7 +494,7 @@ Ext.define('Webdesktop.controller.Duty', {
                     "186": 2 ,"133": 3 ,"153": 3 ,"180": 3 ,"189": 3};
                 var telpart=mapkey[(Globle.tel+"").substring(0,3)];
                 var params={
-                    tel:Globle.dutytel,
+                    tel:localStorage.catalogtel,
                     msg:"有编目" ,
                     telpart:telpart
                 };
@@ -555,6 +561,7 @@ Ext.define('Webdesktop.controller.Duty', {
         localStorage.reportloginurl=form.getValues().reportloginurl;
         localStorage.reportusername=form.getValues().reportusername;
         localStorage.reportpassword=form.getValues().reportpassword;
+        localStorage.catalogtel=form.getValues().catalogtel;
         //localStorage.sourcedir=form.getValues().sourcedir;
         //localStorage.targetdir=form.getValues().targetdir;
         localStorage.wavedir=form.getValues().wavedir;
@@ -620,14 +627,14 @@ Ext.define('Webdesktop.controller.Duty', {
         var me=this;
         Ext.each(items,function(item,index){
             var missionname=item.data.missionname;
+            var missionlabel=item.data.missionlabel;
             var missionstatus= item.data.missionstatus;
             var time=item.data.missiontime;
             var datetime=Ext.Date.parse(time, "H:i");
             var now=new Date();
             if(missionstatus==0&&time!=''&&datetime.getHours()<=now.getHours()){
                 var maps= me.getEventMap();
-                console.log(maps);
-                maps[missionname](item,store);
+                maps[missionlabel](item,store);
             }
 
         });
@@ -688,6 +695,7 @@ Ext.define('Webdesktop.controller.Duty', {
                 reporturl:localStorage.reporturl,
                 reportloginurl:localStorage.reportloginurl,
                 reportusername:localStorage.reportusername,
+                catalogtel:localStorage.catalogtel,
                 reportpassword:localStorage.reportpassword,
                 wavedir:localStorage.wavedir,
                 eventdir:localStorage.eventdir,

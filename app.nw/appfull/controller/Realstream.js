@@ -47,6 +47,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                     var me=this;
                     var task = new Ext.util.DelayedTask(function(){
                         me.realstreammapInit();
+                        //me.realstreammapInitleaf();
                         me.websocketInit();
                     });
                     task.delay(1000);
@@ -54,6 +55,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                 },
                 afterlayout:function( panel, layout, eOpts ){
                     if(this.map){
+
                         this.map.updateSize();
                     }
                 }
@@ -151,7 +153,7 @@ Ext.define('Webdesktop.controller.Realstream', {
         socket.onmessage = function(event) {
             var data=event.data;
             data=JSON.parse(data);
-            console.log(data);
+            //console.log(data);
             if(data.type==="rts"){
                 //console.log(data);
                 if(me.popupmarker){
@@ -387,6 +389,7 @@ Ext.define('Webdesktop.controller.Realstream', {
     },
     realmapfeatures:function(){
         var me=this;
+        me.stationmvoe=0;
         var store=Ext.StoreMgr.get('realstream.RealStreams');
         var taskfun=function(){
             store.load({callback:function(s){
@@ -403,8 +406,10 @@ Ext.define('Webdesktop.controller.Realstream', {
                             geometry: new ol.geom.Point(geom),//558, 825
                             name: s[i].raw.stationname,
                             time:s[i].raw.time,
+                            stationid:s[i].raw.stationid,
                             cross:compare
                         });
+
 
                         var url=CommonFunc.geturl();
                         var iconStyle = new ol.style.Style({
@@ -418,6 +423,43 @@ Ext.define('Webdesktop.controller.Realstream', {
                         });
 
                         iconFeature.setStyle(iconStyle);
+                        iconFeature.on('change',function(de){
+                            testobj=de;
+                            me.stationmvoe++;
+                            var task = (function(index){
+
+                                return new Ext.util.DelayedTask(function(){
+                                    if(index===me.stationmvoe){
+                                         var item=de.c.e;
+                                         var extent=item.geometry.extent;
+                                         var stationid=item.stationid;
+
+                                         var successFunc = function (response, action) {
+
+                                         var res=Ext.JSON.decode(response.responseText);
+
+                                         };
+                                         var failFunc = function (form, action) {
+                                         //alert("fail");
+
+                                         };
+
+                                         var param={
+                                         geom:"["+extent[0]+","+extent[1]+"]",
+                                         id:stationid
+                                         };
+
+                                         CommonFunc.ajaxSend(param,'duty/savestation',successFunc,failFunc,'post');
+
+
+                                    }
+
+                                });
+
+                            })(me.stationmvoe);
+                            task.delay(1000);
+
+                        });
                         features.push(iconFeature);
 
                     })(i);
@@ -434,6 +476,19 @@ Ext.define('Webdesktop.controller.Realstream', {
             interval: 30000
         }
         Ext.TaskManager.start(task);
+
+    },
+
+    realstreammapInitleaf:function(){
+        var me=this;
+        var url=CommonFunc.geturl();
+        me.map=L.map('realstreammap',{maxZoom: 11}).setView([52.295, 1.2], 11);
+        var imageUrl = url+'images/zjmap.gif',
+            imageBounds = [[52, 1], [52.416, 1.483]];
+
+        L.imageOverlay(imageUrl, imageBounds).addTo(me.map);
+        me.map.setMaxBounds(imageBounds);
+
 
     },
     realstreammapInit:function(){
@@ -459,13 +514,95 @@ Ext.define('Webdesktop.controller.Realstream', {
         this.vectorLayer=vectorLayer;
         this.realmapfeatures();
 
+        var overlayStyle = (function() {
+            /* jshint -W069 */
+            var styles = {};
+            styles['Polygon'] = [
+                new ol.style.Style({
+                    fill: new ol.style.Fill({
+                        color: [255, 255, 255, 0.5]
+                    })
+                }),
+                new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: [255, 255, 255, 1],
+                        width: 5
+                    })
+                }),
+                new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: [0, 153, 255, 1],
+                        width: 3
+                    })
+                })
+            ];
+            styles['MultiPolygon'] = styles['Polygon'];
+
+            styles['LineString'] = [
+                new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: [255, 255, 255, 1],
+                        width: 5
+                    })
+                }),
+                new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: [0, 153, 255, 1],
+                        width: 3
+                    })
+                })
+            ];
+            styles['MultiLineString'] = styles['LineString'];
+
+            styles['Point'] = [
+                new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 7,
+                        fill: new ol.style.Fill({
+                            color: [0, 153, 255, 1]
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: [255, 255, 255, 0.75],
+                            width: 1.5
+                        })
+                    }),
+                    zIndex: 100000
+                })
+            ];
+            styles['MultiPoint'] = styles['Point'];
+
+            styles['GeometryCollection'] = styles['Polygon'].concat(styles['Point']);
+
+            return function(feature, resolution) {
+                return styles[feature.getGeometry().getType()];
+            };
+            /* jshint +W069 */
+        })();
+
+        var select = new ol.interaction.Select({
+            style: overlayStyle
+        });
+        var modify = new ol.interaction.Modify({
+            features: select.getFeatures(),
+            style: overlayStyle
+        });
+
+       /* modify.on('moveend',function(fe){
+                alert(1);
+                console.log(fe);
+            });*/
+       // modify.dispatchChangeEvent();
+
 
         var mousePositionControl = new ol.control.MousePosition({
             coordinateFormat: ol.coordinate.createStringXY(4),
 
             undefinedHTML: '&nbsp;'
         });
+
+
         var map = new ol.Map({
+            interactions: Globle.isadmin?ol.interaction.defaults().extend([select, modify]):ol.interaction.defaults().extend([]),
             controls: ol.control.defaults().extend([mousePositionControl]),
             layers: [
                 new ol.layer.Image({
@@ -493,6 +630,9 @@ Ext.define('Webdesktop.controller.Realstream', {
         });
         this.map=map;
         testobj=map;
+
+
+
         var element=document.getElementById('popup');
         /*var container = document.getElementById('popup');
         var content = document.getElementById('popup-content');
