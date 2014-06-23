@@ -448,10 +448,10 @@ Ext.define('Webdesktop.controller.Duty', {
                 var td_arr=$(html).find("td");
                 var time=new Date($(td_arr[7]).text());
                 var now= new Date();
-                var public_content='今日無公编目';
+                var public_content='今日无登记';
                 //console.log($(td_arr[1]).text());
                 if(now.getFullYear()==time.getFullYear()&&now.getMonth()==time.getMonth()&&now.getDate()==time.getDate()){
-                    public_content='今日有编目<br>'+$(td_arr[7]).text();
+                    public_content='今日有登记<br>'+$(td_arr[7]).text();
                 }
 
                 //testobj=html;

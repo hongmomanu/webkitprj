@@ -155,18 +155,40 @@ Ext.define('Webdesktop.controller.Realstream', {
             data=JSON.parse(data);
             //console.log(data);
             if(data.type==="rts"){
-                //console.log(data);
-                if(me.popupmarker){
-                    me.relationmap.removeLayer(me.popupmarker);
-                }
-
+                console.log(data);
                 var results=data.results;
                 var name=data.name;
-                me.showRelationMaplocation(data.lonlat);
-                $('#rts_chart').append('<a>发震时刻:</a>'+data.time);
-                $('#rts_chart').append('<br><a>计算相关性...</a>');
-                me.chart_caculate=0;
-                me.log_info="";
+                var new_results=[];
+                if(me.eventid==data.eventid){
+
+                    for(var t=0;t< data.results.lenght;t++){
+                        var flag=true;
+                          for(var tt=0;tt<me.eventresults;tt++){
+                              if(me.eventresults[tt].sta_code==data.results[t].sta_code){
+                                  flag=false;
+                                  break;
+                              }
+                          }
+                        if(flag){
+                            new_results.push(data.results[t]);
+                            me.eventresults.push(data.results[t]);
+                        }
+                    }
+                    results=new_results;
+
+                }else{
+                    me.eventid=data.eventid;
+                    me.eventresults=data.results;
+                    me.showRelationMaplocation(data.lonlat);
+                    $('#rts_chart').append('<a>发震时刻:</a>'+data.time);
+                    $('#rts_chart').append('<br><a>计算相关性...</a>');
+                    me.log_info="";
+                    me.chart_caculate=0;
+                }
+
+
+
+
 
                 for(var i=0;i<name.length;i++){
 
@@ -179,6 +201,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                                 item={
                                     rtime:results[j].time,
                                     stime:name[i].stations[m].stime,
+                                    time:data.time,
                                     station:results[j].sta_code+"/"+results[j].chn_code,
                                     move:name[i].stations[m].move,
                                     name:name[i].name,
@@ -196,6 +219,17 @@ Ext.define('Webdesktop.controller.Realstream', {
                     }
 
                 }
+                if(me.chart_caculate==0){
+                    $('#rts_chart').append('<br><a>无相关对比测站</a>');
+                    //$('#rts_chart').height(80);
+                    /*var grid=Ext.getCmp('earthlistgrid');
+                    var store=grid.getStore();
+                    var data={
+                        time:data.time
+                    };
+                    data['content']='<a>无相关对比测站</a>';
+                    store.add(data);*/
+                }
 
                 var resoreceurl=localStorage.serverurl+"audio/rts.mp3";
                 var play=new Audio(resoreceurl);
@@ -205,7 +239,13 @@ Ext.define('Webdesktop.controller.Realstream', {
             else if(data.type==="eqim"){
                 var grid=Ext.getCmp('earthlistgrid');
                 var store=grid.getStore();
+                var str='<a>来源:'+ data['ip']+'; 震级:M'+ (data['M']==null?"无":data['M'])+', Ml'
+                    +(data['Ml']==null?"无":data['Ml'])+', Ms '+ (data['Ms']==null?"无":data['Ms'])
+                    +'; 地址:'+data['location']+'</a>';
+                data['content']=str;
+
                 store.add(data);
+
                 var resoreceurl=localStorage.serverurl+"audio/eqim.mp3";
                 var play=new Audio(resoreceurl);
                 play.play();
@@ -249,16 +289,16 @@ Ext.define('Webdesktop.controller.Realstream', {
             params.stime=stime;
             me.log_info+="最大值:"+max_data+"<br>测站:"+params.station+
                 "  （样本事件:"+title+")"+
-                "<br>时间:"+params.rtime;
+                "<br>时间:"+params.rtime+"<br>";
 
             console.log(me.log_info);
             me.make_chart(params.rtime,params.second,
-                params.station,max_index,title,null,params.stime,relactions,res.rate);
+                params.station,max_index,title,null,params.stime,relactions,res.rate,params.time,me.log_info);
 
 
         };
         var failFunc = function (form, action) {
-            alert("fail");
+            //alert("fail");
             me.chart_caculate--;
         };
 
@@ -273,7 +313,7 @@ Ext.define('Webdesktop.controller.Realstream', {
 
 
     },
-    make_chart:function(time,second,station,max_index,chartname,callback,timesample,relactions,rate){
+    make_chart:function(time,second,station,max_index,chartname,callback,timesample,relactions,rate,htime,loginfo){
         var me=this;
         var params={};
         var ratereal=1000/Math.abs(rate);
@@ -352,6 +392,17 @@ Ext.define('Webdesktop.controller.Realstream', {
                             statustype:realstreamtype.relation,
                             imgurl:img,
                             logcontent:me.log_info}],'duty/senddutylogs');
+
+
+                        var grid=Ext.getCmp('earthlistgrid');
+                        var store=grid.getStore();
+                        var data={
+                            time:htime
+                        };
+                        data['content']=me.log_info===""?loginfo:me.log_info;
+
+                        store.add(data);
+
                     }
                 });
 
@@ -374,7 +425,7 @@ Ext.define('Webdesktop.controller.Realstream', {
         me.relationmap.panTo(new L.LatLng(data[1],data[0]));
         if(me.popupmarker)me.relationmap.removeLayer(me.popupmarker);
         var marker=L.marker([data[1],data[0]]).addTo(me.relationmap)
-            .bindPopup("<div id='rts_chart' style='width: 320px;height: 100%;'></div>",{closeButton:true}).openPopup();
+            .bindPopup("<div id='rts_chart' style='width: 320px;height: 320px;overflow-y: auto;'></div>",{closeButton:true}).openPopup();
         me.popupmarker=marker;
         marker.on('popupclose', function(e) {
             //alert(1);

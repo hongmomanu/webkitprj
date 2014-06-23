@@ -432,6 +432,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             "<div class='infoValues'>" + (data.isping ? '正常' : '断开') + "</div>" +
             (data.cpu === "" ? "" : ("<div class='infoTitle'>cpu占用率</div>" +
                 "<div class='infoValues'>" + (eval(data.cpu)).toFixed(2) + "%</div>")) +
+            (data.disk[0].value === "" ? "" : ("<div class='infoTitle'>磁盘占用率</div>" +
+                "<div class='infoValues'>" + data.disk[0].value+ "</div>")) +
             (data.mem === "" ? "" : ("<div class='infoTitle'>内存占用率</div>" +
                 "<div class='infoValues'>" + ((1-data.mem)*100).toFixed(1) + "%</div>")) +
             "<div class='infoTitle'>服务状态</div>" +

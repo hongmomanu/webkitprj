@@ -21,16 +21,17 @@ Ext.define('Webdesktop.view.duty.EarthListGrid', {
             },
 
             columns: [
-                {header:'来源',dataIndex:"ip"},
-                {header:'时间',dataIndex:"time"},
-                {header:'震级',dataIndex:"time",renderer : function(v,m,r) {
+                /*{header:'来源',dataIndex:"ip"},*/
+                {header:'时间',dataIndex:"time",width:100},
+                /*{header:'震级',dataIndex:"time",renderer : function(v,m,r) {
                     var str='<a>M'+ (r.get('M')==null?"无":r.get('M'))+', Ml'
                         +(r.get('Ml')==null?"无":r.get('Ml'))+', Ms '+ (r.get('Ms')==null?"无":r.get('Ms'))+
                         '</a>';
                     return str;
                 }},
 
-                {header: '地址',dataIndex: 'location',flex: 1}
+                {header: '地址',dataIndex: 'location',flex: 1}*/
+                {header:'内容',dataIndex:"content",flex:1}
             ],
 
             store: Ext.create('Ext.data.Store', {
@@ -60,6 +61,8 @@ Ext.define('Webdesktop.view.duty.EarthListGrid', {
                     {name:'sname',
                         type: 'string'},
                     {name:'time',
+                        type: 'string'},
+                    {name:'content',
                         type: 'string'},
                     {name:'type',
                         type: 'string'}

@@ -97,9 +97,10 @@ Ext.define('Webdesktop.view.Viewport', {
 
                                                         } ,
                                                         {
-                                                            xtype:'earthlistgrid',
-                                                            flex:0.4,
-                                                            id:'earthlistgrid'
+                                                            xtype:'logmsgrid',
+                                                            id:'logmsgrid',
+                                                            flex:0.4
+
 
                                                         }
                                                     ],
@@ -107,8 +108,9 @@ Ext.define('Webdesktop.view.Viewport', {
                                                 },
 
                                                 {
-                                                    xtype:'logmsgrid',
-                                                    id:'logmsgrid',
+
+                                                    xtype:'earthlistgrid',
+                                                    id:'earthlistgrid',
                                                     region:'east',
                                                     flex:0.33
 
