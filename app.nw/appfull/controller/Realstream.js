@@ -425,7 +425,7 @@ Ext.define('Webdesktop.controller.Realstream', {
         me.relationmap.panTo(new L.LatLng(data[1],data[0]));
         if(me.popupmarker)me.relationmap.removeLayer(me.popupmarker);
         var marker=L.marker([data[1],data[0]]).addTo(me.relationmap)
-            .bindPopup("<div id='rts_chart' style='width: 320px;height: 320px;overflow-y: auto;'></div>",{closeButton:true}).openPopup();
+            .bindPopup("<div id='rts_chart' style='width: 320px;height: 200px;overflow-y: auto;'></div>",{closeButton:true}).openPopup();
         me.popupmarker=marker;
         marker.on('popupclose', function(e) {
             //alert(1);
