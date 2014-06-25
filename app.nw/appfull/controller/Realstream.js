@@ -46,8 +46,8 @@ Ext.define('Webdesktop.controller.Realstream', {
                 afterrender:function(){
                     var me=this;
                     var task = new Ext.util.DelayedTask(function(){
-                        me.realstreammapInit();
-                        //me.realstreammapInitleaf();
+                        //me.realstreammapInit();
+                        me.realstreammapInitleaf();
                         me.websocketInit();
                     });
                     task.delay(1000);
@@ -82,12 +82,35 @@ Ext.define('Webdesktop.controller.Realstream', {
         var d = new Ext.util.DelayedTask(function(){
             //console.log($('#map').height());
             //console.log($('#map').width());
-            me.relationmap = L.map('relationmap').setView([30.274089,120.15506900000003], 11);
+            var osmLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: 'Map &copy;开源地图osm'
+
+            });
+            var baseLayer = L.tileLayer('http://{s}.tiles.mapbox.com/v3/openplans.map-g4j0dszr/{z}/{x}/{y}.png', {
+                attribution: 'Map &copy; mapbox'
+
+            });
+            var  ter = L.tileLayer("http://t0.tianditu.cn/ter_w/wmts?" +
+                "SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ter&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles" +
+                "&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}", {
+                minZoom: 4,
+                maxZoom: 18
+            });
+            var baseMaps = {
+                'OSM底图':osmLayer,
+                "Mapbox": baseLayer,
+                '天地图地形':ter
+            };
+            me.relationmap = new L.Map('relationmap', {center: [30.274089,120.15506900000003], zoom: 8, layers: [osmLayer]});
+            var map=me.relationmap;
+            var layersControl = new L.Control.Layers(baseMaps);
+            map.addControl(layersControl);
+            /*me.relationmap = L.map('relationmap').setView([30.274089,120.15506900000003], 11);
             var map=me.relationmap;
             L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
-
+*/
             var popup = L.popup();
 
             function onMapClick(e) {
@@ -109,7 +132,7 @@ Ext.define('Webdesktop.controller.Realstream', {
 
                     var className = 'leaflet-hax',
                         container = L.DomUtil.create('div', className);
-                    container.innerHTML = '<input id="quickpanto" value="30.274,120.155" />';
+                    container.innerHTML = '<input class="span2" type="text" style="width: 120px;" id="quickpanto" value="30.274,120.155" />';
 
 
                     //if (!L.Browser.touch) {
@@ -438,6 +461,63 @@ Ext.define('Webdesktop.controller.Realstream', {
         });
 
     },
+    realmapfeaturesleaf:function(){
+        var me=this;
+        me.stationmvoe=0;
+        var url=CommonFunc.geturl();
+        var LeafIcon = L.Icon.extend({
+            options: {
+                shadowUrl:(url+Globle.shadow)/*,
+                iconSize:     [38, 95],
+                shadowSize:   [50, 64],
+                iconAnchor:   [22, 94],
+                shadowAnchor: [4, 62],
+                popupAnchor:  [-3, -76]*/
+            }
+        });
+        var greenIcon = new LeafIcon({iconUrl: url+Globle.mapimg});
+        var redIcon = new LeafIcon({iconUrl: url+Globle.mapalertimg});
+
+        var store=Ext.StoreMgr.get('realstream.RealStreams');
+        var taskfun=function(){
+            store.load({callback:function(s){
+                //me.vectorLayer.getSource().clear();
+                if(me.search_group)me.map.removeLayer(me.search_group);
+                var features=[];
+                var search_group = new L.LayerGroup();
+                me.search_group=search_group;
+                me.map.addLayer(search_group);
+                //testobject=search_group;
+                //testmap=me.map;
+                for(var i=0;i< s.length;i++){
+                    (function(i){
+                        //var item=earth_quick_places[s[i].raw.stationcode];
+                        var compare=s[i].raw.crossnowbhe==0?0:((s[i].raw.crossavgbhe-s[i].raw.crossnowbhe)/s[i].raw.crossnowbhe)*100;
+                        //console.log(compare);
+                        var geom=eval(s[i].raw.geom);
+                        var html='<ul><li><a>测站名:</a>'+s[i].raw.stationname
+                            +'</li><li><a>波形偏差:</a>'+compare+" %"+'</li>' +
+                            '<li><a>时间:</a>'+s[i].raw.time+'</li>'+
+                            '</ul>';
+                        //console.log(geom);
+                        L.marker(geom, {icon: (Math.abs(compare)>50?redIcon:greenIcon)}).bindPopup(html).addTo(search_group);
+
+                    })(i);
+
+
+                }
+                //me.vectorLayer.getSource().addFeatures(features);
+
+            }})
+        };
+        //taskfun();
+        var task={
+            run:taskfun ,
+            interval: 30000
+        }
+        Ext.TaskManager.start(task);
+
+    },
     realmapfeatures:function(){
         var me=this;
         me.stationmvoe=0;
@@ -531,14 +611,45 @@ Ext.define('Webdesktop.controller.Realstream', {
     },
 
     realstreammapInitleaf:function(){
-        var me=this;
+        /*var me=this;
         var url=CommonFunc.geturl();
         me.map=L.map('realstreammap',{maxZoom: 11}).setView([52.295, 1.2], 11);
         var imageUrl = url+'images/zjmap.gif',
             imageBounds = [[52, 1], [52.416, 1.483]];
 
         L.imageOverlay(imageUrl, imageBounds).addTo(me.map);
-        me.map.setMaxBounds(imageBounds);
+        me.map.setMaxBounds(imageBounds);*/
+        var me=this;
+        var osmLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: 'Map &copy;开源地图osm'
+
+        });
+        var baseLayer = L.tileLayer('http://{s}.tiles.mapbox.com/v3/openplans.map-g4j0dszr/{z}/{x}/{y}.png', {
+            attribution: 'Map &copy;mapbox'
+
+        });
+        var  ter = L.tileLayer("http://t0.tianditu.cn/ter_w/wmts?" +
+            "SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ter&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles" +
+            "&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}", {
+            minZoom: 4,
+            maxZoom: 18
+        });
+        var baseMaps = {
+            'OSM底图':osmLayer,
+            "Mapbox": baseLayer,
+            '天地图地形':ter
+        };
+        me.map = new L.Map('realstreammap', {center: [30.274089,120.15506900000003], zoom: 8, layers: [osmLayer]});
+        var map=me.map;
+        /*L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+         }).addTo(map);*/
+        var layersControl = new L.Control.Layers(baseMaps);
+        map.addControl(layersControl);
+        me.realmapfeaturesleaf();
+
+
+
 
 
     },

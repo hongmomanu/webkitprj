@@ -632,7 +632,7 @@ Ext.define('Webdesktop.controller.Duty', {
             var time=item.data.missiontime;
             var datetime=Ext.Date.parse(time, "H:i");
             var now=new Date();
-            if(missionstatus==0&&time!=''&&datetime.getHours()<=now.getHours()){
+            if(missionstatus==0&&time!=''&&datetime.getTime()<=now.getTime()){
                 var maps= me.getEventMap();
                 maps[missionlabel](item,store);
             }

@@ -9,8 +9,9 @@ var Globle={
     password:"",
     tel:"",
     dutytel:"",
-    mapalertimg:"images/marker-gold.png",
-    mapimg:"images/icon.png",
+    mapalertimg:"images/red.jpg",
+    mapimg:"images/green.jpg",
+    shadow:"images/shadow.jpg",
     displayname:"",
     isadmin:false
 

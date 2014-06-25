@@ -271,7 +271,7 @@ Ext.define('Webdesktop.controller.Systemwatch', {
                 }else{
                     //if(me.alertsnd)me.alertsnd.pause();
                     //me.alertsnd.play();
-                    var resoreceurl=localStorage.serverurl+"audio/server.ogg";
+                    var resoreceurl=localStorage.serverurl+"audio/server.wav";
                     var play=new Audio(resoreceurl);
                     play.play();
                 }

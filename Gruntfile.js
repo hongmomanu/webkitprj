@@ -15,7 +15,8 @@ module.exports = function (grunt) {
 									linux64: true // We don't need linux64
 							},
 							src: ['app.nw/**/*'] // Your node-wekit app
-  				},  				
+  				},
+
         
         watch: {
             run : {
@@ -28,9 +29,10 @@ module.exports = function (grunt) {
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-node-webkit-builder');
+    //grunt.loadNpmTasks('grunt-contrib-copy');
 
     // Default task.
-    grunt.registerTask('default', ['watch']);
+    grunt.registerTask('default', ['nodewebkit']);
 
     grunt.registerTask('run', 'Run node-webkit app', function () {
         exec('nw app.nw');
