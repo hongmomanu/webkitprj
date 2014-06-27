@@ -89,4 +89,16 @@ var searchlog_statue= [
     {"value":missiontype.waveformsucc, "name":missiontype.waveformsucc}
 ];
 
+if(!localStorage.dutyalertinterval)localStorage.dutyalertinterval="60000";
+if(!localStorage.stationinterval)localStorage.stationinterval="30000";
+if(!localStorage.eqimurl)localStorage.eqimurl="http://10.5.160.37:8180/gonggao/news.jsp";
+if(!localStorage.reporturl)localStorage.reporturl="http://10.5.202.22/bianmu/signon_rec.jsp";
+if(!localStorage.recordurl)localStorage.recordurl="http://10.33.253.103:8080/JOPENSWeb/mon/logStation";
+if(!localStorage.reportloginurl)localStorage.reportloginurl="http://10.5.202.22/bianmu/validate.jsp";
+if(!localStorage.reportusername)localStorage.reportusername="ZJ33";
+if(!localStorage.reportpassword)localStorage.reportpassword="123456";
+if(!localStorage.catalogtel)localStorage.catalogtel="13336151145";
+if(!localStorage.wavedir)localStorage.wavedir="/Users/au2/2014/";
+if(!localStorage.eventdir)localStorage.eventdir="/Users/au2/2014evt/";
+if(!localStorage.archiveminsize)localStorage.archiveminsize="100";
 

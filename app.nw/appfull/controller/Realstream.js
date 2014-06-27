@@ -55,8 +55,8 @@ Ext.define('Webdesktop.controller.Realstream', {
                 },
                 afterlayout:function( panel, layout, eOpts ){
                     if(this.map){
-
-                        this.map.updateSize();
+                        this.map.invalidateSize(true);
+                        //this.map.updateSize();
                     }
                 }
 

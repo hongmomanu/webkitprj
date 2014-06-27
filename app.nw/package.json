@@ -29,7 +29,7 @@
 
         "icon":"images/app.png",
 
-        "toolbar": false,
+        "toolbar": true,
 
         "position": "mouse"
 

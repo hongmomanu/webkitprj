@@ -555,6 +555,7 @@ Ext.define('Webdesktop.controller.Duty', {
     savedutyconfig:function(btn){
         var form=btn.up('form');
         localStorage.dutyalertinterval=form.getValues().dutyalertinterval;
+        localStorage.stationinterval=form.getValues().stationinterval;
         localStorage.eqimurl=form.getValues().eqimurl;
         localStorage.reporturl=form.getValues().reporturl;
         localStorage.recordurl=form.getValues().recordurl;
@@ -691,6 +692,7 @@ Ext.define('Webdesktop.controller.Duty', {
             form.setValues(
                 {
                     dutyalertinterval:parseInt(localStorage.dutyalertinterval),
+                    stationinterval:parseInt(localStorage.stationinterval),
                     eqimurl:localStorage.eqimurl,
                     recordurl:localStorage.recordurl,
                     reporturl:localStorage.reporturl,

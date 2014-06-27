@@ -37,7 +37,7 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
                 items: [
                     {
                         xtype: 'combobox',
-                        fieldLabel: '刷新时间',
+                        fieldLabel: '值班刷新间隔',
                         queryMode: 'local',
                         displayField: 'name',
                         value:60000,
@@ -56,6 +56,23 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
                         }),
                         valueField: 'value',
                         name: 'dutyalertinterval'
+                    },
+                    {
+                        xtype: 'combobox',
+                        fieldLabel: '测站刷新间隔',
+                        queryMode: 'local',
+                        displayField: 'name',
+                        value:30000,
+                        store:  Ext.create('Ext.data.Store', {
+                            fields: ['value', 'name'],
+                            data : [
+                                {"value":60000, "name":"1分钟"},
+                                {"value":30000, "name":"30秒钟"},
+                                {"value":10000, "name":"10秒钟"}
+                            ]
+                        }),
+                        valueField: 'value',
+                        name: 'stationinterval'
                     },
                     {
                         xtype:'textfield',
