@@ -495,7 +495,7 @@ Ext.define('Webdesktop.controller.Duty', {
                 var telpart=mapkey[(Globle.tel+"").substring(0,3)];
                 var params={
                     tel:localStorage.catalogtel,
-                    msg:"有编目" ,
+                    msg:"[EqAIR]提醒：今日有编目，请及时处理！" ,
                     telpart:telpart
                 };
                 var successFunc = function (response, action) {
@@ -687,20 +687,23 @@ Ext.define('Webdesktop.controller.Duty', {
         this.dutyconfigmanagerwin.show();
         var form=this.dutyconfigmanagerwin.down('form').getForm();
         //testobj=this.systemalertmanagerwin.down('form');
-        form.setValues(
-            {
-                dutyalertinterval:parseInt(localStorage.dutyalertinterval),
-                eqimurl:localStorage.eqimurl,
-                recordurl:localStorage.recordurl,
-                reporturl:localStorage.reporturl,
-                reportloginurl:localStorage.reportloginurl,
-                reportusername:localStorage.reportusername,
-                catalogtel:localStorage.catalogtel,
-                reportpassword:localStorage.reportpassword,
-                wavedir:localStorage.wavedir,
-                eventdir:localStorage.eventdir,
-                archiveminsize:localStorage.archiveminsize
-            });
+        if(localStorage.eqimurl){
+            form.setValues(
+                {
+                    dutyalertinterval:parseInt(localStorage.dutyalertinterval),
+                    eqimurl:localStorage.eqimurl,
+                    recordurl:localStorage.recordurl,
+                    reporturl:localStorage.reporturl,
+                    reportloginurl:localStorage.reportloginurl,
+                    reportusername:localStorage.reportusername,
+                    catalogtel:localStorage.catalogtel,
+                    reportpassword:localStorage.reportpassword,
+                    wavedir:localStorage.wavedir,
+                    eventdir:localStorage.eventdir,
+                    archiveminsize:localStorage.archiveminsize
+                });
+        }
+
 
     },
     delstation:function(btn){

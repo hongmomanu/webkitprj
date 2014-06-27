@@ -1,6 +1,6 @@
 {
-  "name": "webkitprj",
-  "description": "The best project ever.",
+  "name": "EqAIR",
+  "description": "台网值班平台.",
   "version": "0.1.0",
   "homepage": "https://github.com/hongmomanu/nodewebkitprj",
   "author": {
@@ -26,7 +26,9 @@
   },
     "window": {
         "title": "浙江测震台网值班平台",
-        
+
+        "icon":"images/app.png",
+
         "toolbar": false,
 
         "position": "mouse"

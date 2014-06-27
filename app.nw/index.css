@@ -76,5 +76,10 @@ div.infoValues {
     background-color: #e2eff8;
 }
 
-
+*.html2canvasreset{
+    overflow: visible !important;
+    width: auto !important;
+    height: auto !important;
+    max-height: auto !important;
+}
 

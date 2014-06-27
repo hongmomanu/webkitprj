@@ -40,6 +40,7 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
                         fieldLabel: '刷新时间',
                         queryMode: 'local',
                         displayField: 'name',
+                        value:60000,
                         store:  Ext.create('Ext.data.Store', {
                             fields: ['value', 'name'],
                             data : [
@@ -58,48 +59,58 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
                     },
                     {
                         xtype:'textfield',
+                        value:'http://10.5.160.37:8180/gonggao/news.jsp',
                         name:'eqimurl',
                         fieldLabel:'eqim地址'
                     },
                     {
                         xtype:'textfield',
+                        value:'http://10.33.253.103:8080/JOPENSWeb/mon/logStation',
                         name:'recordurl',
                         fieldLabel:'断记地址'
                     },{
                         xtype:'textfield',
                         name:'reporturl',
+                        value:'http://10.5.202.22/bianmu/signon_rec.jsp',
                         fieldLabel:'快报地址'
                     },{
                         xtype:'textfield',
+                        value:'http://10.5.202.22/bianmu/validate.jsp',
                         name:'reportloginurl',
                         fieldLabel:'快报登陆地址'
                     },
                     {
                         xtype:'textfield',
+                        value:'ZJ33',
                         name:'reportusername',
                         fieldLabel:'快报用户名'
                     },
                     {
                         xtype:'textfield',
                         name:'reportpassword',
+                        value:'123456',
                         fieldLabel:'快报密码'
                     },
                     {
                         xtype: 'textfield',
                         fieldLabel: '波形文件夹',
+                        value:'/Users/au2/2014/',
                         name: 'wavedir'
                     },
                     {
                         xtype: 'textfield',
                         fieldLabel: '事件文件夹',
+                        value:'/Users/au2/2014evt/',
                         name: 'eventdir'
                     },
                     {
                         xtype: 'textfield',
                         fieldLabel: '文件异常值',
+                        value:'100',
                         name: 'archiveminsize'
                     },{
                         xtype: 'textfield',
+                        value:'13336151145',
                         fieldLabel: '编目人员电话号码',
                         name: 'catalogtel'
                     },

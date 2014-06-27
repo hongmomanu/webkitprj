@@ -116,7 +116,7 @@ Ext.define('Webdesktop.controller.Realstream', {
             function onMapClick(e) {
                 popup
                     .setLatLng(e.latlng)
-                    .setContent("当前的位置 " + e.latlng.toString())
+                    .setContent('当前的位置 ' + e.latlng.toString())
                     .openOn(map);
             }
 
@@ -262,9 +262,9 @@ Ext.define('Webdesktop.controller.Realstream', {
             else if(data.type==="eqim"){
                 var grid=Ext.getCmp('earthlistgrid');
                 var store=grid.getStore();
-                var str='<a>来源:'+ data['ip']+'; 震级:M'+ (data['M']==null?"无":data['M'])+', Ml'
-                    +(data['Ml']==null?"无":data['Ml'])+', Ms '+ (data['Ms']==null?"无":data['Ms'])
-                    +'; 地址:'+data['location']+'</a>';
+                var str='<a>来源:'+ data['ip']+';&nbsp;&nbsp;发震时间:'+data['time']+'<br> 震级:M'+ (data['M']==null?"无":data['M'].toFixed(1))+', Ml'
+                    +(data['Ml']==null?"无":data['Ml'].toFixed(1))+', Ms '+ (data['Ms']==null?"无":data['Ms'].toFixed(1))
+                    +';<br> 地址:'+data['location']+'</a>';
                 data['content']=str;
 
                 store.add(data);
@@ -407,6 +407,8 @@ Ext.define('Webdesktop.controller.Realstream', {
             me.chart_caculate--;
             if(me.chart_caculate==0){
                 html2canvas($('#rts_chart'), {
+                    //letterRendering:true,
+                    //useOverflow:false,
                     onrendered: function (canvas) {
                         var img = canvas.toDataURL();
                         var system_cl=me.application.getController("Systemwatch");
@@ -498,6 +500,9 @@ Ext.define('Webdesktop.controller.Realstream', {
                         var html='<ul><li><a>测站名:</a>'+s[i].raw.stationname
                             +'</li><li><a>波形偏差:</a>'+compare+" %"+'</li>' +
                             '<li><a>时间:</a>'+s[i].raw.time+'</li>'+
+                            '<li><a>联系人:</a>'+s[i].raw.contact+'&nbsp;<a>电话:</a>'+s[i].raw.phone+'</li>'+
+                            '<li><a>数采地址:</a>'+s[i].raw.dataaddr+'</li>'+
+                            '<li><a>网关地址:</a>'+s[i].raw.gatewayaddr+'</li>'+
                             '</ul>';
                         //console.log(geom);
                         L.marker(geom, {icon: (Math.abs(compare)>50?redIcon:greenIcon)}).bindPopup(html).addTo(search_group);
