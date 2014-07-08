@@ -159,6 +159,19 @@ Ext.define('Webdesktop.controller.Realstream', {
                 {
                     var lonlat=$('#quickpanto').val();
                     map.panTo([lonlat.split(",")[0],lonlat.split(",")[1]]);
+                    var marker=L.marker([lonlat.split(",")[0],lonlat.split(",")[1]]).addTo(map)
+                        .bindPopup('当前的位置 ' +lonlat+'<br> ')
+                        .openPopup();
+
+                    marker.on('popupclose', function(e) {
+                        //alert(1);
+                        try{
+                            map.removeLayer(marker);
+                        }catch(err) {
+
+                        }
+
+                    });
                 }
             });
 
