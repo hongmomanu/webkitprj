@@ -3,7 +3,7 @@ Ext.define('Webdesktop.store.duty.StationManagers', {
     model: 'Webdesktop.model.duty.StationManager',
     alias : 'widget.stationmanagers',
 
-    autoLoad:true,
+    autoLoad:false,
     pageSize: 9000,
 
     proxy:{

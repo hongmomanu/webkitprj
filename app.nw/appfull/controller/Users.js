@@ -165,6 +165,12 @@ Ext.define('Webdesktop.controller.Users', {
         var url="login";
         var me=this;
         var successFunc = function (form, action) {
+             Ext.getStore('duty.MissionManagers').load();
+             Ext.getStore('duty.StationManagers').load();
+             Ext.getStore('duty.WorkManagers').load();
+             //Ext.getStore('duty.WorkManagerEvents').load();
+             //Ext.getStore('duty.WorkManagerEvents').load();
+             //Ext.getStore('duty.WorkManagerCalendars').load();
              win.close();
              Globle.password=action.result.result.password;
              Globle.username=action.result.result.username;

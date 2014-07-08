@@ -11,7 +11,7 @@ Ext.define('Webdesktop.view.duty.EditStationWin' ,{
         var required = '<span style="color:red;font-weight:bold" data-qtip="必填字段">*</span>';
         Ext.apply(this, {
             title: '编辑台站',
-            height: 610,
+            height: 510,
             width: 520,
             closeAction : 'hide',
             modal:true,
@@ -30,7 +30,7 @@ Ext.define('Webdesktop.view.duty.EditStationWin' ,{
                 //xtype: 'fieldset',
 
                 fieldDefaults: {
-                    labelAlign: 'top',
+                    labelAlign: 'left',
                     labelWidth: 100,
                     labelStyle: 'font-weight:bold'
                 },
@@ -118,6 +118,13 @@ Ext.define('Webdesktop.view.duty.EditStationWin' ,{
                         //allowBlank:false,
                         //afterLabelTextTpl: required,
                         name: 'phone'
+                    },{
+                        xtype: 'textfield',
+                            fieldLabel: '零点穿越筏值',
+                            //required:true,
+                            //allowBlank:false,
+                            //afterLabelTextTpl: required,
+                            name: 'crossnums'
                     }
 
                 ],

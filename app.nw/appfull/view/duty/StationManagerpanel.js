@@ -33,7 +33,8 @@ Ext.define('Webdesktop.view.duty.StationManagerpanel', {
                 {header: '网关地址',dataIndex: 'gatewayaddr'},
                 {header: '通讯类型',dataIndex: 'connecttype'},
                 {header: '联系人',dataIndex: 'contact'},
-                {header: '联系人电话',dataIndex: 'phone'}
+                {header: '联系人电话',dataIndex: 'phone'},
+                {header: '穿越筏值',dataIndex: 'crossnums'}
             ],
             flex: 1,
             tbar:[

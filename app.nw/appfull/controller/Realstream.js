@@ -422,7 +422,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                         var grid=Ext.getCmp('earthlistgrid');
                         var store=grid.getStore();
                         var data={
-                            time:htime
+                            stime:htime
                         };
                         data['content']=me.log_info===""?loginfo:me.log_info;
 
@@ -482,7 +482,11 @@ Ext.define('Webdesktop.controller.Realstream', {
 
         var store=Ext.StoreMgr.get('realstream.RealStreams');
         var taskfun=function(){
-            store.load({callback:function(s){
+            store.load({
+                params: {
+                    timelong: localStorage.stationinterval
+                },
+                callback:function(s){
                 //me.vectorLayer.getSource().clear();
                 if(me.search_group)me.map.removeLayer(me.search_group);
                 var features=[];
@@ -494,18 +498,86 @@ Ext.define('Webdesktop.controller.Realstream', {
                 for(var i=0;i< s.length;i++){
                     (function(i){
                         //var item=earth_quick_places[s[i].raw.stationcode];
-                        var compare=s[i].raw.crossnowbhe==0?0:((s[i].raw.crossavgbhe-s[i].raw.crossnowbhe)/s[i].raw.crossnowbhe)*100;
+                        var compare=s[i].raw.crossavgbhe==0?0:((s[i].raw.crossnowbhe-s[i].raw.crossavgbhe)/s[i].raw.crossavgbhe)*100;
                         //console.log(compare);
+                        var crossnums=s[i].raw.crossnums;
+                        var crossnowbhe=s[i].raw.crossnowbhe*60000/localStorage.stationinterval;
+                        var crossavgbhe=s[i].raw.crossavgbhe*60000/localStorage.stationinterval;
                         var geom=eval(s[i].raw.geom);
-                        var html='<ul><li><a>测站名:</a>'+s[i].raw.stationname
-                            +'</li><li><a>波形偏差:</a>'+compare+" %"+'</li>' +
+                        var html='<ul><li><a>台站名:</a>'+s[i].raw.stationname
+                            +'</li><li><a>波形偏差:</a>'+compare.toFixed(1)+" %"+'</li>' +
+                            '</li><li><a>当前值:</a>'+crossnowbhe.toFixed(0)+'&nbsp;&nbsp;t/m<a>&nbsp;&nbsp;&nbsp;&nbsp;平均值:</a>'
+                            +crossavgbhe.toFixed(0)+'&nbsp;&nbsp;t/m</li>' +
                             '<li><a>时间:</a>'+s[i].raw.time+'</li>'+
-                            '<li><a>联系人:</a>'+s[i].raw.contact+'&nbsp;<a>电话:</a>'+s[i].raw.phone+'</li>'+
+                            '<li><a>联系人:</a>'+s[i].raw.contact+'&nbsp;&nbsp;'+s[i].raw.phone+'</li>'+
                             '<li><a>数采地址:</a>'+s[i].raw.dataaddr+'</li>'+
                             '<li><a>网关地址:</a>'+s[i].raw.gatewayaddr+'</li>'+
-                            '</ul>';
+                            '</ul><a class="btn" style="text-align: right;">检查故障</a>';
                         //console.log(geom);
-                        L.marker(geom, {icon: (Math.abs(compare)>50?redIcon:greenIcon)}).bindPopup(html).addTo(search_group);
+                        L.marker(geom, {icon: ((Math.abs(compare)>localStorage.crossalert||crossnowbhe<crossnums)?redIcon:greenIcon)})
+                            .bindPopup(html).addTo(search_group).on('popupopen',function(e){
+                                $('a.btn').click(function(){
+                                    var myMask = new Ext.LoadMask(Ext.getBody(), {msg:"请等候..."});
+                                    //myMask.show();
+                                    var successFunc = function (response, action) {
+                                        //myMask.hide();
+                                        var res=Ext.JSON.decode(response.responseText);
+                                        //console.log(res);
+
+                                        var grid=Ext.getCmp('earthlistgrid');
+                                        var store=grid.getStore();
+                                        var str='<a>台站:'+s[i].raw.stationname+'&nbsp;&nbsp;数采:'
+                                            +(res.dataping?'正常':'超时')
+                                            +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网关:'
+                                            +(res.gateway?'正常':'超时')+'<br>';
+                                        console.log(s[i].raw.stationname);
+                                        console.log(str);
+                                        if(res.results.length>0){
+                                            for(var j=0;j<res.results.length;j++){
+                                                str+='告警&nbsp;'+Ext.util.Format.date(new Date(res.results[j].sdate),'Y-m-d H:i:s');
+                                                str+='&nbsp;&nbsp;'+ res.results[j].alarmname+'<br>';
+                                            }
+                                        }else{
+                                            str+='无故障信息';
+                                        }
+
+                                        str+='</a>';
+                                        var data={
+                                            stime:Ext.util.Format.date(new Date(),'Y-m-d')+'<br>'+Ext.util.Format.date(new Date(),'H:i:s')
+                                        };
+                                        data['content']=str;
+                                        store.add(data);
+                                        var system_cl=me.application.getController("Systemwatch");
+                                        system_cl.sendsystemlogs([{
+                                            statustype:exceptiontype.stationcheck,
+                                            logcontent:str}],'duty/senddutylogs');
+
+
+                                    };
+                                    var failFunc = function (form, action) {
+                                        //alert("fail");
+                                        //myMask.hide();
+                                    };
+                                    var etime=new Date();
+                                    etime=Ext.Date.add(etime,Ext.Date.DAY,1);
+                                    var btime=Ext.Date.add(etime,Ext.Date.DAY,-3);
+
+                                    var param={
+                                        stationname:s[i].raw.stationname,
+                                        etime:Ext.util.Format.date(etime,'Y-m-d'),
+
+                                        btime:Ext.util.Format.date(btime,'Y-m-d')
+                                    };
+                                    if(s[i].raw.dataaddr&&s[i].raw.dataaddr!='')param.dataaddr=s[i].raw.dataaddr;
+                                    if(s[i].raw.gatewayaddr&&s[i].raw.gatewayaddr!='')param.gatewayaddr=s[i].raw.gatewayaddr;
+
+                                    CommonFunc.ajaxSend(param,'realstream/stationcheck',successFunc,failFunc,'get');
+
+
+                                });
+
+                            });
 
                     })(i);
 

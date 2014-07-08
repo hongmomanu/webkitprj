@@ -4,7 +4,7 @@ Ext.define('Webdesktop.store.duty.MissionManagers', {
     alias : 'widget.missionmanagers',
 
     pageSize: 10000,
-    autoLoad:true,
+    autoLoad:false,
     proxy:{
         type: 'ajax',
         url: CommonFunc.geturl()+'getmissions'

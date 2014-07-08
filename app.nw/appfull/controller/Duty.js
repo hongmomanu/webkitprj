@@ -24,6 +24,7 @@ Ext.define('Webdesktop.controller.Duty', {
          'duty.DutyConfigManagerWin',
          'duty.StationManagerConfigwin',
          'duty.EarthListGrid',
+
          'conmmon.AnimateWin'
     ],
     models: [
@@ -37,6 +38,8 @@ Ext.define('Webdesktop.controller.Duty', {
         'duty.MissionManagers',
         'duty.WorkManagers',
         'duty.StationManagers',
+        'duty.WorkManagerCalendars',
+        'duty.WorkManagerEvents',
         'duty.WorkManagerEvents'
     ],
     init: function() {
@@ -102,6 +105,9 @@ Ext.define('Webdesktop.controller.Duty', {
             },
             'archivefilewin button[action=check]':{
                 click: this.checkarchive
+            },
+            'stationmanagerpanel':{
+                itemdblclick: this.showstationedit
             },
             'stationmanagerpanel button[action=new]':{
                 click: this.addnewstationwin
@@ -563,6 +569,7 @@ Ext.define('Webdesktop.controller.Duty', {
         localStorage.reportusername=form.getValues().reportusername;
         localStorage.reportpassword=form.getValues().reportpassword;
         localStorage.catalogtel=form.getValues().catalogtel;
+        localStorage.crossalert=form.getValues().crossalert;
         //localStorage.sourcedir=form.getValues().sourcedir;
         //localStorage.targetdir=form.getValues().targetdir;
         localStorage.wavedir=form.getValues().wavedir;
@@ -699,6 +706,7 @@ Ext.define('Webdesktop.controller.Duty', {
                     reportloginurl:localStorage.reportloginurl,
                     reportusername:localStorage.reportusername,
                     catalogtel:localStorage.catalogtel,
+                    crossalert:localStorage.crossalert,
                     reportpassword:localStorage.reportpassword,
                     wavedir:localStorage.wavedir,
                     eventdir:localStorage.eventdir,
@@ -740,6 +748,12 @@ Ext.define('Webdesktop.controller.Duty', {
     addnewstationwin:function(btn){
         if(!this.newstationwin)this.newstationwin= Ext.widget('addnewstationwin');
         this.newstationwin.show();
+    },
+
+    showstationedit:function(btn){
+      //console.log(btn);
+      //testobjs=btn;
+      this.editstationwin(btn);
     },
     editstationwin:function(btn){
 

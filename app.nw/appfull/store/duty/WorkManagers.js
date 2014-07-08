@@ -4,7 +4,7 @@ Ext.define('Webdesktop.store.duty.WorkManagers', {
     alias : 'widget.workmanagers',
 
     pageSize: 10000,
-    autoLoad:true,
+    autoLoad:false,
     proxy:{
         type: 'ajax',
         url: CommonFunc.geturl()+'getworkmanagers'

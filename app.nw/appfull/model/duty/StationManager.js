@@ -45,6 +45,10 @@ Ext.define('Webdesktop.model.duty.StationManager', {
         {
             name: 'id',
             type:'int'
+        },
+        {
+            name: 'crossnums',
+            type:'int'
         }
 
 

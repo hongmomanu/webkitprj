@@ -76,6 +76,12 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
                     },
                     {
                         xtype:'textfield',
+                        value:50,
+                        name:'crossalert',
+                        fieldLabel:'偏离度告警阀值(%)'
+                    },
+                    {
+                        xtype:'textfield',
                         value:'http://10.5.160.37:8180/gonggao/news.jsp',
                         name:'eqimurl',
                         fieldLabel:'eqim地址'

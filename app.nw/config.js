@@ -24,6 +24,7 @@ var AlertContent={
 
 var exceptiontype={
     ping:"网络异常",
+    stationcheck:'台站检测',
     mem:"内存危机",
     app:"服务异常",
     disk:"磁盘危机",
@@ -73,6 +74,7 @@ var searchlog_statue= [
     {"value":exceptiontype.disk, "name":exceptiontype.disk},
     {"value":exceptiontype.mem, "name":exceptiontype.mem},
     {"value":exceptiontype.ok, "name":exceptiontype.ok},
+    {"value":exceptiontype.stationcheck, "name":exceptiontype.stationcheck},
     {"value":dutylogtype.logfail, "name":dutylogtype.logfail},
     {"value":dutylogtype.logsucc, "name":dutylogtype.logsucc},
     {"value":missiontype.earthquickfail, "name":missiontype.earthquickfail},
@@ -88,7 +90,7 @@ var searchlog_statue= [
     {"value":missiontype.waveformfail, "name":missiontype.waveformfail},
     {"value":missiontype.waveformsucc, "name":missiontype.waveformsucc}
 ];
-
+if(!localStorage.serverurl)localStorage.serverurl="http://10.33.5.242:8080/lumprj/";
 if(!localStorage.dutyalertinterval)localStorage.dutyalertinterval="60000";
 if(!localStorage.stationinterval)localStorage.stationinterval="30000";
 if(!localStorage.eqimurl)localStorage.eqimurl="http://10.5.160.37:8180/gonggao/news.jsp";
@@ -101,4 +103,5 @@ if(!localStorage.catalogtel)localStorage.catalogtel="13336151145";
 if(!localStorage.wavedir)localStorage.wavedir="/Users/au2/2014/";
 if(!localStorage.eventdir)localStorage.eventdir="/Users/au2/2014evt/";
 if(!localStorage.archiveminsize)localStorage.archiveminsize="100";
+if(!localStorage.crossalert)localStorage.crossalert="50";
 
