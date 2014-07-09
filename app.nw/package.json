@@ -27,9 +27,9 @@
     "window": {
         "title": "浙江测震台网值班平台",
 
-        "icon":"images/app.png",
+        "icon":"eqair.png",
 
-        "toolbar": true,
+        "toolbar": false,
 
         "position": "mouse"
 

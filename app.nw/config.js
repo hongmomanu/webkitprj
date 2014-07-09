@@ -10,6 +10,7 @@ var Globle={
     tel:"",
     dutytel:"",
     mapalertimg:"images/red.jpg",
+    mapdownimg:"images/down.png",
     mapimg:"images/green.jpg",
     shadow:"images/shadow.jpg",
     displayname:"",

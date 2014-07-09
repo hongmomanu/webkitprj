@@ -206,12 +206,14 @@ Ext.define('Webdesktop.controller.Duty', {
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.eqimsucc,
                     logcontent:missiontype.eqimsucc}],'duty/senddutylogs');
+                me.makefrontmesage(missiontype.eqimsucc);
             }else{
                 //Ext.Msg.alert("提示信息", "eqim 网络不通!");
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.eqimfail,
                     logcontent:"eqim 网络不通!"}],'duty/senddutylogs');
+                me.makefrontmesage("eqim 网络不通!");
             }
 
             //btn.up('panel').getStore().load();
@@ -307,6 +309,9 @@ Ext.define('Webdesktop.controller.Duty', {
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.recordyes,
                     logcontent:logcontent}],'duty/senddutylogs');
+
+                me.makefrontmesage(logcontent);
+
             }else{
                 me.completeduty(rec,store,missiontype.recordno);
                 var system_cl=me.application.getController("Systemwatch");
@@ -317,6 +322,8 @@ Ext.define('Webdesktop.controller.Duty', {
                         logcontent:missiontype.recordno
                     }
                 ],'duty/senddutylogs');
+
+                me.makefrontmesage(missiontype.recordno);
             }
 
 
@@ -344,6 +351,9 @@ Ext.define('Webdesktop.controller.Duty', {
             system_cl.sendsystemlogs([{userid:Globle.userid,
                 statustype:missiontype.waveformsucc,
                 logcontent:missiontype.waveformsucc}],'duty/senddutylogs');
+
+            me.makefrontmesage(missiontype.waveformsucc);
+
         };
         var failFunc = function (form, action) {
             Ext.Msg.alert("提示信息", "源目录不存在");
@@ -351,6 +361,7 @@ Ext.define('Webdesktop.controller.Duty', {
             system_cl.sendsystemlogs([{userid:Globle.userid,
                 statustype:missiontype.waveformfail,
                 logcontent:"源目录不存在"}],'duty/senddutylogs');
+            me.makefrontmesage("源目录不存在");
         };
 
         CommonFunc.ajaxSend(params,'duty/copywavefile',successFunc,failFunc,'POST');
@@ -374,6 +385,7 @@ Ext.define('Webdesktop.controller.Duty', {
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.earthquicksucc,
                     logcontent:missiontype.earthquicksucc}],'duty/senddutylogs');
+                me.makefrontmesage(missiontype.earthquicksucc);
             }else{
                 me.completeduty(rec,store,missiontype.earthquickfail+'('+res.results+")");
                 var system_cl=me.application.getController("Systemwatch");
@@ -384,6 +396,8 @@ Ext.define('Webdesktop.controller.Duty', {
                         logcontent:'('+res.results+")个地震事件"
                     }
                 ],'duty/senddutylogs');
+
+                me.makefrontmesage('('+res.results+")个地震事件");
             }
 
         };
@@ -413,6 +427,8 @@ Ext.define('Webdesktop.controller.Duty', {
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.archivefilesucc,
                     logcontent:missiontype.archivefilesucc}],'duty/senddutylogs');
+
+                me.makefrontmesage(missiontype.archivefilesucc);
             }
             else{
                 me.completeduty(rec,store,missiontype.archivefilefail+'<br>'+res.results.join("<br>"));
@@ -424,6 +440,8 @@ Ext.define('Webdesktop.controller.Duty', {
                         logcontent:res.results.join(",")
                     }
                 ],'duty/senddutylogs');
+
+                me.makefrontmesage(res.results.join(","));
             }
 
         };
@@ -466,12 +484,16 @@ Ext.define('Webdesktop.controller.Duty', {
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.catalogingreportsucc,
                     logcontent:public_content}],'duty/senddutylogs');
+
+                me.makefrontmesage(public_content);
             }else{
                 //Ext.Msg.alert("提示信息", "eqim 网络不通!");
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.catalogingreportfail,
                     logcontent:"网络不通!"}],'duty/senddutylogs');
+
+                me.makefrontmesage("网络不通！");
             }
 
         };
@@ -482,6 +504,15 @@ Ext.define('Webdesktop.controller.Duty', {
         };
         //CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
         CommonFunc.ajaxSend(params,'duty/eqimpubliclogin',successFunc,failFunc,'POST');
+    },
+    makefrontmesage:function(content){
+        var grid=Ext.getCmp('earthlistgrid');
+        var store=grid.getStore();
+        var data={
+            stime:Ext.util.Format.date(new Date(),'Y-m-d')+'<br>'+Ext.util.Format.date(new Date(),'H:i:s')
+        };
+        data['content']=content;
+        store.add(data);
     },
     catalogingclick:function(rec,store){
         var me=this;
@@ -498,7 +529,10 @@ Ext.define('Webdesktop.controller.Duty', {
                     "152": 1,"157": 1,"158": 1 ,"159": 1 ,"182": 1 ,"183": 1 ,
                     "187": 1,"188": 1 ,"130": 2 ,"131":2 ,"132": 2 ,"155": 2 ,"156": 2 ,"185": 2 ,
                     "186": 2 ,"133": 3 ,"153": 3 ,"180": 3 ,"189": 3};
-                var telpart=mapkey[(Globle.tel+"").substring(0,3)];
+                console.log((Globle.tel+"").substring(0,3));
+
+                var telpart=mapkey[(localStorage.catalogtel+"").substring(0,3)];
+
                 var params={
                     tel:localStorage.catalogtel,
                     msg:"[EqAIR]提醒：今日有编目，请及时处理！" ,
@@ -512,12 +546,14 @@ Ext.define('Webdesktop.controller.Duty', {
                         system_cl.sendsystemlogs([{userid:Globle.userid,
                             statustype:missiontype.cataloging,
                             logcontent:'编目已发送'}],'duty/senddutylogs');
+                        me.makefrontmesage('编目已发送');
                     }else{
                         //Ext.Msg.alert("提示信息", "eqim 网络不通!");
                         var system_cl=me.application.getController("Systemwatch");
                         system_cl.sendsystemlogs([{userid:Globle.userid,
                             statustype:missiontype.catalogingfail,
                             logcontent:"发送失败!"}],'duty/senddutylogs');
+                        me.makefrontmesage('发送失败！');
                     }
 
                 };
@@ -532,6 +568,11 @@ Ext.define('Webdesktop.controller.Duty', {
 
             }else{
                 me.completeduty(rec,store,'今日无编目');
+                var system_cl=me.application.getController("Systemwatch");
+                system_cl.sendsystemlogs([{userid:Globle.userid,
+                    statustype:missiontype.cataloging,
+                    logcontent:'今日无编目'}],'duty/senddutylogs');
+                me.makefrontmesage('今日无编目');
             }
         });
     },
@@ -791,6 +832,7 @@ Ext.define('Webdesktop.controller.Duty', {
             system_cl.sendsystemlogs([{userid:Globle.userid,
                 statustype:missiontype.archivefilesucc,
                 logcontent:missiontype.archivefilesucc}],'duty/senddutylogs');
+            me.makefrontmesage(missiontype.archivefilesucc);
             win.close();
         };
         var failFunc = function (form, action) {
@@ -803,6 +845,7 @@ Ext.define('Webdesktop.controller.Duty', {
                     logcontent:action.result.results.join(",")
                 }
             ],'duty/senddutylogs');
+            me.makefrontmesage(action.result.results.join(","));
         };
         CommonFunc.formSubmit(form, params, 'duty/checkarchive', successFunc, failFunc, "正在提交。。。");
 
@@ -819,6 +862,7 @@ Ext.define('Webdesktop.controller.Duty', {
             system_cl.sendsystemlogs([{userid:Globle.userid,
                 statustype:missiontype.waveformsucc,
                 logcontent:missiontype.waveformsucc}],'duty/senddutylogs');
+            me.makefrontmesage(missiontype.waveformsucc);
             win.hide();
         };
         var failFunc = function (form, action) {
@@ -828,6 +872,7 @@ Ext.define('Webdesktop.controller.Duty', {
             system_cl.sendsystemlogs([{userid:Globle.userid,
                 statustype:missiontype.waveformfail,
                 logcontent:"源目录不存在"}],'duty/senddutylogs');
+            me.makefrontmesage("源目录不存在");
         };
 
         CommonFunc.formSubmit(form, {}, 'duty/copywavefile', successFunc, failFunc, "正在提交。。。");

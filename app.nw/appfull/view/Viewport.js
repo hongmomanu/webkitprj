@@ -39,7 +39,7 @@ Ext.define('Webdesktop.view.Viewport', {
                                 //background: '#ffc',
                                 background: 'url(images/bghead.png)'
                             },
-                            html:'<div style="font-size: 20;padding-left: 10px;padding-top:5px;color: #ffffff">浙江测震台网值班平台</div>'
+                            html:'<div style="font-size: 20;padding-left: 10px;padding-top:5px;color: #ffffff">浙江测震台网值班平台(EqAIR)</div>'
                         },
                         {
                             flex: 1,

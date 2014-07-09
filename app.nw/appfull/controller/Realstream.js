@@ -96,14 +96,31 @@ Ext.define('Webdesktop.controller.Realstream', {
                 minZoom: 4,
                 maxZoom: 18
             });
+            var tdt = L.tileLayer("http://t0.tianditu.cn/vec_w/wmts?" +
+                "SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles" +
+                "&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}", {
+                minZoom: 4,
+                maxZoom: 18
+            });
+
+            var lt2 = L.tileLayer("http://t0.tianditu.com/cva_w/wmts?" +
+                "SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles" +
+                "&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}", {
+                minZoom: 4,
+                maxZoom: 18
+            });
             var baseMaps = {
                 'OSM底图':osmLayer,
                 "Mapbox": baseLayer,
+                '天地图底图':tdt,
                 '天地图地形':ter
+            };
+            var overlayMaps = {
+                "标注": lt2
             };
             me.relationmap = new L.Map('relationmap', {center: [30.274089,120.15506900000003], zoom: 8, layers: [osmLayer]});
             var map=me.relationmap;
-            var layersControl = new L.Control.Layers(baseMaps);
+            var layersControl = new L.Control.Layers(baseMaps,overlayMaps);
             map.addControl(layersControl);
             /*me.relationmap = L.map('relationmap').setView([30.274089,120.15506900000003], 11);
             var map=me.relationmap;
@@ -159,7 +176,15 @@ Ext.define('Webdesktop.controller.Realstream', {
                 {
                     var lonlat=$('#quickpanto').val();
                     map.panTo([lonlat.split(",")[0],lonlat.split(",")[1]]);
-                    var marker=L.marker([lonlat.split(",")[0],lonlat.split(",")[1]]).addTo(map)
+                    var url=CommonFunc.geturl();
+                    var LeafIcon = L.Icon.extend({
+                        options: {
+                            shadowUrl:(url+Globle.shadow) ,
+                            popupAnchor:  [8, 0]
+                        }
+                    });
+                    var greenIcon = new LeafIcon({iconUrl: url+Globle.mapimg});
+                    var marker=L.marker([lonlat.split(",")[0],lonlat.split(",")[1]],{icon: greenIcon}).addTo(map)
                         .bindPopup('当前的位置 ' +lonlat+'<br> ')
                         .openPopup();
 
@@ -492,6 +517,7 @@ Ext.define('Webdesktop.controller.Realstream', {
         });
         var greenIcon = new LeafIcon({iconUrl: url+Globle.mapimg});
         var redIcon = new LeafIcon({iconUrl: url+Globle.mapalertimg});
+        var downIcon = new LeafIcon({iconUrl: url+Globle.mapdownimg});
 
         var store=Ext.StoreMgr.get('realstream.RealStreams');
         var taskfun=function(){
@@ -527,7 +553,8 @@ Ext.define('Webdesktop.controller.Realstream', {
                             '<li><a>网关地址:</a>'+s[i].raw.gatewayaddr+'</li>'+
                             '</ul><a class="btn" style="text-align: right;">检查故障</a>';
                         //console.log(geom);
-                        L.marker(geom, {icon: ((Math.abs(compare)>localStorage.crossalert||crossnowbhe<crossnums)?redIcon:greenIcon)})
+                        var imgurl=s[i].raw.ispasue?downIcon:((Math.abs(compare)>localStorage.crossalert||crossnowbhe<crossnums)?redIcon:greenIcon);
+                        L.marker(geom, {icon: imgurl})
                             .bindPopup(html).addTo(search_group).on('popupopen',function(e){
                                 $('a.btn').click(function(){
                                     var myMask = new Ext.LoadMask(Ext.getBody(), {msg:"请等候..."});
@@ -544,8 +571,8 @@ Ext.define('Webdesktop.controller.Realstream', {
                                             +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                                             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网关:'
                                             +(res.gateway?'正常':'超时')+'<br>';
-                                        console.log(s[i].raw.stationname);
-                                        console.log(str);
+                                        //console.log(s[i].raw.stationname);
+                                        //console.log(str);
                                         if(res.results.length>0){
                                             for(var j=0;j<res.results.length;j++){
                                                 str+='告警&nbsp;'+Ext.util.Format.date(new Date(res.results[j].sdate),'Y-m-d H:i:s');
@@ -633,13 +660,16 @@ Ext.define('Webdesktop.controller.Realstream', {
 
 
                         var url=CommonFunc.geturl();
+                        console.log(s[i].raw);
+                        console.log(s[i].raw.ispasue);
+                        var imgurl=s[i].raw.ispasue?(url+Globle.mapdownimg):(Math.abs(compare)>15?(url+Globle.mapalertimg):(url+Globle.mapimg));
                         var iconStyle = new ol.style.Style({
                             image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
                                 anchor: [0.5, 46],
                                 anchorXUnits: 'fraction',
                                 anchorYUnits: 'pixels',
                                 opacity: 0.75,
-                                src:Math.abs(compare)>15?(url+Globle.mapalertimg):(url+Globle.mapimg)
+                                src:imgurl
                             }))
                         });
 
@@ -724,17 +754,33 @@ Ext.define('Webdesktop.controller.Realstream', {
             minZoom: 4,
             maxZoom: 18
         });
+        var tdt = L.tileLayer("http://t0.tianditu.cn/vec_w/wmts?" +
+            "SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles" +
+            "&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}", {
+            minZoom: 4,
+            maxZoom: 18
+        });
+        var lt2 = L.tileLayer("http://t0.tianditu.com/cva_w/wmts?" +
+            "SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles" +
+            "&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}", {
+            minZoom: 4,
+            maxZoom: 18
+        });
         var baseMaps = {
             'OSM底图':osmLayer,
             "Mapbox": baseLayer,
+            '天地图底图':tdt,
             '天地图地形':ter
+        };
+        var overlayMaps = {
+            "标注": lt2
         };
         me.map = new L.Map('realstreammap', {center: [30.274089,120.15506900000003], zoom: 8, layers: [osmLayer]});
         var map=me.map;
         /*L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
          }).addTo(map);*/
-        var layersControl = new L.Control.Layers(baseMaps);
+        var layersControl = new L.Control.Layers(baseMaps,overlayMaps);
         map.addControl(layersControl);
         me.realmapfeaturesleaf();
 
