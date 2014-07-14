@@ -1,7 +1,7 @@
 Ext.define('Webdesktop.store.duty.DutyMissions', {
     extend: 'Ext.data.Store',
     model: 'Webdesktop.model.duty.DutyMission',
-    alias : 'widget.usermanagers',
+    alias : 'widget.dutymanagers',
 
     pageSize: 10000,
     autoLoad:false,

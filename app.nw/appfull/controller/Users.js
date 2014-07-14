@@ -168,6 +168,7 @@ Ext.define('Webdesktop.controller.Users', {
              Ext.getStore('duty.MissionManagers').load();
              Ext.getStore('duty.StationManagers').load();
              Ext.getStore('duty.WorkManagers').load();
+             Ext.getStore('duty.DutyMissions').load();
              //Ext.getStore('duty.WorkManagerEvents').load();
              //Ext.getStore('duty.WorkManagerEvents').load();
              //Ext.getStore('duty.WorkManagerCalendars').load();
@@ -283,6 +284,7 @@ Ext.define('Webdesktop.controller.Users', {
        var win=btn.up('window');
        var form=win.down('form').getForm();
        localStorage.serverurl=form.getValues().serverurl;
+       window.location.reload();
        win.hide();
 
     },
