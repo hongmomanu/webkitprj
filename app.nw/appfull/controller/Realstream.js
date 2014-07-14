@@ -499,7 +499,11 @@ Ext.define('Webdesktop.controller.Realstream', {
             [range[3],range[1]],
             [range[2],range[1]],
             [range[2],range[0]]
-        ]).addTo(me.relationmap);
+        ],{
+            fillOpacity: 0.1,
+            weight:1
+
+        }).addTo(me.relationmap);
 
         me.polygonvec=polygon;
 

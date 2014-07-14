@@ -59,7 +59,7 @@ var missiontype={
     earthquickfile:'地震事件文件检查',
     earthquicksucc:'无地震事件',
     earthquickfail:'有地震事件',
-    archivefilesucc:'连续波形文件无异常',
+    archivefilesucc:'连续波形文件正常',
     archivefilefail:'连续波形文件异常',
     cataloging:'编目地震提醒',
     catalogingfail:'编目地震提醒失败',

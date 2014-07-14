@@ -37,6 +37,7 @@ Ext.define('Webdesktop.view.systemwatch.AddNewSystemWin' ,{
                     {
                         xtype: 'textfield',
                         fieldLabel: '服务器名称',
+                        itemId:'servername',
                         required:true,
                         allowBlank:false,
                         afterLabelTextTpl: required,
@@ -45,6 +46,7 @@ Ext.define('Webdesktop.view.systemwatch.AddNewSystemWin' ,{
                     {
                         xtype: 'textfield',
                         fieldLabel: '服务器地址',
+                        itemId:'serveraddr',
                         required:true,
                         allowBlank:false,
                         afterLabelTextTpl: required,

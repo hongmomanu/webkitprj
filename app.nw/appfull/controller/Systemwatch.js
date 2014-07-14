@@ -586,6 +586,8 @@ Ext.define('Webdesktop.controller.Systemwatch', {
         this.newsystemwin.show();
         var form_combobox = this.newsystemwin.down('combobox');
         var form_cssimg = this.newsystemwin.down('#machinecss');
+        var form_servername = this.newsystemwin.down('#servername');
+        var form_serveraddr = this.newsystemwin.down('#serveraddr');
         var form_password = this.newsystemwin.down('#password');
         var form_username = this.newsystemwin.down('#username');
         var win = this.systemmanagerwin;
@@ -597,11 +599,15 @@ Ext.define('Webdesktop.controller.Systemwatch', {
             form_cssimg.show();
             form_password.show();
             form_username.show();
+            form_servername.setFieldLabel("服务器名称");
+            form_serveraddr.setFieldLabel("服务器地址");
         } else {
             form_combobox.show();
             form_cssimg.hide();
             form_password.hide();
             form_username.hide();
+            form_servername.setFieldLabel("服务名称");
+            form_serveraddr.setFieldLabel("服务命令");
         }
 
     },

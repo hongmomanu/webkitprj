@@ -29,7 +29,7 @@
 
         "icon":"eqair.png",
 
-        "toolbar": false,
+        "toolbar": true,
 
         "position": "mouse"
 

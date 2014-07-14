@@ -47,6 +47,11 @@ Ext.define('Webdesktop.controller.Duty', {
             'dutypanel menuitem[action=workmanager]':{
                 click: this.openworkmanagerwin
             },
+            'dutypanel menuitem[action=alteruser]':{
+                click: this.openalteruser
+            },'dutymanagerwin button[action=print]':{
+                click: this.dutyprint
+            },
             'dutypanel menuitem[action=missionmanager]':{
                 click: this.openmissionmanagerwin
             },
@@ -720,10 +725,49 @@ Ext.define('Webdesktop.controller.Duty', {
         }
 
     },
+    dutyprint:function(btn){
+        html2canvas($('#workcalendarpanel'), {
+
+            onrendered: function (canvas) {
+                var img = canvas.toDataURL();
+                //var newWindow = open(img);
+                var myWindow=window.open('');
+                myWindow.document.write('<img src="'+img+'"/>');
+                myWindow.focus();
+                myWindow.print();
+                myWindow.close();
+
+            }}
+        );
+    },
     openworkmanagerwin:function(btn){
         if(!this.workmanagerwin)this.workmanagerwin= Ext.widget('dutymanagerwin');
         this.workmanagerwin.show();
 
+    },
+    openalteruser:function(btn){
+        Ext.MessageBox.prompt('修改密码', '请输入新密码:', function(btn, text){
+            if(btn==="ok"){
+                var params = {
+                    id:Globle.userid,
+                    password: text
+                };
+                var successFunc = function (response, action) {
+
+                    var res = Ext.JSON.decode(response.responseText);
+                    if(res.success){
+                        Ext.Msg.alert("提示信息", "修改密码成功!");
+                    }
+
+                };
+                var failFunc = function (form, action) {
+                    Ext.Msg.alert("提示信息", "修改密码失败!");
+                };
+                CommonFunc.ajaxSend(params, 'user/saveuser', successFunc, failFunc,'POST');
+
+            }
+
+        });
     },
     openmissionmanagerwin:function(btn){
         if(!this.missionmanagerwin)this.missionmanagerwin= Ext.widget('missionmanagerwin');

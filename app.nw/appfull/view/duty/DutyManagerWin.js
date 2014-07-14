@@ -16,12 +16,21 @@ Ext.define('Webdesktop.view.duty.DutyManagerWin' ,{
             height: 500,
             width: 800,
             closeAction : 'hide',
+            tbar: [
+                {
+                    xtype: 'button',
+                    action:'print',
+                    text:'打印'
+                }
+            ],
             modal:true,
             resizable:false,
             layout: 'fit',
             items: {
                 //xtype:'workmanagerpanel'
+                id:'workcalendarpanel',
                 xtype: 'extensible.calendarpanel',
+                readOnly :!Globle.isadmin,
                 eventStore: Ext.create('Webdesktop.store.duty.WorkManagerEvents'),
                 calendarStore:Ext.create('Webdesktop.store.duty.WorkManagerCalendars')
             }
