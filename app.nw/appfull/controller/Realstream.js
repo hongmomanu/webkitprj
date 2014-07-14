@@ -241,7 +241,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                 }else{
                     me.eventid=data.eventid;
                     me.eventresults=data.results;
-                    me.showRelationMaplocation(data.lonlat);
+                    me.showRelationMaplocation(data.lonlat,data.range);
                     $('#rts_chart').append('<a>发震时刻:</a>'+data.time);
                     $('#rts_chart').append('<br><a>计算相关性...</a>');
                     me.log_info="";
@@ -484,13 +484,25 @@ Ext.define('Webdesktop.controller.Realstream', {
 
 
 
-    showRelationMaplocation:function(data){
+    showRelationMaplocation:function(data,range){
         var me=this;
         me.relationmap.panTo(new L.LatLng(data[1],data[0]));
         if(me.popupmarker)me.relationmap.removeLayer(me.popupmarker);
+        if(me.polygonvec)me.relationmap.removeLayer(me.polygonvec);
         var marker=L.marker([data[1],data[0]]).addTo(me.relationmap)
             .bindPopup("<div id='rts_chart' style='width: 320px;height: 200px;overflow-y: auto;'></div>",{closeButton:true}).openPopup();
+
         me.popupmarker=marker;
+
+        var polygon=L.polygon([
+            [range[3], range[0]],
+            [range[3],range[1]],
+            [range[2],range[1]],
+            [range[2],range[0]]
+        ]).addTo(me.relationmap);
+
+        me.polygonvec=polygon;
+
         marker.on('popupclose', function(e) {
             //alert(1);
             try{
