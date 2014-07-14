@@ -263,7 +263,7 @@ Ext.define('Webdesktop.controller.Duty', {
             params.id=0;
             params.operator=Globle.displayname;
             params.eventType=1301;
-            params.treatType=2000;
+            params.treatType=2303;
             params.logContent="自行恢复";
             params.createTime=Ext.util.Format.date(new Date(), 'Y-m-d H:i:s');
             var successFunc = function (response, action) {
@@ -301,9 +301,9 @@ Ext.define('Webdesktop.controller.Duty', {
             if(res.success){
                 me.completeduty(rec,store,missiontype.recordyes);
                 var system_cl=me.application.getController("Systemwatch");
-                var logcontent="";
+                var logcontent="<b>断记统计上传检查</b>:<br>";
                 for(var i=0;i<res.result.length;i++){
-                    logcontent+=res.result[i].station+","+res.result[i].begin_time+"<br>";
+                    logcontent+=res.result[i].station+","+res.result[i].begin_time+"——" +res.result[i].end_time+"<br>";
                     me.sendnewrecordyes(res.result[i].station,res.result[i].begin_time,res.result[i].end_time)
                 }
                 system_cl.sendsystemlogs([{userid:Globle.userid,
@@ -319,11 +319,11 @@ Ext.define('Webdesktop.controller.Duty', {
                     {
                         userid:Globle.userid,
                         statustype:missiontype.recordno,
-                        logcontent:missiontype.recordno
+                        logcontent:"<b>断记统计上传检查</b>:<br>"+missiontype.recordno
                     }
                 ],'duty/senddutylogs');
 
-                me.makefrontmesage(missiontype.recordno);
+                me.makefrontmesage("<b>断记统计上传检查</b>:<br>"+missiontype.recordno);
             }
 
 
@@ -384,20 +384,20 @@ Ext.define('Webdesktop.controller.Duty', {
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.earthquicksucc,
-                    logcontent:missiontype.earthquicksucc}],'duty/senddutylogs');
-                me.makefrontmesage(missiontype.earthquicksucc);
+                    logcontent:"<b>地震事件文件检查</b>:<br>"+missiontype.earthquicksucc}],'duty/senddutylogs');
+                me.makefrontmesage("<b>地震事件文件检查</b>:<br>"+missiontype.earthquicksucc);
             }else{
-                me.completeduty(rec,store,missiontype.earthquickfail+'('+res.results+")");
+                me.completeduty(rec,store,missiontype.earthquickfail+':<br>'+res.results.join('<br>')+'');
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([
                     {
                         userid:Globle.userid,
                         statustype:missiontype.earthquickfail,
-                        logcontent:'('+res.results+")个地震事件"
+                        logcontent:"<b>地震事件文件检查</b>:<br>"+''+res.results.join('<br>')
                     }
                 ],'duty/senddutylogs');
 
-                me.makefrontmesage('('+res.results+")个地震事件");
+                me.makefrontmesage("<b>地震事件文件检查</b>:<br>"+''+res.results.join('<br>')+"");
             }
 
         };
@@ -426,9 +426,9 @@ Ext.define('Webdesktop.controller.Duty', {
                 var system_cl=me.application.getController("Systemwatch");
                 system_cl.sendsystemlogs([{userid:Globle.userid,
                     statustype:missiontype.archivefilesucc,
-                    logcontent:missiontype.archivefilesucc}],'duty/senddutylogs');
+                    logcontent:"<b>连续波形文件检查:</b><br>"+missiontype.archivefilesucc}],'duty/senddutylogs');
 
-                me.makefrontmesage(missiontype.archivefilesucc);
+                me.makefrontmesage("<b>连续波形文件检查:</b><br>"+missiontype.archivefilesucc);
             }
             else{
                 me.completeduty(rec,store,missiontype.archivefilefail+'<br>'+res.results.join("<br>"));
@@ -437,11 +437,11 @@ Ext.define('Webdesktop.controller.Duty', {
                     {
                         userid:Globle.userid,
                         statustype:missiontype.archivefilefail,
-                        logcontent:res.results.join(",")
+                        logcontent:"<b>连续波形文件检查:</b><br>"+res.results.join(",")
                     }
                 ],'duty/senddutylogs');
 
-                me.makefrontmesage(res.results.join(","));
+                me.makefrontmesage("<b>连续波形文件检查:</b><br>"+res.results.join(","));
             }
 
         };
@@ -472,10 +472,10 @@ Ext.define('Webdesktop.controller.Duty', {
                 var td_arr=$(html).find("td");
                 var time=new Date($(td_arr[7]).text());
                 var now= new Date();
-                var public_content='今日无登记';
+                var public_content='<b>编目快报检查:<br>今日无登记</b>';
                 //console.log($(td_arr[1]).text());
                 if(now.getFullYear()==time.getFullYear()&&now.getMonth()==time.getMonth()&&now.getDate()==time.getDate()){
-                    public_content='今日有登记<br>'+$(td_arr[7]).text();
+                    public_content='<b>编目快报检查:<br></b>今日已登记<br>'+$(td_arr[7]).text();
                 }
 
                 //testobj=html;
@@ -506,6 +506,11 @@ Ext.define('Webdesktop.controller.Duty', {
         CommonFunc.ajaxSend(params,'duty/eqimpubliclogin',successFunc,failFunc,'POST');
     },
     makefrontmesage:function(content){
+
+        var resoreceurl=localStorage.serverurl+"audio/air.ogg";
+        var play=new Audio(resoreceurl);
+        play.play();
+
         var grid=Ext.getCmp('earthlistgrid');
         var store=grid.getStore();
         var data={

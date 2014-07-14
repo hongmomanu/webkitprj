@@ -216,7 +216,8 @@ Ext.define('Webdesktop.controller.Realstream', {
             data=JSON.parse(data);
             //console.log(data);
             if(data.type==="rts"){
-                console.log(data);
+
+                //console.log(data);
                 var results=data.results;
                 var name=data.name;
                 var new_results=[];
@@ -249,21 +250,21 @@ Ext.define('Webdesktop.controller.Realstream', {
 
 
 
-
+                console.log(results);
 
                 for(var i=0;i<name.length;i++){
-
+                    console.log(name[i].stations);
                     for(var m=0;m<name[i].stations.length;m++){
                         //console.log(results[j].sta_code+"----"+name[i].stations[m].name);
                         var item=null;
                         for(var j=0;j<results.length;j++){
 
-                            if(results[j].sta_code===name[i].stations[m].name){
+                            if(results[j].net_code+"/"+results[j].sta_code===name[i].stations[m].name){
                                 item={
                                     rtime:results[j].time,
                                     stime:name[i].stations[m].stime,
                                     time:data.time,
-                                    station:results[j].sta_code+"/"+results[j].chn_code,
+                                    station:results[j].net_code+"/"+results[j].sta_code+"/"+results[j].chn_code,
                                     move:name[i].stations[m].move,
                                     name:name[i].name,
                                     second:name[i].stations[m].second
@@ -273,7 +274,7 @@ Ext.define('Webdesktop.controller.Realstream', {
                         }
                         if(item){
                             me.chart_caculate++;
-                            //console.log(me.chart_caculate);
+                            console.log(item);
                             me.relations_begin(name[i].name,item)
                         }
 
@@ -412,7 +413,7 @@ Ext.define('Webdesktop.controller.Realstream', {
 
             }
 
-            var id=chartname+"chart"+station.replace("/","-");
+            var id=chartname+"chart"+station.replace(/\//g,"");
             var idrelactions=id+"relactions";
             $('#rts_chart').append('<div id="'+id+'" style="height: 120px;"></div>');
             $('#rts_chart').append('<div id="'+idrelactions+'" style="height: 120px;"></div>');
@@ -508,7 +509,7 @@ Ext.define('Webdesktop.controller.Realstream', {
         var LeafIcon = L.Icon.extend({
             options: {
                 shadowUrl:(url+Globle.shadow)/*,
-                iconSize:     [38, 95],
+                iconSize:     [32, 32],
                 shadowSize:   [50, 64],
                 iconAnchor:   [22, 94],
                 shadowAnchor: [4, 62],
