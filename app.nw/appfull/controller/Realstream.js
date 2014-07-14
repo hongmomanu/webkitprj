@@ -308,9 +308,9 @@ Ext.define('Webdesktop.controller.Realstream', {
 
                 store.add(data);
 
-                var resoreceurl=localStorage.serverurl+"audio/eqim.mp3";
+                /*var resoreceurl=localStorage.serverurl+"audio/eqim.mp3";
                 var play=new Audio(resoreceurl);
-                play.play();
+                play.play();*/
             }
         }
 
