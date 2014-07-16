@@ -76,9 +76,15 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
                     },
                     {
                         xtype:'textfield',
-                        value:50,
+                        value:'[20,20,20]',
                         name:'crossalert',
                         fieldLabel:'偏离度告警阀值(%)'
+                    },
+                    {
+                        xtype:'textfield',
+                        value:70,
+                        name:'relationmaxalert',
+                        fieldLabel:'相关告警阀值(%)'
                     },
                     {
                         xtype:'textfield',

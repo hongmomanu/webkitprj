@@ -519,7 +519,7 @@ Ext.define('Webdesktop.controller.Duty', {
         var grid=Ext.getCmp('earthlistgrid');
         var store=grid.getStore();
         var data={
-            stime:Ext.util.Format.date(new Date(),'Y-m-d')+'<br>'+Ext.util.Format.date(new Date(),'H:i:s')
+            stime:Ext.util.Format.date(new Date(),'Y-m-d')+' '+Ext.util.Format.date(new Date(),'H:i:s')
         };
         data['content']=content;
         store.add(data);
@@ -621,6 +621,7 @@ Ext.define('Webdesktop.controller.Duty', {
         localStorage.reportpassword=form.getValues().reportpassword;
         localStorage.catalogtel=form.getValues().catalogtel;
         localStorage.crossalert=form.getValues().crossalert;
+        localStorage.relationmaxalert=form.getValues().relationmaxalert;
         //localStorage.sourcedir=form.getValues().sourcedir;
         //localStorage.targetdir=form.getValues().targetdir;
         localStorage.wavedir=form.getValues().wavedir;
@@ -797,6 +798,7 @@ Ext.define('Webdesktop.controller.Duty', {
                     reportusername:localStorage.reportusername,
                     catalogtel:localStorage.catalogtel,
                     crossalert:localStorage.crossalert,
+                    relationmaxalert:localStorage.relationmaxalert,
                     reportpassword:localStorage.reportpassword,
                     wavedir:localStorage.wavedir,
                     eventdir:localStorage.eventdir,

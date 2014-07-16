@@ -75,6 +75,7 @@ var searchlog_statue= [
     {"value":exceptiontype.disk, "name":exceptiontype.disk},
     {"value":exceptiontype.mem, "name":exceptiontype.mem},
     {"value":exceptiontype.ok, "name":exceptiontype.ok},
+    {"value":realstreamtype.relation, "name":realstreamtype.relation},
     {"value":exceptiontype.stationcheck, "name":exceptiontype.stationcheck},
     {"value":dutylogtype.logfail, "name":dutylogtype.logfail},
     {"value":dutylogtype.logsucc, "name":dutylogtype.logsucc},
@@ -104,5 +105,6 @@ if(!localStorage.catalogtel)localStorage.catalogtel="13336151145";
 if(!localStorage.wavedir)localStorage.wavedir="/Users/au2/2014/";
 if(!localStorage.eventdir)localStorage.eventdir="/Users/au2/2014evt/";
 if(!localStorage.archiveminsize)localStorage.archiveminsize="100";
-if(!localStorage.crossalert)localStorage.crossalert="50";
+if(!localStorage.crossalert)localStorage.crossalert="[20,20,20]";
+if(!localStorage.relationmaxalert)localStorage.relationmaxalert="70";
 

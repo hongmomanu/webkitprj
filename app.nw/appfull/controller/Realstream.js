@@ -245,6 +245,8 @@ Ext.define('Webdesktop.controller.Realstream', {
                     $('#rts_chart').append('<a>发震时刻:</a>'+data.time);
                     $('#rts_chart').append('<br><a>计算相关性...</a>');
                     me.log_info="";
+                    me.ismaxalert=false;
+
                     me.chart_caculate=0;
                 }
 
@@ -349,9 +351,11 @@ Ext.define('Webdesktop.controller.Realstream', {
             //stime= Ext.Date.add(new Date(stime),Ext.Date.HOUR,8);
             params.rtime=rtime;
             params.stime=stime;
+            me.ismaxalert=(max_data>=(localStorage.relationmaxalert/100));
             me.log_info+="最大值:"+max_data+"<br>测站:"+params.station+
                 "  （样本事件:"+title+")"+
                 "<br>时间:"+params.rtime+"<br>";
+
 
             console.log(me.log_info);
             me.make_chart(params.rtime,params.second,
@@ -452,6 +456,14 @@ Ext.define('Webdesktop.controller.Realstream', {
                         var img = canvas.toDataURL();
                         var system_cl=me.application.getController("Systemwatch");
 
+
+                        if(!me.ismaxalert){
+                            me.log_info= "<font color='blue'><b>报警事件相关分析结果:</b><br>"+me.log_info+"</font>" ;
+                        }else{
+
+                            me.log_info="<font color='red'><b>报警事件相关分析结果:疑与事件["
+                                +chartname+"]相似</b><br>"+me.log_info+"</font>" ;
+                        }
                         system_cl.sendsystemlogs([{
                             statustype:realstreamtype.relation,
                             imgurl:img,
@@ -490,7 +502,7 @@ Ext.define('Webdesktop.controller.Realstream', {
         if(me.popupmarker)me.relationmap.removeLayer(me.popupmarker);
         if(me.polygonvec)me.relationmap.removeLayer(me.polygonvec);
         var marker=L.marker([data[1],data[0]]).addTo(me.relationmap)
-            .bindPopup("<div id='rts_chart' style='width: 320px;height: 200px;overflow-y: auto;'></div>",{closeButton:true}).openPopup();
+            .bindPopup("<div id='rts_chart' style='width: 320px;height: 250px;overflow-y: auto;'></div>",{closeButton:true}).openPopup();
 
         me.popupmarker=marker;
 
@@ -555,22 +567,39 @@ Ext.define('Webdesktop.controller.Realstream', {
                     (function(i){
                         //var item=earth_quick_places[s[i].raw.stationcode];
                         var compare=s[i].raw.crossavgbhe==0?0:((s[i].raw.crossnowbhe-s[i].raw.crossavgbhe)/s[i].raw.crossavgbhe)*100;
+                        var compare_n=s[i].raw.crossavgbhn==0?0:((s[i].raw.crossnowbhn-s[i].raw.crossavgbhn)/s[i].raw.crossavgbhn)*100;
+                        var compare_z=s[i].raw.crossavgbhz==0?0:((s[i].raw.crossnowbhz-s[i].raw.crossavgbhz)/s[i].raw.crossavgbhz)*100;
                         //console.log(compare);
                         var crossnums=s[i].raw.crossnums;
                         var crossnowbhe=s[i].raw.crossnowbhe*60000/localStorage.stationinterval;
                         var crossavgbhe=s[i].raw.crossavgbhe*60000/localStorage.stationinterval;
+                        var crossnowbhn=s[i].raw.crossnowbhn*60000/localStorage.stationinterval;
+                        var crossavgbhn=s[i].raw.crossavgbhn*60000/localStorage.stationinterval;
+                        var crossnowbhz=s[i].raw.crossnowbhz*60000/localStorage.stationinterval;
+                        var crossavgbhz=s[i].raw.crossavgbhz*60000/localStorage.stationinterval;
                         var geom=eval(s[i].raw.geom);
                         var html='<ul><li><a>台站名:</a>'+s[i].raw.stationname
-                            +'</li><li><a>波形偏差:</a>'+compare.toFixed(1)+" %"+'</li>' +
-                            '</li><li><a>当前值:</a>'+crossnowbhe.toFixed(0)+'&nbsp;&nbsp;t/m<a>&nbsp;&nbsp;&nbsp;&nbsp;平均值:</a>'
-                            +crossavgbhe.toFixed(0)+'&nbsp;&nbsp;t/m</li>' +
+                            +'</li><li><a>波形偏差:</a>N:'+compare_n.toFixed(1)
+                            +" % &nbsp;&nbsp;E:"+compare.toFixed(1)
+                            +" % &nbsp;&nbsp;Z:"+compare_z.toFixed(1)
+                            +' %</li>' +
+                            '</li><li><a>当前值:</a>N:'+crossnowbhn.toFixed(0)
+                            +'&nbsp;E:'+crossnowbhe.toFixed(0)
+                            +'&nbsp;Z:'+crossnowbhz.toFixed(0)
+                            +'&nbsp;&nbsp;t/m<a><br>平均值:</a>N:'
+                            +crossavgbhn.toFixed(0)
+                            +'&nbsp;E:'+crossavgbhe.toFixed(0)
+                            +'&nbsp;Z:'+crossavgbhz.toFixed(0)
+                            +'&nbsp;&nbsp;t/m</li>' +
                             '<li><a>时间:</a>'+s[i].raw.time+'</li>'+
                             '<li><a>联系人:</a>'+s[i].raw.contact+'&nbsp;&nbsp;'+s[i].raw.phone+'</li>'+
                             '<li><a>数采地址:</a>'+s[i].raw.dataaddr+'</li>'+
                             '<li><a>网关地址:</a>'+s[i].raw.gatewayaddr+'</li>'+
                             '</ul><a class="btn" style="text-align: right;">检查故障</a>';
                         //console.log(geom);
-                        var imgurl=s[i].raw.ispasue?downIcon:((Math.abs(compare)>localStorage.crossalert||crossnowbhe<crossnums)?redIcon:greenIcon);
+                        var imgurl=s[i].raw.ispasue?downIcon:((Math.abs(compare)>(eval (localStorage.crossalert))[1]
+                            ||Math.abs(compare_n)>(eval (localStorage.crossalert))[0]
+                            ||Math.abs(compare_z)>(eval (localStorage.crossalert))[2]||crossnowbhe<crossnums)?redIcon:greenIcon);
                         L.marker(geom, {icon: imgurl})
                             .bindPopup(html).addTo(search_group).on('popupopen',function(e){
                                 $('a.btn').click(function(){
@@ -601,7 +630,7 @@ Ext.define('Webdesktop.controller.Realstream', {
 
                                         str+='</a>';
                                         var data={
-                                            stime:Ext.util.Format.date(new Date(),'Y-m-d')+'<br>'+Ext.util.Format.date(new Date(),'H:i:s')
+                                            stime:Ext.util.Format.date(new Date(),'Y-m-d')+' '+Ext.util.Format.date(new Date(),'H:i:s')
                                         };
                                         data['content']=str;
                                         store.add(data);
