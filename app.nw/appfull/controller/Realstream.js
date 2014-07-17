@@ -43,12 +43,12 @@ Ext.define('Webdesktop.controller.Realstream', {
 
             },
             'realstreammappanel':{
-                afterrender:function(){
+                afterrender:function(panel){
                     var me=this;
                     var task = new Ext.util.DelayedTask(function(){
                         //me.realstreammapInit();
                         me.realstreammapInitleaf();
-                        me.websocketInit();
+                        me.websocketInit(panel);
                     });
                     task.delay(1000);
 
@@ -204,7 +204,7 @@ Ext.define('Webdesktop.controller.Realstream', {
         d.delay(500);
 
     },
-    websocketInit:function(){
+    websocketInit:function(panel){
         var url=localStorage.serverurl;
         //url=url?"ws://"+url.split("://")[1].split(":")[0]+":3001/":"ws://localhost:3001/";
         url=url.replace(/(:\d+)/g,":3001");
@@ -314,7 +314,14 @@ Ext.define('Webdesktop.controller.Realstream', {
                 var play=new Audio(resoreceurl);
                 play.play();*/
             }
-        }
+        };
+        socket.onclose = function(event) {
+
+            var d = new Ext.util.DelayedTask(function(){
+                me.websocketInit(panel);
+            });
+            d.delay(5000);
+        };
 
     },
 
