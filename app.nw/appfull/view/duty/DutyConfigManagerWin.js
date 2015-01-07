@@ -10,7 +10,7 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
     initComponent: function() {
         Ext.apply(this, {
             title: '值班配置管理',
-            height: 530,
+            height: 550,
             width: 500,
             closeAction : 'hide',
             modal:true,
@@ -94,10 +94,25 @@ Ext.define('Webdesktop.view.duty.DutyConfigManagerWin' ,{
                     },
                     {
                         xtype:'textfield',
-                        value:'http://10.33.253.103:8080/JOPENSWeb/mon/logStation',
+                        //value:'http://10.33.253.103:8080/JOPENSWeb/mon/logStation',
+                        value:'http://10.33.5.103:8080/JOPENSWeb/mon/logStationFormController?key=3',
                         name:'recordurl',
                         fieldLabel:'断记地址'
-                    },{
+                    },
+                    {
+                        xtype:'textfield',
+                        value:'http://10.33.253.103:8080/JOPENSWeb/mon/logStationFormController?key=3',
+                        name:'recordurlfilter',
+                        fieldLabel:'断记指定台站地址'
+                    },
+                    {
+                        xtype:'textfield',
+                        value:'["XAJ"]',
+                        name:'recordstation',
+                        fieldLabel:'断记指定台站'
+                    },
+
+                    {
                         xtype:'textfield',
                         name:'reporturl',
                         value:'http://10.5.202.22/bianmu/signon_rec.jsp',
