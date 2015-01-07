@@ -264,7 +264,8 @@ Ext.define('Webdesktop.controller.Duty', {
             params.staCname=data.stationname;
             params.startTime=begin_time;
             params.endTime=end_time;
-            params.url="http://10.33.5.103:8080/JOPENSWeb/mon/logStationFormController?key=3";
+            //params.url="http://10.33.5.103:8080/JOPENSWeb/mon/logStationFormController?key=3";
+            params.url=localStorage.recordurl;
             params.id=0;
             params.operator=Globle.displayname;
             params.eventType=1301;
@@ -280,6 +281,16 @@ Ext.define('Webdesktop.controller.Duty', {
             };
             //CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
             CommonFunc.ajaxSend(params,'duty/newrecord',successFunc,failFunc,'POST');
+
+            if(Ext.Array.contains(eval(localStorage.recordstation),data.stationcode)){
+                var params_filter=Ext.clone(params);
+                params_filter.url=localStorage.recordurlfilter;
+
+                //CommonFunc.ajaxSend(params,'duty/eqimcheck',successFunc,failFunc,'POST');
+                CommonFunc.ajaxSend(params_filter,'duty/newrecord',successFunc,failFunc,'POST');
+
+            }
+
 
 
         };
@@ -616,6 +627,8 @@ Ext.define('Webdesktop.controller.Duty', {
         localStorage.eqimurl=form.getValues().eqimurl;
         localStorage.reporturl=form.getValues().reporturl;
         localStorage.recordurl=form.getValues().recordurl;
+        localStorage.recordurlfilter=form.getValues().recordurlfilter;
+        localStorage.recordstation=form.getValues().recordstation;
         localStorage.reportloginurl=form.getValues().reportloginurl;
         localStorage.reportusername=form.getValues().reportusername;
         localStorage.reportpassword=form.getValues().reportpassword;
@@ -793,6 +806,8 @@ Ext.define('Webdesktop.controller.Duty', {
                     stationinterval:parseInt(localStorage.stationinterval),
                     eqimurl:localStorage.eqimurl,
                     recordurl:localStorage.recordurl,
+                    recordurlfilter:localStorage.recordurlfilter,
+                    recordstation:localStorage.recordstation,
                     reporturl:localStorage.reporturl,
                     reportloginurl:localStorage.reportloginurl,
                     reportusername:localStorage.reportusername,
